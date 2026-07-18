@@ -50,6 +50,7 @@
   .badge.free{ background:color-mix(in srgb, var(--ok) 14%, transparent); color:var(--ok); border:1px solid var(--ok);}
   .badge.consult{ background:color-mix(in srgb, var(--accent) 10%, transparent); color:var(--accent); border:1px solid var(--accent); text-decoration:none;}
   .badge.uni{ background:transparent; border:none; color:var(--sub); font-weight:700; letter-spacing:0.1em; padding:5px 6px;}
+  .badge.new{ background:var(--tan); color:#3A2E12; font-weight:700;}
   .metaline{ display:flex; gap:16px; font-size:12.5px; color:var(--sub); margin:14px 0 4px;}
   .sec{ border-top:1px dashed var(--tan); margin-top:12px; padding-top:11px;}
   .sec .h{ font-size:13px; font-weight:700; margin:0 0 6px; color:var(--ink);}
@@ -184,6 +185,7 @@ function load(){
           iConsult=find('consultation','諮詢'),
           iUni=find('university','uni'),
           iFac=find('faculty','學院'),
+          iNew=find('new'),
           iPrice=find('price'), iStatus=find('status'), iUpd=find('updated');
       let dataRows;
       if(iTitle>=0){ dataRows=rows.slice(1); }
@@ -212,6 +214,7 @@ function load(){
           consult:val(r,iConsult),
           uni:val(r,iUni),
           fac:val(r,iFac).toLowerCase(),
+          isNew:/^(yes|y|new|true)$/i.test(val(r,iNew)),
           price, free,
           status:(val(r,iStatus).toLowerCase())||'available',
           updated:val(r,iUpd)
@@ -256,13 +259,10 @@ function render(){
     if(c.free) badges.push('<span class="badge free">FREE NOTE</span>');
     if(c.consult) badges.push(`<a class="badge consult" href="${DM_LINK}" target="_blank" rel="noopener">💬 TUTOR CONSULTATION</a>`);
     if(c.uni) badges.push(`<span class="badge uni">${esc(c.uni)}</span>`);
-    const parts=[];
-    if(c.notes.length) parts.push('notes');
-    if(c.consult) parts.push('consultation');
-    const dmLabel='DM for '+(parts.length?parts.join(' / '):'more');
+    if(c.isNew) badges.push('<span class="badge new">NEW</span>');
     const btn=c.free
       ?`<a class="dm" style="background:var(--ok)" href="${FORM_URL}" target="_blank" rel="noopener">Request free copy</a>`
-      :`<a class="dm" href="${DM_LINK}" target="_blank" rel="noopener">${dmLabel}</a>`;
+      :`<a class="dm" href="${DM_LINK}" target="_blank" rel="noopener">DM for more</a>`;
     return `<div class="card ${s}">
       <div class="name" style="margin:0;">${c.code?`<b class="code-inline" style="${FAC_COLOR[c.fac]?`color:${FAC_COLOR[c.fac]}`:''}">${esc(c.code)}</b> — `:''}${esc(c.title)}</div>
       <div class="metaline">${c.version?`<span>📅 Version: ${esc(c.version)}</span>`:''}${c.grade?`<span>🎓 Grade: ${esc(c.grade)}</span>`:''}</div>
