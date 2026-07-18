@@ -234,9 +234,8 @@ Criminal Litigation & Advocacy</textarea>
     <label>Grade（可留空，accent 色框）</label><input type="text" id="p1_grade" value="" oninput="renderP1()">
     <label>Faculty / University 標籤（自動由 Excel 填，可手動改）</label><input type="text" id="p1_factag" value="" oninput="renderP1()">
     <label>Free / Consultation 標籤（自動由 Excel 填）</label><input type="text" id="p1_statustag" value="" oninput="renderP1()">
-    <label>Subtitle 副標題（手動打，唔會自動改）</label>
-    <textarea id="p1_teaser" style="min-height:60px" oninput="renderP1()">Litigation + Advocacy 全套精讀
-**with past paper analysis</textarea>
+    <label>Subtitle 副標題（手動打，唔會自動改）<button type="button" style="margin-left:8px;font-size:11px;padding:3px 10px;border-radius:999px;border:1.5px solid var(--tan,#B99B5E);background:none;cursor:pointer;" onclick="suggestSubtitle()">💡 建議 Suggest</button></label>
+    <textarea id="p1_teaser" style="min-height:60px" oninput="renderP1()"></textarea>
     <label>CTA</label><input type="text" id="p1_cta" value="SAVE 📌" oninput="renderP1()">
     <label>📷 背景相片（自動填滿成頁，可選）</label>
     <div class="dropzone" ondragover="event.preventDefault();this.classList.add('over')" ondragleave="this.classList.remove('over')" ondrop="dropPhoto(event,'1',this)">
@@ -256,6 +255,7 @@ Criminal Litigation & Advocacy</textarea>
 
   <!-- P2 -->
   <div class="editor-panel" id="editP2">
+    <div class="row" style="margin-bottom:10px;"><label style="flex:none;font-weight:700;">☑️ 顯示呢頁 Show this page</label><input type="checkbox" id="p2_show" checked onchange="onPageShowToggle('P2')"></div>
     <label>標題（中文）</label><input type="text" id="p2_h" value="評核要求" oninput="renderP2()">
     <label>標題（英文小字）</label><input type="text" id="p2_en" value="ASSESSMENT REQUIREMENTS" oninput="renderP2()">
     <label>評核要求（每行一項；開頭係 ** 或 as of 或 註： 或 Note: 嘅一行會自動變斜體、唔計數）</label>
@@ -282,6 +282,7 @@ Criminal Litigation & Advocacy</textarea>
 
   <!-- P3 -->
   <div class="editor-panel" id="editP3">
+    <div class="row" style="margin-bottom:10px;"><label style="flex:none;font-weight:700;">☑️ 顯示呢頁 Show this page</label><input type="checkbox" id="p3_show" checked onchange="onPageShowToggle('P3')"></div>
     <label>Eyebrow</label><input type="text" id="p3_eyebrow" value="NOTES INCLUDED" oninput="renderP3()">
     <label>標題（【】= accent 色）</label>
     <textarea id="p3_title" style="min-height:64px" oninput="renderP3()">Notes included
@@ -308,6 +309,7 @@ Assessments scripts/notes x2</textarea>
 
   <!-- P5 (last page) -->
   <div class="editor-panel" id="editP5">
+    <div class="row" style="margin-bottom:10px;"><label style="flex:none;font-weight:700;">☑️ 顯示呢頁 Show this page</label><input type="checkbox" id="p5_show" checked onchange="onPageShowToggle('P5')"></div>
     <label>Eyebrow</label><input type="text" id="p5_eyebrow" value="SAMPLE 試閱" oninput="renderP5()">
     <label>標題（【】= accent 色）</label>
     <textarea id="p5_title" style="min-height:56px" oninput="renderP5()">Notes Sample</textarea>
@@ -330,7 +332,7 @@ Assessments scripts/notes x2</textarea>
     <label>Consultation（可留空 = 唔顯示）</label>
     <input type="text" id="p5_consult" value="" oninput="renderP5()" placeholder="例：💬 包 Consultation · 提供課程諮詢">
     <label>Why this source（可留空）</label>
-    <textarea id="p5_why" style="min-height:64px" oninput="renderP5()">✍️ 1-take pass 師兄一手整理
+    <textarea id="p5_why" style="min-height:64px" oninput="renderP5()">✍️ 由拎高分嘅同學親手整理
 📊 連 past paper analysis
 🛟 24/7 after-sale course tips</textarea>
     <label>價錢顯示 Price display</label>
@@ -368,8 +370,8 @@ Assessments scripts/notes x2</textarea>
           <div class="rule-accent"></div>
           <div><span class="version" id="w1_ver" style="display:inline-block;"></span><span class="version" id="w1_grade" style="display:none; margin-left:16px; border-color:var(--accent); color:var(--accent);"></span></div>
           <div style="display:flex; gap:10px; margin-top:10px;">
-            <span id="w1_factag" style="font-family:var(--mono); font-size:13px; letter-spacing:0.06em; color:var(--sub); display:none;"></span>
-            <span id="w1_statustag" style="font-family:var(--mono); font-size:13px; letter-spacing:0.06em; color:var(--accent); font-weight:700; display:none;"></span>
+            <span id="w1_factag" style="font-family:var(--mono); font-size:24px; letter-spacing:0.05em; color:var(--sub); border:2px solid var(--sub); padding:10px 22px; display:none;"></span>
+            <span id="w1_statustag" style="font-family:var(--mono); font-size:24px; letter-spacing:0.05em; color:var(--accent); font-weight:700; border:2px solid var(--accent); padding:10px 22px; display:none;"></span>
           </div>
           <div class="teaser" id="w1_teaser"></div>
         </div>
@@ -471,7 +473,7 @@ const R=document.documentElement.style;
 const THEMES=[
   {name:'原色 Editorial', bg:'#F2F0EB', ink:'#1E1E1E', sub:'#6E6A5E', accent:'#D9381E', tan:'#B99B5E', logo:'dark'},
   {name:'Cream × Slate', bg:'#F2F0EB', ink:'#2E3A45', sub:'#6E7680', accent:'#4A6572', tan:'#B99B5E', logo:'dark'},
-  {name:'Cream × Forest', bg:'#F2F0EB', ink:'#0C3B2E', sub:'#6E7A6E', accent:'#0C3B2E', tan:'#B99B5E', logo:'dark'},
+  {name:'Cream × Burgundy', bg:'#F2F0EB', ink:'#5A1F2A', sub:'#8A6E70', accent:'#7A2E3A', tan:'#B99B5E', logo:'dark'},
   {name:'Cream × Cobalt', bg:'#F2F0EB', ink:'#1B1B1B', sub:'#6E6A5E', accent:'#1D4ED8', tan:'#9AA7C4', logo:'dark'},
   {name:'Cream × Mustard', bg:'#F2F0EB', ink:'#2A2620', sub:'#6E6A5E', accent:'#C98A00', tan:'#B99B5E', logo:'dark'},
   {name:'Navy 學院', bg:'#122A44', ink:'#F4EFE4', sub:'#8FA3BC', accent:'#D8FF3E', tan:'#C9A961', logo:'light'},
@@ -611,12 +613,14 @@ async function downloadAll(){
   const prev=host.style.transform;
   host.style.transform='scale(1)';
   await shoot('tplP1','p1-cover');
-  await shoot('tplP2','p2-catalogue');
-  await shoot('tplP3','p3-details');
-  await shoot('tplP5','p4-sample-order');
+  const show2=document.getElementById('p2_show'), show3=document.getElementById('p3_show'), show5=document.getElementById('p5_show');
+  if(!show2||show2.checked) await shoot('tplP2','p2-catalogue');
+  if(!show3||show3.checked) await shoot('tplP3','p3-details');
+  if(!show5||show5.checked) await shoot('tplP5','p4-sample-order');
   host.style.transform=prev;
 }
 [renderP1,renderP2,renderP3,renderP5].forEach(f=>{try{f()}catch(e){console.error(e)}});
+try{ updatePageVisibility(); }catch(e){}
 
 /* ===================== PHOTO UPLOAD + BG REMOVAL + TINT ===================== */
 const photoOriginal={}; // page key -> HTMLImageElement (raw, in-memory)
@@ -863,11 +867,26 @@ function courseKey(c){
   const m=t.match(/([A-Z]{2,6}\s?\d{4}(?:\s?[&\/]\s?\d{4})?)/i);
   return m?m[1].replace(/\s+/g,' ').trim():t.slice(0,30);
 }
+function suggestSubtitle(){
+  const c=CATALOG.find(x=>courseKey(x)===ACTIVE);
+  if(!c){ toast('⚠️ 未搵到呢科嘅 Excel 資料 — 請先載入/貼上 Sheet'); return; }
+  const tipsLine=(c.tips||'').split('\n').map(x=>x.trim()).filter(Boolean)[0];
+  const assessLine=(c.assess||'').split('\n').map(x=>x.trim()).filter(Boolean).find(l=>!/^(\*\*|as of|\(?註[:：]|note:)/i.test(l));
+  const notesLine=(c.contents||[])[0];
+  let src=tipsLine||notesLine||assessLine||'';
+  src=src.replace(/^\*+\s*/,'').trim();
+  if(!src){ toast('⚠️ Excel 入面搵唔到可用內容嚟建議 — 請直接手打'); return; }
+  if(src.length>60) src=src.slice(0,58)+'…';
+  p1_teaser.value=src;
+  renderP1(); autoSave();
+  toast('💡 已根據 Tips/Notes 建議 — 記得自己再改');
+}
 function fillFromCatalog(c){
   const code=(c.code||'').trim();
   const name=(c.title||'').trim();
   const filled=[];
-  p1_headline.value='[1-take pass] 📄🗣️\n'+(code?'【'+code+'】\n':'')+name; filled.push('標題');
+  const isPCLL=/^pcll/i.test(code) || /pcll|law/i.test(c.fac||'');
+  p1_headline.value=(isPCLL?'[1-take pass] 📄🗣️\n':'📄🗣️\n')+(code?'【'+code+'】\n':'')+name; filled.push('標題');
   if(c.version){ p1_ver.value='📍 '+c.version+(/version/i.test(c.version)?'':' Version'); filled.push('Version'); }
   if(c.contents.length){
     p3_body.value=c.contents.join('\n');
@@ -914,6 +933,7 @@ const DESIGN_IDS=['c_bg','c_ink','c_sub','c_accent','c_tan','s_head','s_body'];
 const SELECT_IDS=['logoSel','f_display','f_body'];
 const PHOTO_KEYS=['1','2','3','5a','5b'];
 const CFG_PAGES=['1','2','3','5'];
+const CHECK_IDS=['p2_show','p3_show','p5_show'];
 
 let ACTIVE='未命名 Untitled';
 let COURSES_STATE={};
@@ -921,8 +941,9 @@ let COURSES_STATE={};
 function renderAll(){ [renderP1,renderP2,renderP3,renderP5].forEach(f=>{try{f()}catch(e){console.error(e)}}); }
 
 function collectContent(){
-  const slot={fields:{},photos:{},photoCfg:{}};
+  const slot={fields:{},photos:{},photoCfg:{},checks:{}};
   CONTENT_IDS.forEach(id=>{ const el=document.getElementById(id); if(el) slot.fields[id]=el.value; });
+  CHECK_IDS.forEach(id=>{ const el=document.getElementById(id); if(el) slot.checks[id]=el.checked; });
   PHOTO_KEYS.forEach(k=>{ if(photoFinal[k]) slot.photos[k]=photoFinal[k]; });
   CFG_PAGES.forEach(pg=>{
     const tol=document.getElementById('p'+pg+'_tol'), bg=document.getElementById('p'+pg+'_bgon');
@@ -935,6 +956,7 @@ function collectContent(){
 function applyContent(slot){
   if(!slot) return;
   CONTENT_IDS.forEach(id=>{ const el=document.getElementById(id); if(el && slot.fields && id in slot.fields) el.value=slot.fields[id]; });
+  CHECK_IDS.forEach(id=>{ const el=document.getElementById(id); if(el) el.checked=(slot.checks && id in slot.checks)?!!slot.checks[id]:true; });
   CFG_PAGES.forEach(pg=>{
     const cfg=slot.photoCfg && slot.photoCfg[pg];
     if(!cfg) return;
@@ -954,6 +976,24 @@ function applyContent(slot){
   });
   CFG_PAGES.forEach(pg=>{ if(document.getElementById('p'+pg+'_dim')) setDim(pg); });
   renderAll();
+  updatePageVisibility();
+}
+function onPageShowToggle(k){
+  updatePageVisibility();
+  autoSave();
+}
+function updatePageVisibility(){
+  const map={P2:'p2_show',P3:'p3_show',P5:'p5_show'};
+  const labels={P2:'2 清單',P3:'3 詳情',P5:'4 試閱+落單'};
+  document.querySelectorAll('.tabs button').forEach((btn,i)=>{
+    const keys=['P1','P2','P3','P5'];
+    const k=keys[i];
+    if(!map[k]) return;
+    const el=document.getElementById(map[k]);
+    const shown=el?el.checked:true;
+    btn.style.opacity=shown?'1':'0.4';
+    btn.textContent=labels[k]+(shown?'':'（已隱藏）');
+  });
 }
 function collectDesign(){
   const g={fields:{},selects:{},catPaste:''};
