@@ -8,7 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   :root{
-    --bg:#F2F0EB; --ink:#1E1E1E; --sub:#6E6A5E; --accent:#D9381E; --tan:#B99B5E;
+    --bg:#F2F0EB; --ink:#1E1E1E; --sub:#6E6A5E; --accent:#2C5F8A; --tan:#B99B5E;
     --scale-head:1; --scale-body:1;
     --font-display:'Playfair Display','Noto Serif TC',serif;
     --font-body:'Noto Sans TC',sans-serif;
@@ -165,11 +165,11 @@
   <label>📚 課程目錄 Course Catalogue</label>
   <button class="save-btn" style="background:#31518a;color:#fff;width:100%;margin:4px 0 8px;" onclick="loadCatalogLive()">🔄 從 Google Sheet 直接載入（hosted 版用）</button>
   <label style="margin-top:0;">或者手動貼上（desktop 版用）</label>
-  <textarea id="catPaste" style="min-height:64px" placeholder="喺 Sheet 由 A 欄拖選到 J 欄（成行）→ ⌘C → 貼呢度 → 套用"></textarea>
+  <textarea id="catPaste" style="min-height:64px" placeholder="喺 Sheet 連標題列一齊拖選晒成個表（包括第一行標題）→ ⌘C → 貼呢度 → 套用"></textarea>
   <button class="save-btn" style="background:#31518a;color:#fff;width:100%;margin:6px 0;" onclick="parsePaste()">✅ 套用目錄</button>
   <div id="activeCourse" style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#D8FF3E;margin:2px 0 6px;">✏️ 正在編輯 Editing：未命名 Untitled</div>
   <select id="courseSel" style="display:none; margin-bottom:4px;" onchange="onCourseSel(this.value)"></select>
-  <p class="hint" style="margin-bottom:14px;">⚠️ Copy 時揀齊 A–D 四欄。每科內容<b>獨立儲存</b> — 改一科唔會影響其他科；💾 = 已儲存嘅科。</p>
+  <p class="hint" style="margin-bottom:14px;">⚠️ Copy 時記得連埋標題列（第一行）一齊。每科內容<b>獨立儲存</b> — 改一科唔會影響其他科；💾 = 已儲存嘅科。</p>
   <style>
     .save-btn{ flex:1; padding:11px 6px; background:#B99B5E; color:#141310; border:none; border-radius:8px; font-weight:900; font-size:12.5px; cursor:pointer; font-family:'Noto Sans TC',sans-serif;}
     .save-btn.ghost{ background:transparent; border:1.5px solid #B99B5E; color:#B99B5E;}
@@ -752,6 +752,40 @@ function parseCSVc(text){
   if(row.some(c=>c.trim()!=='')) rows.push(row);
   return rows;
 }
+function mapRowsToCatalog(rows){
+  if(!rows.length) return [];
+  const head=rows[0].map(h=>(h||'').trim().toLowerCase());
+  const find=(...names)=>{ for(const n of names){ const i=head.findIndex(h=>h.includes(n)); if(i>=0) return i; } return -1; };
+  let iTitle=find('course name','course and course code','course'),
+      iVer=find('version'), iGrade=find('grade'),
+      iAssess=find('assessment','評核'),
+      iTips=find('study tips','tips'),
+      iNotes=find('notes','note'),
+      iConsult=find('consultation','諮詢'),
+      iPrice=find('price');
+  let dataRows;
+  if(iTitle>=0){ dataRows=rows.slice(1); }
+  else{
+    iTitle=0; iVer=1; iGrade=2; iAssess=3; iTips=4; iNotes=5; iConsult=6; iPrice=7;
+    dataRows=rows.filter(r=>!/^course\s*name$/i.test((r[0]||'').trim()));
+  }
+  const val=(r,i)=>(i>=0?(r[i]||''):'').trim();
+  const splitLines=t=>t.split('\n').map(x=>x.replace(/^\s*(?:\d+\uFE0F?\u20E3|\d+[\.\u3001\)])\s*/,'').trim()).filter(Boolean);
+  return dataRows.map(r=>{
+    const rawTitle=val(r,iTitle);
+    const codeMatch=rawTitle.match(/([A-Z]{2,6}\s?\d{4}(?:\s?[&\/]\s?\d{4})?)/i);
+    const code=codeMatch?codeMatch[1].replace(/\s+/g,' ').trim():'';
+    let name=rawTitle;
+    if(codeMatch) name=rawTitle.replace(codeMatch[0],'').replace(/^[\s\-\u2013\u2014:\u00b7]+|[\s\-\u2013\u2014:\u00b7]+$/g,'').trim();
+    return{
+      code, title:name||rawTitle,
+      version:val(r,iVer), grade:val(r,iGrade),
+      contents:splitLines(val(r,iNotes)),
+      assess:val(r,iAssess), tips:val(r,iTips),
+      consult:val(r,iConsult), price:val(r,iPrice)
+    };
+  }).filter(c=>c.code||c.title);
+}
 function loadCatalogLive(){
   if(location.protocol==='file:'){ toast('⚠️ Desktop 版用唔到直接載入 — 請用下面貼上方式'); return; }
   toast('🔄 載入緊…');
@@ -759,17 +793,7 @@ function loadCatalogLive(){
     .then(r=>{ if(!r.ok) throw new Error(r.status); return r.text(); })
     .then(text=>{
       const rows=parseCSVc(text);
-      CATALOG=rows.map(r=>({
-        code:(r[0]||'').trim(),
-        title:(r[1]||'').trim(),
-        version:(r[2]||'').trim(),
-        grade:(r[3]||'').trim(),
-        contents:(r[4]||'').split('\n').map(x=>x.replace(/^\s*(?:\d+\uFE0F?\u20E3|\d+[\.\u3001\)])\s*/,'').trim()).filter(Boolean),
-        assess:(r[5]||'').trim(),
-        tips:(r[6]||'').trim(),
-        consult:(r[7]||'').trim(),
-        price:(r[8]||'').trim()
-      })).filter(c=>(c.code||c.title) && !/^course\s*code$/i.test(c.code) && !/^course\s*name$/i.test(c.title));
+      CATALOG=mapRowsToCatalog(rows);
       if(!CATALOG.length){ toast('⚠️ Sheet 度未有課程資料'); return; }
       buildCourseSel();
       toast('📚 已同步 '+CATALOG.length+' 科 — 喺下面揀科');
@@ -800,20 +824,10 @@ function parseTSV(text){
 }
 function parsePaste(silent){
   const rows=parseTSV(catPaste.value);
-  CATALOG=rows.map(r=>({
-        code:(r[0]||'').trim(),
-        title:(r[1]||'').trim(),
-        version:(r[2]||'').trim(),
-        grade:(r[3]||'').trim(),
-        contents:(r[4]||'').split('\n').map(x=>x.replace(/^\s*(?:\d+\uFE0F?\u20E3|\d+[\.\u3001\)])\s*/,'').trim()).filter(Boolean),
-        assess:(r[5]||'').trim(),
-        tips:(r[6]||'').trim(),
-        consult:(r[7]||'').trim(),
-        price:(r[8]||'').trim()
-      })).filter(c=>(c.code||c.title) && !/^course\s*code$/i.test(c.code) && !/^course\s*name$/i.test(c.title));
-  if(!CATALOG.length){ if(!silent) toast('⚠️ 貼上嘅內容讀唔到 — 請由 Sheet 直接 copy 成行'); return; }
+  CATALOG=mapRowsToCatalog(rows);
+  if(!CATALOG.length){ if(!silent) toast('⚠️ 貼上嘅內容讀唔到 — 請由 Sheet 直接 copy 成行（記得連同標題列一齊 copy）'); return; }
   const maxCols=Math.max(...rows.map(r=>r.length));
-  if(maxCols<6 && !silent) toast('⚠️ 只貼到 '+maxCols+' 欄 — 請由 A 欄拖選到 J 欄再 copy');
+  if(maxCols<6 && !silent) toast('⚠️ 只貼到 '+maxCols+' 欄 — 請由 A 欄拖選到最後一欄再 copy');
   buildCourseSel();
   if(!silent){ toast('📚 已載入 '+CATALOG.length+' 科 — 喺下面揀科'); autoSave(); }
 }
@@ -844,7 +858,7 @@ function fillFromCatalog(c){
   if(c.price){ p4_price.value=c.price; p4_showprice.value='show'; filled.push('價錢'); } else { p4_showprice.value='hide'; }
   if(c.consult){ p5_consult.value='💬 Consultation available · 提供課程諮詢'; filled.push('Consultation'); } else p5_consult.value='';
   renderAll();
-  if(filled.length<=1) toast('⚠️ 只套用到標題 — 貼上時請揀齊 A–D 欄');
+  if(filled.length<=1) toast('⚠️ 只套用到標題 — 貼上時記得連埋標題列一齊 copy');
   else toast('✅ '+courseKey(c)+' 已套用：'+filled.join('、'));
 }
 function onCourseSel(v){
