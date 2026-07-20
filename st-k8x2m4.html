@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v40</title>
+<title>This Semester — Studio v41</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -181,7 +181,7 @@
 <body>
 
 <div class="sidebar">
-  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v40</span></h1>
+  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v41</span></h1>
   <p class="sub">4 頁 funnel：Cover → 清單 → 詳情 → 試閱+落單<br>📷 可拖放上載 · 🎨 相片色調 tint · 🗑 一鍵移除相<br>✅ 自動儲存 · 💾 儲存副本</p>
   <div style="display:flex; gap:8px; margin-bottom:12px;">
     <button class="save-btn" onclick="saveHtmlCopy()">💾 儲存 HTML 副本</button>
@@ -239,6 +239,7 @@
     </div>
     <label>標題大小 Title size</label><input type="range" id="s_head" min="60" max="180" value="100" oninput="fontCtrl.setHead(this.value)"><span class="val" id="v_head">100%</span>
     <label>內文大小 Body size</label><input type="range" id="s_body" min="60" max="180" value="100" oninput="fontCtrl.setBody(this.value)"><span class="val" id="v_body">100%</span>
+    <button class="dl-btn" onclick="applyToAllPages()" style="margin-top:8px;">📐 套用呢個大小去全部 4 頁 Apply this size to all pages</button>
   </details>
 
   <div class="tabs">
@@ -893,6 +894,21 @@ function removePhoto(page){
 }
 
 /* ===== auto-fit: shrink body text until nothing is clipped ===== */
+function applyToAllPages(){
+  const s=fontCtrl.activeScale();
+  const head=s.head, body=s.body;
+  fontCtrl.linked.head=head; fontCtrl.linked.body=body;
+  ['P1','P2','P3','P4'].forEach(k=>{
+    fontCtrl.pageScale[k]={head:head, body:body};
+    const t=document.getElementById('tpl'+k);
+    if(t){ t.style.setProperty('--scale-head',head); t.style.setProperty('--scale-body',body); }
+  });
+  [renderP1,renderP2,renderP3,renderP4].forEach(f=>{try{f()}catch(e){}});
+  ['tplP1','tplP2','tplP3','tplP4'].forEach(id=>autoFit(id));
+  fontCtrl.loadForActivePage();
+  autoSave();
+  toast('✅ 已套用去全部 4 頁 Applied to all 4 pages');
+}
 function autoFitLinked(){
   autoFit('tplP2'); autoFit('tplP3');
   const t2=document.getElementById('tplP2'), t3=document.getElementById('tplP3');
