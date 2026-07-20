@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v41</title>
+<title>This Semester — Studio v42</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -129,6 +129,7 @@
   .bullet-line:last-child{ margin-bottom:0;}
   .bullet-line .dot{ color:var(--accent); font-weight:900; flex:none;}
   .bullet-line .txt{ flex:1; text-align:justify;}
+  #w4_rembox .bullet-line{ margin-bottom:8px;}
 
   /* ---- ORDER details (last page) ---- */
   #tplP3 .pricebox{ display:flex; align-items:baseline; gap:28px;}
@@ -146,7 +147,7 @@
   .dot-grid{ position:absolute; display:grid; grid-template-columns:repeat(3,1fr); gap:20px; width:110px;}
   .dot-grid span{ width:14px; height:14px; border-radius:50%; background:var(--tan);}
   .chev{ display:inline-block; margin-left:10px; font-weight:900;}
-  .rule-accent{ width:120px; height:5px; background:var(--accent); margin-top:6px;}
+  .rule-accent{ width:120px; height:5px; background:var(--accent); margin-top:20px;}
 
   /* full-page photo background */
   .photo-bg{ position:absolute; inset:0; display:none; z-index:1; pointer-events:none;}
@@ -181,7 +182,7 @@
 <body>
 
 <div class="sidebar">
-  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v41</span></h1>
+  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v42</span></h1>
   <p class="sub">4 頁 funnel：Cover → 清單 → 詳情 → 試閱+落單<br>📷 可拖放上載 · 🎨 相片色調 tint · 🗑 一鍵移除相<br>✅ 自動儲存 · 💾 儲存副本</p>
   <div style="display:flex; gap:8px; margin-bottom:12px;">
     <button class="save-btn" onclick="saveHtmlCopy()">💾 儲存 HTML 副本</button>
@@ -233,13 +234,14 @@
       <option value="'LXGW WenKai TC',serif">LXGW WenKai</option>
     </select>
     <div class="row"><label style="flex:none;font-weight:700;">文字大小控制 Text size control</label></div>
+    <p class="hint">呢個大小設定係全部 course 通用 — 轉第個 course 唔會變返細。呢個 slider 淨係影響「呢頁」（或 P2+P3 一齊，見下面）；想全部 4 頁一致，撳低面粒 Apply 按鈕。<br>This size applies across all courses — switching courses won't reset it. The slider below only affects the current page (or P2+P3 together, see below); to match all 4 pages, use the Apply button below.</p>
     <div class="row" id="scopeRow" style="gap:14px; display:none;">
       <label style="flex:none;"><input type="radio" name="scaleScope" value="linked" checked onchange="fontCtrl.setScope('linked');"> P2+P3 一致 Same as P2/P3</label>
       <label style="flex:none;"><input type="radio" name="scaleScope" value="solo" onchange="fontCtrl.setScope('solo');"> 只調呢頁 This page only</label>
     </div>
     <label>標題大小 Title size</label><input type="range" id="s_head" min="60" max="180" value="100" oninput="fontCtrl.setHead(this.value)"><span class="val" id="v_head">100%</span>
     <label>內文大小 Body size</label><input type="range" id="s_body" min="60" max="180" value="100" oninput="fontCtrl.setBody(this.value)"><span class="val" id="v_body">100%</span>
-    <button class="dl-btn" onclick="applyToAllPages()" style="margin-top:8px;">📐 套用呢個大小去全部 4 頁 Apply this size to all pages</button>
+    <button class="dl-btn" onclick="applyToAllPages()" style="margin-top:8px;">📐 套用去全部 4 頁（所有 course 都會用呢個大小）Apply to all 4 pages (all courses)</button>
   </details>
 
   <div class="tabs">
@@ -1137,13 +1139,6 @@ function collectContent(){
 function applyContent(slot){
   if(!slot) return;
   CONTENT_IDS.forEach(id=>{ const el=document.getElementById(id); if(el && slot.fields && id in slot.fields) el.value=slot.fields[id]; });
-  if(slot.pageScale){
-    fontCtrl.pageScale=JSON.parse(JSON.stringify(slot.pageScale));
-    ['P1','P2','P3','P4'].forEach(k=>{
-      const t=document.getElementById('tpl'+k);
-      if(t){ t.style.setProperty('--scale-head', fontCtrl.pageScale[k].head); t.style.setProperty('--scale-body', fontCtrl.pageScale[k].body); }
-    });
-  }
   fontCtrl.loadForActivePage();
   const uncheckedByDefault=['p4_show','p4_showprice_chk','p5_showconsult','p5_sp2','p5_sp3','p5_sp4','p5_sp5','p5_sp6'];
   CHECK_IDS.forEach(id=>{ const el=document.getElementById(id); if(el) el.checked=(slot.checks && id in slot.checks)?!!slot.checks[id]:!uncheckedByDefault.includes(id); });
@@ -1166,6 +1161,7 @@ function applyContent(slot){
   });
   CFG_PAGES.forEach(pg=>{ if(document.getElementById('p'+pg+'_dim')) setDim(pg); });
   renderAll();
+  ['tplP1','tplP2','tplP3','tplP4'].forEach(id=>autoFit(id));
   updatePageVisibility();
 }
 function onPageShowToggle(k){
