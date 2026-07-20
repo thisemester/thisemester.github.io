@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v33</title>
+<title>This Semester — Studio v30</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -123,7 +123,7 @@
   #tplP2 .tipsbox .tb{ font-family:var(--font-body); font-weight:500; font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.85; color:var(--ink); white-space:pre-line;}
   #tplP3 .consultbar{ margin-top:0; background:var(--accent); color:var(--bg); font-family:var(--font-body); font-weight:900; font-size:calc(40px * var(--scale-body) * var(--fit,1)); padding:26px 32px; border-radius:12px; text-align:center;}
   #tplP3 .whybox{ margin-top:0;}
-  #tplP3 .whybox .wt{ font-family:var(--mono); font-size:23px; letter-spacing:0.18em; color:var(--accent);}
+  #tplP3 .whybox .wt{ font-family:var(--mono); font-size:28px; letter-spacing:0.18em; color:var(--accent); font-weight:700;}
   #tplP3 .whybox .wb{ font-family:var(--font-body); font-weight:500; font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.75; color:var(--ink); margin-top:10px;}
   .bullet-line{ display:flex; gap:14px; align-items:baseline; margin-bottom:14px;}
   .bullet-line:last-child{ margin-bottom:0;}
@@ -181,7 +181,7 @@
 <body>
 
 <div class="sidebar">
-  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v33</span></h1>
+  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v24</span></h1>
   <p class="sub">4 頁 funnel：Cover → 清單 → 詳情 → 試閱+落單<br>📷 可拖放上載 · 🎨 相片色調 tint · 🗑 一鍵移除相<br>✅ 自動儲存 · 💾 儲存副本</p>
   <div style="display:flex; gap:8px; margin-bottom:12px;">
     <button class="save-btn" onclick="saveHtmlCopy()">💾 儲存 HTML 副本</button>
@@ -258,7 +258,8 @@ Criminal Litigation & Advocacy</textarea>
     <label>Version 框</label><input type="text" id="p1_ver" value="📍 2025-2026 Version" oninput="renderP1()">
     <label>Grade（可留空，accent 色框）</label><input type="text" id="p1_grade" value="" oninput="renderP1()">
     <label>Faculty / University 標籤（自動由 Excel 填，可手動改）</label><input type="text" id="p1_factag" value="" oninput="renderP1()">
-    <label>Free / Consultation 標籤（自動由 Excel 填）</label><input type="text" id="p1_statustag" value="" oninput="renderP1()">
+    <label>Free note 標籤（可留空 = 唔顯示）</label><input type="text" id="p1_freetag" value="" oninput="renderP1()">
+    <label>Consultation 標籤（可留空 = 唔顯示）</label><input type="text" id="p1_consulttag" value="" oninput="renderP1()">
     <label>Subtitle 副標題（手動打，唔會自動改）<button type="button" style="margin-left:8px;font-size:11px;padding:3px 10px;border-radius:999px;border:1.5px solid var(--tan,#B99B5E);background:none;cursor:pointer;" onclick="suggestSubtitle()">💡 建議 Suggest</button></label>
     <textarea id="p1_teaser" style="min-height:60px" oninput="renderP1()"></textarea>
     <label>CTA</label><input type="text" id="p1_cta" value="SAVE 📌" oninput="renderP1()">
@@ -286,7 +287,7 @@ Criminal Litigation & Advocacy</textarea>
     <textarea id="p2_items" style="min-height:170px" oninput="renderP2()">**As of the academic year 2025-26:
 1. Litigation Component (Coursework 18/50)
 2. Advocacy Component (Bail App 15/50)</textarea>
-    <label>Study Tips（可留空 — 顯示喺特別框；每行一項）</label>
+    <label>Study Tips（可留空 — 顯示喺特別框；每行一項；用【字】highlight 關鍵字）</label>
     <textarea id="p2_tips" style="min-height:70px" oninput="renderP2()"></textarea>
     <label>自由發揮 Your own box（可留空 — 顯示喺虛線框）</label>
     <textarea id="p2_custom" style="min-height:70px" oninput="renderP2()"></textarea>
@@ -336,13 +337,13 @@ Assessments scripts/notes x2</textarea>
     <div class="row"><label style="flex:none">套用去背</label><input type="checkbox" id="p5_bgon" onchange="reprocess('5a');reprocess('5b')"></div>
     <p class="hint">Notes screenshot 通常唔使去背，預設關閉。</p>
 
-    <label style="flex:none;font-weight:700;">Why this source — 剔咗先會顯示，文字可自己改</label>
-    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp1" checked onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp1_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Comprehensive and neatly organised exam notes and templates for better preparation and easy reference</textarea></label>
-    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp2" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp2_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Focused on exam-tested content; written by a top-scoring senior student, not a random note-taker</textarea></label>
-    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp3" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp3_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Cross-checked against past paper patterns and marking schemes, saving you hours of re-organising</textarea></label>
-    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp4" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp4_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Track record of past buyers scoring A/A- with this set</textarea></label>
+    <label style="flex:none;font-weight:700;">Why this source — 剔咗先會顯示；用【字】highlight 關鍵字</label>
+    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp1" checked onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp1_txt" style="min-height:44px;flex:1;" oninput="renderP3()">【Comprehensive】 and neatly organised exam notes and templates for better preparation and easy reference</textarea></label>
+    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp2" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp2_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Focused on 【exam-tested content】; written by a top-scoring senior student, not a random note-taker</textarea></label>
+    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp3" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp3_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Cross-checked against past paper patterns and marking schemes, saving you 【hours of re-organising】</textarea></label>
+    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp4" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp4_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Track record of past buyers scoring 【A/A-】 with this set</textarea></label>
     <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp5" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp5_txt" style="min-height:44px;flex:1;" oninput="renderP3()">After-sale support — ask follow-up questions regarding the notes and course</textarea></label>
-    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp6" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp6_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Ready-made templates so you can just fill in and go; formatted for quick review before the exam</textarea></label>
+    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp6" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp6_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Ready-made 【templates】 so you can just fill in and go; formatted for quick review before the exam</textarea></label>
     <label>其他 Your own point（可留空）</label>
     <textarea id="p5_why_extra" style="min-height:44px" oninput="renderP3()"></textarea>
     <label>Consultation（可留空 = 唔顯示）</label>
@@ -398,9 +399,10 @@ Assessments scripts/notes x2</textarea>
           <div class="headline" id="w1_headline"></div>
           <div class="rule-accent"></div>
           <div><span class="version" id="w1_ver" style="display:inline-block;"></span><span class="version" id="w1_grade" style="display:none; margin-left:16px; border-color:var(--accent); color:var(--accent);"></span></div>
-          <div style="display:flex; gap:10px; margin-top:10px;">
+          <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
             <span id="w1_factag" style="font-family:var(--mono); font-size:24px; letter-spacing:0.05em; color:var(--sub); border:2px solid var(--sub); padding:10px 22px; display:none;"></span>
-            <span id="w1_statustag" style="font-family:var(--mono); font-size:24px; letter-spacing:0.05em; color:var(--accent); font-weight:700; border:2px solid var(--accent); padding:10px 22px; display:none;"></span>
+            <span id="w1_freetag" style="font-family:var(--mono); font-size:24px; letter-spacing:0.05em; color:var(--accent); font-weight:700; border:2px solid var(--accent); padding:10px 22px; display:none;"></span>
+            <span id="w1_consulttag" style="font-family:var(--mono); font-size:24px; letter-spacing:0.05em; color:var(--accent); font-weight:700; border:2px solid var(--accent); padding:10px 22px; display:none;"></span>
           </div>
           <div class="teaser" id="w1_teaser"></div>
         </div>
@@ -557,15 +559,16 @@ function renderP1(){
   w1_ver.textContent=p1_ver.value; w1_teaser.textContent=p1_teaser.value;
   w1_grade.textContent=p1_grade.value;
   w1_grade.style.display=p1_grade.value.trim()?'inline-block':'none';
-  const ft=document.getElementById('p1_factag'), st=document.getElementById('p1_statustag');
-  const w1ft=document.getElementById('w1_factag'), w1st=document.getElementById('w1_statustag');
+  const ft=document.getElementById('p1_factag');
+  const w1ft=document.getElementById('w1_factag'), w1free=document.getElementById('w1_freetag'), w1consult=document.getElementById('w1_consulttag');
   if(ft&&w1ft){ w1ft.textContent=ft.value; w1ft.style.display=ft.value.trim()?'inline':'none'; }
-  if(st&&w1st){ w1st.textContent=st.value; w1st.style.display=st.value.trim()?'inline':'none'; }
+  if(p1_freetag&&w1free){ w1free.textContent=p1_freetag.value; w1free.style.display=p1_freetag.value.trim()?'inline':'none'; }
+  if(p1_consulttag&&w1consult){ w1consult.textContent=p1_consulttag.value; w1consult.style.display=p1_consulttag.value.trim()?'inline':'none'; }
   w1_cta.innerHTML=esc(p1_cta.value)+'<span class="chev">»</span>';
   autoFitActive();
 }
 function bulletHTML(lines){
-  return lines.filter(l=>l.trim()).map(l=>`<div class="bullet-line"><span class="dot">•</span><span class="txt">${esc(l.trim())}</span></div>`).join('');
+  return lines.filter(l=>l.trim()).map(l=>`<div class="bullet-line"><span class="dot">•</span><span class="txt">${hl(l.trim())}</span></div>`).join('');
 }
 function buildHeadline(full){
   const idx=full.indexOf(' ');
@@ -591,8 +594,7 @@ function renderP2(){
     }
   });
   w2_items.innerHTML=html;
-  const size=raw.length<=5?52:raw.length<=7?46:40;
-  document.querySelectorAll('#tplP2 .items li:not(.note-line)').forEach(li=>li.style.fontSize=`calc(${size}px * var(--scale-body) * var(--fit,1))`);
+  document.querySelectorAll('#tplP2 .items li:not(.note-line)').forEach(li=>li.style.fontSize=`calc(40px * var(--scale-body) * var(--fit,1))`);
   w2_tips.innerHTML=bulletHTML(p2_tips.value.split('\n'));
   w2_tipsbox.style.display=p2_tips.value.trim()?'block':'none';
   w2_custom.textContent=p2_custom.value;
@@ -1048,11 +1050,8 @@ function fillFromCatalog(c){
   if(c.fac) tagParts.push(c.fac);
   const ft=document.getElementById('p1_factag');
   if(ft) ft.value=tagParts.join(' · ');
-  const st=[];
-  if(c.free) st.push('🆓 FREE');
-  if(c.consult) st.push('💬 CONSULTATION');
-  const sb=document.getElementById('p1_statustag');
-  if(sb) sb.value=st.join('  ');
+  p1_freetag.value=c.free?'FREE NOTE':'';
+  p1_consulttag.value=c.consult?'CONSULTATION':'';
   renderAll();
   if(filled.length<=1) toast('⚠️ 只套用到標題 — 貼上時記得連埋標題列一齊 copy');
   else toast('✅ '+courseKey(c)+' 已套用：'+filled.join('、'));
@@ -1066,7 +1065,7 @@ function onCourseSel(v){
 /* ===================== SAVE / PERSISTENCE — PER-COURSE WORKSPACES ===================== */
 const LS_KEY='thissemester_studio_v7';
 const CONTENT_IDS=[
-  'p1_pkg','p1_headline','p1_ver','p1_grade','p1_factag','p1_statustag','p1_teaser','p1_cta',
+  'p1_pkg','p1_headline','p1_ver','p1_grade','p1_factag','p1_freetag','p1_consulttag','p1_teaser','p1_cta',
   'p2_eyebrow','p2_items','p2_tips','p2_custom',
   'p3_eyebrow','p3_body','p3_samplecount','p3_custom',
   'p4_price','p4_was','p5_consult',
