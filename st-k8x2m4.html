@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v37</title>
+<title>This Semester — Studio v38</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -97,9 +97,9 @@
   #tplP4 .sec h2{ font-family:var(--font-display); font-weight:900; font-size:calc(76px * var(--scale-head)); color:var(--ink); margin:0;}
   #tplP4 .sec .en{ font-family:var(--mono); font-size:25px; color:var(--sub); letter-spacing:0.14em;}
   #tplP4 .items{ list-style:none; margin:48px 0 0; padding:0;}
-  #tplP4 .items li{ display:block; padding:20px 0; border-bottom:1.5px solid color-mix(in srgb, var(--ink) 30%, transparent); font-family:var(--font-body); color:var(--ink); line-height:1.5;}
+  #tplP4 .items li{ display:block; padding:12px 0; border-bottom:1.5px solid color-mix(in srgb, var(--ink) 30%, transparent); font-family:var(--font-body); color:var(--ink); line-height:1.4;}
   #tplP4 .items li:last-child{ border-bottom:none;}
-  #tplP4 .items li .q{ font-weight:700; font-size:calc(32px * var(--scale-body) * var(--fit,1)); display:block; margin-bottom:8px;}
+  #tplP4 .items li .q{ font-weight:700; font-size:calc(32px * var(--scale-body) * var(--fit,1)); display:block; margin-bottom:4px;}
   #tplP4 .items li .a{ font-weight:400; font-size:calc(28px * var(--scale-body) * var(--fit,1)); color:var(--sub); display:block;}
   #tplP2 .num{ font-family:var(--mono); font-weight:600; font-size:30px; color:var(--accent); min-width:60px;}
 
@@ -181,7 +181,7 @@
 <body>
 
 <div class="sidebar">
-  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v37</span></h1>
+  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v24</span></h1>
   <p class="sub">4 頁 funnel：Cover → 清單 → 詳情 → 試閱+落單<br>📷 可拖放上載 · 🎨 相片色調 tint · 🗑 一鍵移除相<br>✅ 自動儲存 · 💾 儲存副本</p>
   <div style="display:flex; gap:8px; margin-bottom:12px;">
     <button class="save-btn" onclick="saveHtmlCopy()">💾 儲存 HTML 副本</button>
@@ -339,7 +339,7 @@ Assessments scripts/notes x2</textarea>
 
     <label style="flex:none;font-weight:700;">Why this source — 剔咗先會顯示；用【字】highlight 關鍵字</label>
     <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp1" checked onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp1_txt" style="min-height:44px;flex:1;" oninput="renderP3()">【Comprehensive】 and neatly organised exam notes and templates for better preparation and easy reference</textarea></label>
-    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp2" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp2_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Focused on 【exam-tested content】; written by a top-scoring senior student, not a random note-taker</textarea></label>
+    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp2" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp2_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Focused on 【exam-tested content】; written by a top-scoring senior student</textarea></label>
     <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp3" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp3_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Cross-checked against past paper patterns and marking schemes, saving you 【hours of re-organising】</textarea></label>
     <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp4" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp4_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Track record of past buyers scoring 【A/A-】 with this set</textarea></label>
     <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp5" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp5_txt" style="min-height:44px;flex:1;" oninput="renderP3()">After-sale support — ask follow-up questions regarding the notes and course</textarea></label>
@@ -487,13 +487,13 @@ Yes — check the sample pages on this post, or DM for more.</textarea>
         <div class="content">
           <div class="sec"><h2 id="w4_h"></h2><span class="en" id="w4_en"></span></div>
           <ul class="items" id="w4_items"></ul>
-          <div id="w4_aboutbox" style="margin-top:30px; border-top:2px solid var(--ink); padding-top:20px; display:none;">
-            <div style="font-family:var(--mono); font-size:23px; letter-spacing:0.18em; color:var(--sub); margin-bottom:10px;">ABOUT US 關於我們</div>
-            <div id="w4_about" style="font-family:var(--font-body); font-size:calc(30px * var(--scale-body) * var(--fit,1)); line-height:1.75; color:var(--ink); white-space:pre-line;"></div>
+          <div id="w4_aboutbox" style="margin-top:16px; border-top:2px solid var(--ink); padding-top:12px; display:none;">
+            <div style="font-family:var(--mono); font-size:23px; letter-spacing:0.18em; color:var(--sub); margin-bottom:8px;">ABOUT US 關於我們</div>
+            <div id="w4_about" style="font-family:var(--font-body); font-size:calc(28px * var(--scale-body) * var(--fit,1)); line-height:1.6; color:var(--ink); white-space:pre-line;"></div>
           </div>
-          <div id="w4_rembox" style="margin-top:22px; border:2px dashed color-mix(in srgb, var(--ink) 35%, transparent); border-radius:14px; padding:24px 28px; display:none;">
-            <div style="font-family:var(--mono); font-size:23px; letter-spacing:0.18em; color:var(--accent); margin-bottom:10px;">REMINDERS</div>
-            <div id="w4_rem" style="font-family:var(--font-body); font-weight:500; font-size:calc(28px * var(--scale-body) * var(--fit,1)); line-height:1.6; color:var(--sub);"></div>
+          <div id="w4_rembox" style="margin-top:14px; border:2px dashed color-mix(in srgb, var(--ink) 35%, transparent); border-radius:14px; padding:16px 20px; display:none;">
+            <div style="font-family:var(--mono); font-size:23px; letter-spacing:0.18em; color:var(--accent); margin-bottom:8px;">REMINDERS</div>
+            <div id="w4_rem" style="font-family:var(--font-body); font-weight:500; font-size:calc(24px * var(--scale-body) * var(--fit,1)); line-height:1.45; color:var(--sub);"></div>
           </div>
         </div>
         <div class="bottom">
@@ -911,8 +911,8 @@ function autoFit(tplId){
   if(!c) return;
   tpl.style.setProperty('--fit','1');
   let f=1;
-  while(c.scrollHeight > c.clientHeight+2 && f>0.4){
-    f-=0.03;
+  while(c.scrollHeight > c.clientHeight+2 && f>0.32){
+    f-=0.02;
     tpl.style.setProperty('--fit', f.toFixed(2));
   }
 }
