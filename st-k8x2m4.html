@@ -104,9 +104,11 @@
   #tplP2 .num{ font-family:var(--mono); font-weight:600; font-size:30px; color:var(--accent); min-width:60px;}
 
   /* ---- P3 DETAILS ---- */
-  .hd-single{ font-family:var(--font-display); font-weight:900; font-size:calc(56px * var(--scale-head)); line-height:1.25; color:var(--ink); white-space:pre-wrap;}
+  .hd-single{ margin-top:6px; margin-bottom:8px; white-space:nowrap; overflow:hidden;}
+  .hd-single .cn{ font-family:var(--font-display); font-weight:900; font-size:calc(94px * var(--scale-head)); line-height:1; color:var(--ink);}
+  .hd-single .en{ font-family:var(--font-body); font-weight:500; font-size:calc(30px * var(--scale-head)); line-height:1; color:var(--accent); margin-left:18px;}
   #tplP3 .notes-checklist{ list-style:none; margin:40px 0 0; padding:0;}
-  #tplP3 .notes-checklist li{ font-family:var(--font-body); font-size:calc(30px * var(--scale-body) * var(--fit,1)); line-height:1.8; color:var(--sub); padding-left:44px; position:relative; margin-bottom:10px;}
+  #tplP3 .notes-checklist li{ font-family:var(--font-body); font-size:calc(44px * var(--scale-body) * var(--fit,1)); line-height:1.7; color:var(--sub); padding-left:44px; position:relative; margin-bottom:12px;}
   #tplP3 .notes-checklist li::before{ content:'✓'; position:absolute; left:0; color:var(--accent); font-weight:900;}
   #tplP3 .tipsbox{ margin-top:34px; border:2px solid var(--tan); background:color-mix(in srgb, var(--tan) 12%, transparent); border-radius:14px; padding:32px 36px;}
   #tplP2 .tipsbox{ margin-top:34px; border:2px solid var(--tan); background:color-mix(in srgb, var(--tan) 12%, transparent); border-radius:14px; padding:32px 36px;}
@@ -216,8 +218,13 @@
       <option value="'Noto Serif TC',serif">Noto Serif TC</option>
       <option value="'LXGW WenKai TC',serif">LXGW WenKai</option>
     </select>
-    <div class="row"><label>標題大小</label><input type="range" id="s_head" min="60" max="150" value="100"><span class="val" id="v_head">100%</span></div>
-    <div class="row"><label>內文大小</label><input type="range" id="s_body" min="60" max="150" value="100"><span class="val" id="v_body">100%</span></div>
+    <div class="row"><label style="flex:none;font-weight:700;">文字大小控制 Text size control</label></div>
+    <div class="row" style="gap:14px;">
+      <label style="flex:none;"><input type="radio" name="scaleScope" value="page" checked onchange="fontCtrl.scope='page'; fontCtrl.apply();"> 淨係呢頁 This page only</label>
+      <label style="flex:none;"><input type="radio" name="scaleScope" value="all" onchange="fontCtrl.scope='all'; fontCtrl.apply();"> 全部頁 All pages</label>
+    </div>
+    <label>標題大小 Title size</label><input type="range" id="s_head" min="60" max="180" value="100" oninput="fontCtrl.setHead(this.value)"><span class="val" id="v_head">100%</span>
+    <label>內文大小 Body size</label><input type="range" id="s_body" min="60" max="180" value="100" oninput="fontCtrl.setBody(this.value)"><span class="val" id="v_body">100%</span>
   </details>
 
   <div class="tabs">
@@ -229,7 +236,6 @@
 
   <!-- P1 -->
   <div class="editor-panel active" id="editP1">
-    <label>文字大小 Text size（呢頁獨立控制）</label><input type="range" id="scaleP1" min="60" max="140" value="100" oninput="setPageScale('P1', this.value)"><span class="val" id="scaleP1v">100%</span>
     <label>Package 標籤</label><input type="text" id="p1_pkg" value="NOTES PACKAGE" oninput="renderP1()">
     <label>Headline（【】= accent 色）標題會自動縮放</label>
     <textarea id="p1_headline" style="min-height:96px" oninput="renderP1()">[1-take pass] 📄🗣️
@@ -261,7 +267,6 @@ Criminal Litigation & Advocacy</textarea>
   <!-- P2 -->
   <div class="editor-panel" id="editP2">
     <div class="row" style="margin-bottom:10px;"><label style="flex:none;font-weight:700;">☑️ 顯示呢頁 Show this page</label><input type="checkbox" id="p2_show" checked onchange="onPageShowToggle('P2')"></div>
-    <label>文字大小 Text size（呢頁獨立控制）</label><input type="range" id="scaleP2" min="60" max="140" value="100" oninput="setPageScale('P2', this.value)"><span class="val" id="scaleP2v">100%</span>
     <label>標題（一行，中英夾雜）</label><input type="text" id="p2_eyebrow" value="課程要求 Course requirements" oninput="renderP2()">
     <label>評核要求（每行一項；開頭係 ** 或 as of 或 註： 或 Note: 嘅一行會自動變斜體、唔計數）</label>
     <textarea id="p2_items" style="min-height:170px" oninput="renderP2()">**As of the academic year 2025-26:
@@ -287,7 +292,6 @@ Criminal Litigation & Advocacy</textarea>
   <!-- P3 -->
   <div class="editor-panel" id="editP3">
     <div class="row" style="margin-bottom:10px;"><label style="flex:none;font-weight:700;">☑️ 顯示呢頁 Show this page</label><input type="checkbox" id="p3_show" checked onchange="onPageShowToggle('P3')"></div>
-    <label>文字大小 Text size（呢頁獨立控制）</label><input type="range" id="scaleP3" min="60" max="140" value="100" oninput="setPageScale('P3', this.value)"><span class="val" id="scaleP3v">100%</span>
     <label>標題（一行，中英夾雜）</label><input type="text" id="p3_eyebrow" value="套裝內容 Package contents" oninput="renderP3()">
     <label>內文（每行一項 — 即係你賣緊嘅筆記內容，例如 Exam script / Coursework notes）</label>
     <textarea id="p3_body" style="min-height:110px" oninput="renderP3()">Litigation SG notes (**with past paper analysis)
@@ -342,7 +346,6 @@ Assessments scripts/notes x2</textarea>
 
   <div class="editor-panel" id="editP4">
     <div class="row" style="margin-bottom:10px;"><label style="flex:none;font-weight:700;">☑️ 顯示呢頁 Show this page</label><input type="checkbox" id="p4_show" onchange="onPageShowToggle('P4')"></div>
-    <label>文字大小 Text size（呢頁獨立控制）</label><input type="range" id="scaleP4" min="60" max="140" value="100" oninput="setPageScale('P4', this.value)"><span class="val" id="scaleP4v">100%</span>
     <label>標題（中文）</label><input type="text" id="p4_h" value="常見問題" oninput="renderP4()">
     <label>標題（英文小字）</label><input type="text" id="p4_en" value="FAQ" oninput="renderP4()">
     <label>Q&A（每條問題一行，跟住一行答案；用空白行分隔唔同組）</label>
@@ -512,8 +515,7 @@ c_sub.oninput=()=>R.setProperty('--sub',c_sub.value);
 c_accent.oninput=()=>R.setProperty('--accent',c_accent.value);
 c_tan.oninput=()=>R.setProperty('--tan',c_tan.value);
 logoSel.onchange=()=>setLogo(logoSel.value);
-s_head.oninput=()=>{R.setProperty('--scale-head',s_head.value/100); v_head.textContent=s_head.value+'%'; renderP1(); renderP3();};
-s_body.oninput=()=>{R.setProperty('--scale-body',s_body.value/100); v_body.textContent=s_body.value+'%'; autoFitActive();};
+
 f_display.onchange=()=>{R.setProperty('--font-display',f_display.value); autoFitActive();};
 f_body.onchange=()=>{R.setProperty('--font-body',f_body.value); autoFitActive();};
 
@@ -540,7 +542,13 @@ function renderP1(){
   autoFitActive();
 }
 function renderP2(){
-  w2_headline.textContent=p2_eyebrow.value;
+  {
+    const full=p2_eyebrow.value.trim();
+    const idx=full.indexOf(' ');
+    const cn=idx>=0?full.slice(0,idx):full;
+    const en=idx>=0?full.slice(idx+1):'';
+    w2_headline.innerHTML=`<span class="cn">${esc(cn)}</span>${en?`<span class="en">${esc(en)}</span>`:''}`;
+  }
   const raw=p2_items.value.split('\n').map(l=>l.trim()).filter(Boolean);
   const noteRe=/^(\*\*|as of|\(?註[:：]|note:)/i;
   let num=1, html='';
@@ -553,14 +561,20 @@ function renderP2(){
     }
   });
   w2_items.innerHTML=html;
-  const size=raw.length<=5?38:raw.length<=7?34:30;
+  const size=raw.length<=5?52:raw.length<=7?46:40;
   document.querySelectorAll('#tplP2 .items li:not(.note-line)').forEach(li=>li.style.fontSize=`calc(${size}px * var(--scale-body) * var(--fit,1))`);
   w2_tips.textContent=p2_tips.value;
   w2_tipsbox.style.display=p2_tips.value.trim()?'block':'none';
   autoFitActive();
 }
 function renderP3(){
-  w3_headline.textContent=p3_eyebrow.value;
+  {
+    const full=p3_eyebrow.value.trim();
+    const idx=full.indexOf(' ');
+    const cn=idx>=0?full.slice(0,idx):full;
+    const en=idx>=0?full.slice(idx+1):'';
+    w3_headline.innerHTML=`<span class="cn">${esc(cn)}</span>${en?`<span class="en">${esc(en)}</span>`:''}`;
+  }
   const items=p3_body.value.split('\n').map(l=>l.trim()).filter(Boolean);
   w3_body.innerHTML=items.map(x=>`<li>${esc(x)}</li>`).join('');
 
@@ -598,22 +612,60 @@ function renderP4(){
   document.getElementById('w4_aboutbox').style.display=p4_about.value.trim()?'block':'none';
   autoFitActive();
 }
-function setPageScale(k,val){
-  const tpl=document.getElementById('tpl'+k);
-  if(!tpl) return;
-  tpl.style.setProperty('--scale-body', val/100);
-  tpl.style.setProperty('--scale-head', val/100);
-  const v=document.getElementById('scale'+k+'v'); if(v) v.textContent=val+'%';
-  autoFitActive();
-  autoSave();
-}
+const fontCtrl={
+  scope:'page',
+  pageScale:{P1:{head:1,body:1},P2:{head:1,body:1},P3:{head:1,body:1},P4:{head:1,body:1}},
+  setHead(val){
+    const v=val/100;
+    if(this.scope==='all'){
+      R.setProperty('--scale-head',v);
+      ['P1','P2','P3','P4'].forEach(k=>{ const t=document.getElementById('tpl'+k); if(t) t.style.removeProperty('--scale-head'); this.pageScale[k].head=v; });
+    }else{
+      const t=document.getElementById('tpl'+ACTIVE_PAGE);
+      if(t) t.style.setProperty('--scale-head',v);
+      this.pageScale[ACTIVE_PAGE].head=v;
+    }
+    v_head.textContent=val+'%';
+    [renderP1,renderP2,renderP3,renderP4].forEach(f=>{try{f()}catch(e){}});
+    autoFitActive(); autoSave();
+  },
+  setBody(val){
+    const v=val/100;
+    if(this.scope==='all'){
+      R.setProperty('--scale-body',v);
+      ['P1','P2','P3','P4'].forEach(k=>{ const t=document.getElementById('tpl'+k); if(t) t.style.removeProperty('--scale-body'); this.pageScale[k].body=v; });
+    }else{
+      const t=document.getElementById('tpl'+ACTIVE_PAGE);
+      if(t) t.style.setProperty('--scale-body',v);
+      this.pageScale[ACTIVE_PAGE].body=v;
+    }
+    v_body.textContent=val+'%';
+    autoFitActive(); autoSave();
+  },
+  apply(){ this.loadForActivePage(); },
+  loadForActivePage(){
+    let head,body;
+    if(this.scope==='all'){
+      head=parseFloat(R.getPropertyValue('--scale-head'))||1;
+      body=parseFloat(R.getPropertyValue('--scale-body'))||1;
+    }else{
+      head=this.pageScale[ACTIVE_PAGE].head;
+      body=this.pageScale[ACTIVE_PAGE].body;
+    }
+    s_head.value=Math.round(head*100); s_body.value=Math.round(body*100);
+    v_head.textContent=Math.round(head*100)+'%'; v_body.textContent=Math.round(body*100)+'%';
+  }
+};
+let ACTIVE_PAGE='P1';
 function switchTpl(k,btn){
+  ACTIVE_PAGE=k;
   document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   document.querySelectorAll('.tpl').forEach(t=>t.classList.remove('active'));
   document.getElementById('tpl'+k).classList.add('active');
   document.querySelectorAll('.editor-panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('edit'+k).classList.add('active');
+  fontCtrl.loadForActivePage();
   autoFitActive();
 }
 function shoot(tplId,name){
@@ -648,6 +700,7 @@ async function downloadAll(){
 }
 [renderP1,renderP2,renderP3,renderP4].forEach(f=>{try{f()}catch(e){console.error(e)}});
 try{ updatePageVisibility(); }catch(e){}
+try{ fontCtrl.loadForActivePage(); }catch(e){}
 
 /* ===================== PHOTO UPLOAD + BG REMOVAL + TINT ===================== */
 const photoOriginal={}; // page key -> HTMLImageElement (raw, in-memory)
@@ -954,10 +1007,9 @@ const CONTENT_IDS=[
   'p2_eyebrow','p2_items','p2_tips',
   'p3_eyebrow','p3_body','p3_samplecount',
   'p4_price','p4_was','p4_tag','p4_steps','p4_pay','p4_showprice','p5_why','p5_consult',
-  'p4_h','p4_en','p4_items','p4_about',
-  'scaleP1','scaleP2','scaleP3','scaleP4'
+  'p4_h','p4_en','p4_items','p4_about'
 ];
-const DESIGN_IDS=['c_bg','c_ink','c_sub','c_accent','c_tan','s_head','s_body'];
+const DESIGN_IDS=['c_bg','c_ink','c_sub','c_accent','c_tan'];
 const SELECT_IDS=['logoSel','f_display','f_body'];
 const PHOTO_KEYS=['1','2','5a','5b'];
 const CFG_PAGES=['1','2','5'];
@@ -969,7 +1021,7 @@ let COURSES_STATE={};
 function renderAll(){ [renderP1,renderP2,renderP3,renderP4].forEach(f=>{try{f()}catch(e){console.error(e)}}); }
 
 function collectContent(){
-  const slot={fields:{},photos:{},photoCfg:{},checks:{}};
+  const slot={fields:{},photos:{},photoCfg:{},checks:{},pageScale:JSON.parse(JSON.stringify(fontCtrl.pageScale))};
   CONTENT_IDS.forEach(id=>{ const el=document.getElementById(id); if(el) slot.fields[id]=el.value; });
   CHECK_IDS.forEach(id=>{ const el=document.getElementById(id); if(el) slot.checks[id]=el.checked; });
   PHOTO_KEYS.forEach(k=>{ if(photoFinal[k]) slot.photos[k]=photoFinal[k]; });
@@ -984,10 +1036,14 @@ function collectContent(){
 function applyContent(slot){
   if(!slot) return;
   CONTENT_IDS.forEach(id=>{ const el=document.getElementById(id); if(el && slot.fields && id in slot.fields) el.value=slot.fields[id]; });
-  ['P1','P2','P3','P4'].forEach(k=>{
-    const el=document.getElementById('scale'+k);
-    if(el) setPageScale(k, el.value);
-  });
+  if(slot.pageScale){
+    fontCtrl.pageScale=JSON.parse(JSON.stringify(slot.pageScale));
+    ['P1','P2','P3','P4'].forEach(k=>{
+      const t=document.getElementById('tpl'+k);
+      if(t){ t.style.setProperty('--scale-head', fontCtrl.pageScale[k].head); t.style.setProperty('--scale-body', fontCtrl.pageScale[k].body); }
+    });
+  }
+  fontCtrl.loadForActivePage();
   CHECK_IDS.forEach(id=>{ const el=document.getElementById(id); if(el) el.checked=(slot.checks && id in slot.checks)?!!slot.checks[id]:(id!=='p4_show'); });
   CFG_PAGES.forEach(pg=>{
     const cfg=slot.photoCfg && slot.photoCfg[pg];
@@ -1055,8 +1111,6 @@ function applyDesign(g){
   SELECT_IDS.forEach(id=>{ const el=document.getElementById(id); if(el && g.selects && id in g.selects) el.value=g.selects[id]; });
   R.setProperty('--bg',c_bg.value); R.setProperty('--ink',c_ink.value); R.setProperty('--sub',c_sub.value);
   R.setProperty('--accent',c_accent.value); R.setProperty('--tan',c_tan.value);
-  R.setProperty('--scale-head',s_head.value/100); v_head.textContent=s_head.value+'%';
-  R.setProperty('--scale-body',s_body.value/100); v_body.textContent=s_body.value+'%';
   R.setProperty('--font-display',f_display.value); R.setProperty('--font-body',f_body.value);
   setLogo(logoSel.value);
   if(g.catPaste){ const cp=document.getElementById('catPaste'); if(cp) cp.value=g.catPaste; }
