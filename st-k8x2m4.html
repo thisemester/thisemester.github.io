@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v39</title>
+<title>This Semester — Studio v40</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -181,7 +181,7 @@
 <body>
 
 <div class="sidebar">
-  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v24</span></h1>
+  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v40</span></h1>
   <p class="sub">4 頁 funnel：Cover → 清單 → 詳情 → 試閱+落單<br>📷 可拖放上載 · 🎨 相片色調 tint · 🗑 一鍵移除相<br>✅ 自動儲存 · 💾 儲存副本</p>
   <div style="display:flex; gap:8px; margin-bottom:12px;">
     <button class="save-btn" onclick="saveHtmlCopy()">💾 儲存 HTML 副本</button>
@@ -382,7 +382,7 @@ Consultation covers exam preparation, course tips, and career questions.
 Can I see a sample before I buy?
 Yes — check the sample pages on this post, or DM for more.</textarea>
     <label>About Us（可留空 = 唔顯示）</label>
-    <textarea id="p4_about" style="min-height:70px" oninput="renderP4()">Studying shouldn't be guesswork. A good reference helps you truly learn. We sell student-written study notes based on our own coursework experience, and may share older-year versions for free — hope they help.</textarea>
+    <textarea id="p4_about" style="min-height:70px" oninput="renderP4()">A good reference helps you truly learn. We sell student-written study notes based on our own coursework experience, and may share older-year versions for free.</textarea>
     <label style="flex:none;font-weight:700;">Reminders — 剔咗先會顯示</label>
     <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p4_rem1" checked onchange="renderP4()"><textarea id="p4_rem1_txt" style="min-height:44px;flex:1;" oninput="renderP4()">Notes are supplementary study material and do not guarantee any specific grade.</textarea></label>
     <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p4_rem2" checked onchange="renderP4()"><textarea id="p4_rem2_txt" style="min-height:44px;flex:1;" oninput="renderP4()">Notes reflect the syllabus and course structure at the time of writing; please check for any recent updates.</textarea></label>
@@ -562,7 +562,7 @@ function renderP1(){
   w1_pkg.textContent=p1_pkg.value;
   w1_headline.innerHTML=hl(p1_headline.value);
   fitHead(w1_headline, p1_headline.value, 96);
-  w1_ver.textContent=p1_ver.value; w1_teaser.textContent=p1_teaser.value;
+  w1_ver.textContent=p1_ver.value; w1_teaser.innerHTML=hl(p1_teaser.value);
   w1_grade.textContent=p1_grade.value;
   w1_grade.style.display=p1_grade.value.trim()?'inline-block':'none';
   const ft=document.getElementById('p1_factag');
@@ -593,9 +593,9 @@ function renderP2(){
   let num=1, html='';
   raw.forEach(l=>{
     if(noteRe.test(l)){
-      html+=`<li class="note-line">${esc(l.replace(/^\*+\s*/,''))}</li>`;
+      html+=`<li class="note-line">${hl(l.replace(/^\*+\s*/,''))}</li>`;
     }else{
-      html+=`<li><span class="num">${String(num).padStart(2,'0')}</span><span>${esc(l)}</span></li>`;
+      html+=`<li><span class="num">${String(num).padStart(2,'0')}</span><span>${hl(l)}</span></li>`;
       num++;
     }
   });
@@ -603,7 +603,7 @@ function renderP2(){
   document.querySelectorAll('#tplP2 .items li:not(.note-line)').forEach(li=>li.style.fontSize=`calc(40px * var(--scale-body) * var(--fit,1))`);
   w2_tips.innerHTML=bulletHTML(p2_tips.value.split('\n'));
   w2_tipsbox.style.display=p2_tips.value.trim()?'block':'none';
-  w2_custom.textContent=p2_custom.value;
+  w2_custom.innerHTML=hl(p2_custom.value);
   w2_custombox.style.display=p2_custom.value.trim()?'block':'none';
   if(fontCtrl.isP23('P2')&&fontCtrl.scopeLinked){ autoFitLinked(); } else { autoFitActive(); }
 }
@@ -612,7 +612,7 @@ function renderP3(){
     w3_headline.innerHTML=buildHeadline(p3_eyebrow.value.trim());
   }
   const items=p3_body.value.split('\n').map(l=>l.trim()).filter(Boolean);
-  w3_body.innerHTML=items.map(x=>`<li>${esc(x)}</li>`).join('');
+  w3_body.innerHTML=items.map(x=>`<li>${hl(x)}</li>`).join('');
 
   const count=p3_samplecount?parseInt(p3_samplecount.value,10):2;
   const grid=document.getElementById('w3_samplegrid');
@@ -626,7 +626,7 @@ function renderP3(){
   const pb=document.getElementById('w5_pricebox');
   const showPrice=!!(p4_showprice_chk&&p4_showprice_chk.checked);
   if(pb) pb.style.display=showPrice?'flex':'none';
-  w5_consult.textContent=p5_consult.value;
+  w5_consult.innerHTML=hl(p5_consult.value);
   const showConsult=!!(p5_showconsult.checked && p5_consult.value.trim());
   w5_consult.style.display=showConsult?'block':'none';
   const tworow=document.querySelector('#tplP3 .tworow');
@@ -645,7 +645,7 @@ function renderP3(){
   const whyText=spLines.join('\n');
   if(wb) wb.style.display=whyText?'block':'none';
   w5_why.innerHTML=bulletHTML(spLines);
-  w5_custom.textContent=p3_custom.value;
+  w5_custom.innerHTML=hl(p3_custom.value);
   w5_custombox.style.display=p3_custom.value.trim()?'block':'none';
   if(fontCtrl.isP23('P3')&&fontCtrl.scopeLinked){ autoFitLinked(); } else { autoFitActive(); }
 }
@@ -655,9 +655,9 @@ function renderP4(){
   w4_items.innerHTML=blocks.map(b=>{
     const lines=b.split('\n').map(l=>l.trim()).filter(Boolean);
     const q=lines[0]||''; const a=lines.slice(1).join(' ');
-    return `<li><span class="q">${esc(q)}</span>${a?`<span class="a">${esc(a)}</span>`:''}</li>`;
+    return `<li><span class="q">${hl(q)}</span>${a?`<span class="a">${hl(a)}</span>`:''}</li>`;
   }).join('');
-  w4_about.textContent=p4_about.value;
+  w4_about.innerHTML=hl(p4_about.value);
   document.getElementById('w4_aboutbox').style.display=p4_about.value.trim()?'block':'none';
   const remLines=[];
   [['p4_rem1','p4_rem1_txt'],['p4_rem2','p4_rem2_txt'],['p4_rem3','p4_rem3_txt']].forEach(([chk,txt])=>{
