@@ -109,14 +109,14 @@
   .hd-single .en-stack{ display:flex; flex-direction:column; gap:2px;}
   .hd-single .en-stack span{ display:block; font-family:var(--font-body); font-weight:700; font-size:calc(26px * var(--scale-head)); line-height:1.15; color:var(--accent); letter-spacing:0.03em; text-transform:uppercase; white-space:nowrap;}
   #tplP3 .notes-checklist{ list-style:none; margin:16px 0 0; padding:0; flex:0 0 auto;}
-  #tplP3 .notes-checklist li{ font-family:var(--font-body); font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.7; color:var(--sub); padding-left:44px; position:relative; margin-bottom:12px;}
+  #tplP3 .notes-checklist li{ font-family:var(--font-body); font-weight:500; font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.7; color:var(--ink); padding-left:44px; position:relative; margin-bottom:12px; text-align:justify;}
   #tplP3 .notes-checklist li::before{ content:'✓'; position:absolute; left:0; color:var(--accent); font-weight:900;}
   #tplP3 .tipsbox{ margin-top:34px; border:2px solid var(--tan); background:color-mix(in srgb, var(--tan) 12%, transparent); border-radius:14px; padding:32px 36px;}
   #tplP2 .tipsbox{ margin-top:22px; border:2px solid var(--tan); background:color-mix(in srgb, var(--tan) 12%, transparent); border-radius:14px; padding:24px 28px;}
   #tplP2 .customboxP2{ margin-top:22px; border:2px dashed color-mix(in srgb, var(--ink) 35%, transparent); border-radius:14px; padding:28px 32px;}
-  #tplP2 .customboxP2 .tb{ font-family:var(--font-body); font-weight:500; font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.8; color:var(--ink); white-space:pre-line;}
+  #tplP2 .customboxP2 .tb{ font-family:var(--font-body); font-weight:500; font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.8; color:var(--ink); white-space:pre-line; text-align:justify;}
   #tplP3 .customboxP3{ border:2px dashed color-mix(in srgb, var(--ink) 35%, transparent); border-radius:14px; padding:24px 28px;}
-  #tplP3 .customboxP3 .tb{ font-family:var(--font-body); font-weight:500; font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.75; color:var(--ink); white-space:pre-line;}
+  #tplP3 .customboxP3 .tb{ font-family:var(--font-body); font-weight:500; font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.75; color:var(--ink); white-space:pre-line; text-align:justify;}
   #tplP3 .tipsbox .tl{ font-family:var(--mono); font-size:23px; letter-spacing:0.2em; color:var(--tan); margin-bottom:10px;}
   #tplP2 .tipsbox .tl{ font-family:var(--mono); font-size:23px; letter-spacing:0.2em; color:var(--tan); margin-bottom:10px;}
   #tplP3 .tipsbox .tb{ font-family:var(--font-body); font-weight:500; font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.85; color:var(--ink); white-space:pre-line;}
@@ -124,7 +124,11 @@
   #tplP3 .consultbar{ margin-top:0; background:var(--accent); color:var(--bg); font-family:var(--font-body); font-weight:900; font-size:calc(40px * var(--scale-body) * var(--fit,1)); padding:26px 32px; border-radius:12px; text-align:center;}
   #tplP3 .whybox{ margin-top:0;}
   #tplP3 .whybox .wt{ font-family:var(--mono); font-size:23px; letter-spacing:0.18em; color:var(--accent);}
-  #tplP3 .whybox .wb{ font-family:var(--font-body); font-weight:500; font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.75; color:var(--ink); white-space:pre-line; margin-top:10px;}
+  #tplP3 .whybox .wb{ font-family:var(--font-body); font-weight:500; font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.75; color:var(--ink); margin-top:10px;}
+  .bullet-line{ display:flex; gap:14px; align-items:baseline; margin-bottom:14px;}
+  .bullet-line:last-child{ margin-bottom:0;}
+  .bullet-line .dot{ color:var(--accent); font-weight:900; flex:none;}
+  .bullet-line .txt{ flex:1; text-align:justify;}
 
   /* ---- ORDER details (last page) ---- */
   #tplP3 .pricebox{ display:flex; align-items:baseline; gap:28px;}
@@ -560,6 +564,9 @@ function renderP1(){
   w1_cta.innerHTML=esc(p1_cta.value)+'<span class="chev">»</span>';
   autoFitActive();
 }
+function bulletHTML(lines){
+  return lines.filter(l=>l.trim()).map(l=>`<div class="bullet-line"><span class="dot">•</span><span class="txt">${esc(l.trim())}</span></div>`).join('');
+}
 function buildHeadline(full){
   const idx=full.indexOf(' ');
   const cn=idx>=0?full.slice(0,idx):full;
@@ -586,7 +593,7 @@ function renderP2(){
   w2_items.innerHTML=html;
   const size=raw.length<=5?52:raw.length<=7?46:40;
   document.querySelectorAll('#tplP2 .items li:not(.note-line)').forEach(li=>li.style.fontSize=`calc(${size}px * var(--scale-body) * var(--fit,1))`);
-  w2_tips.textContent=p2_tips.value;
+  w2_tips.innerHTML=bulletHTML(p2_tips.value.split('\n'));
   w2_tipsbox.style.display=p2_tips.value.trim()?'block':'none';
   w2_custom.textContent=p2_custom.value;
   w2_custombox.style.display=p2_custom.value.trim()?'block':'none';
@@ -629,7 +636,7 @@ function renderP3(){
   if(p5_why_extra.value.trim()) spLines.push(p5_why_extra.value.trim());
   const whyText=spLines.join('\n');
   if(wb) wb.style.display=whyText?'block':'none';
-  w5_why.textContent=whyText;
+  w5_why.innerHTML=bulletHTML(spLines);
   w5_custom.textContent=p3_custom.value;
   w5_custombox.style.display=p3_custom.value.trim()?'block':'none';
   autoFitActive();
