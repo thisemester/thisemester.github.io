@@ -115,6 +115,8 @@
   #tplP2 .tipsbox{ margin-top:22px; border:2px solid var(--tan); background:color-mix(in srgb, var(--tan) 12%, transparent); border-radius:14px; padding:24px 28px;}
   #tplP2 .customboxP2{ margin-top:22px; border:2px dashed color-mix(in srgb, var(--ink) 35%, transparent); border-radius:14px; padding:28px 32px;}
   #tplP2 .customboxP2 .tb{ font-family:var(--font-body); font-weight:500; font-size:calc(32px * var(--scale-body) * var(--fit,1)); line-height:1.8; color:var(--ink); white-space:pre-line;}
+  #tplP3 .customboxP3{ border:2px dashed color-mix(in srgb, var(--ink) 35%, transparent); border-radius:14px; padding:24px 28px;}
+  #tplP3 .customboxP3 .tb{ font-family:var(--font-body); font-weight:500; font-size:calc(30px * var(--scale-body) * var(--fit,1)); line-height:1.75; color:var(--ink); white-space:pre-line;}
   #tplP3 .tipsbox .tl{ font-family:var(--mono); font-size:23px; letter-spacing:0.2em; color:var(--tan); margin-bottom:10px;}
   #tplP2 .tipsbox .tl{ font-family:var(--mono); font-size:23px; letter-spacing:0.2em; color:var(--tan); margin-bottom:10px;}
   #tplP3 .tipsbox .tb{ font-family:var(--font-body); font-weight:500; font-size:calc(36px * var(--scale-body) * var(--fit,1)); line-height:1.85; color:var(--ink); white-space:pre-line;}
@@ -148,7 +150,7 @@
   .photo-bg .dim{ position:absolute; inset:0; background:var(--bg); opacity:0.35;}
 
   /* P5 sample-notes frame */
-  .sample-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:16px; flex:1 1 auto; min-height:180px; max-height:460px;}
+  .sample-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:16px; flex:1 1 auto; min-height:220px; max-height:600px;}
   .sample-frame{ border:2px solid color-mix(in srgb, var(--ink) 30%, transparent); border-radius:20px; overflow:hidden; background:color-mix(in srgb, var(--ink) 4%, transparent); display:flex; align-items:center; justify-content:center; height:100%;}
   #tplP3 .orderbox{ margin-top:20px; border-top:2px solid var(--ink); padding-top:16px; flex:0 0 auto;}
   #tplP3 .orderbox>*{ margin-top:16px;}
@@ -332,6 +334,7 @@ Assessments scripts/notes x2</textarea>
 
     <label>Consultation（可留空 = 唔顯示）</label>
     <input type="text" id="p5_consult" value="" oninput="renderP3()" placeholder="例：💬 包 Consultation · 提供課程諮詢">
+    <label style="flex:none"><input type="checkbox" id="p5_showconsult" checked onchange="renderP3()"> 顯示 Consultation button</label>
     <label>Why this source（可留空）</label>
     <textarea id="p5_why" style="min-height:64px" oninput="renderP3()">✍️ 由拎高分嘅同學親手整理
 📊 連 past paper analysis
@@ -344,11 +347,10 @@ Assessments scripts/notes x2</textarea>
     <label>價錢</label><input type="text" id="p4_price" value="$XXX" oninput="renderP3()">
     <label>原價（刪除線，可留空）</label><input type="text" id="p4_was" value="" oninput="renderP3()">
     <input type="hidden" id="p4_tag" value="">
-    <label>落單步驟（每行一步）</label>
-    <textarea id="p4_steps" style="min-height:80px" oninput="renderP3()">DM 我哋 IG · DM us @thissemester
-揀付款方式 · Pay via PayMe / FPS / AlipayHK
-即時收到 PDF · Instant Google Drive link</textarea>
-    <label>付款 chips（用 · 分隔）</label><input type="text" id="p4_pay" value="PayMe · FPS · AlipayHK" oninput="renderP3()">
+    <input type="hidden" id="p4_steps" value="">
+    <input type="hidden" id="p4_pay" value="">
+    <label>自由發揮 Your own box（可留空 — 落單步驟/付款方式等自己打，顯示喺虛線框）</label>
+    <textarea id="p3_custom" style="min-height:80px" oninput="renderP3()"></textarea>
 
     <button class="dl-btn" onclick="download('tplP3','p3-notes-order')">⬇ PNG · Page 3</button>
     <button class="dl-all" onclick="downloadAll()">⬇⬇ Download 全部</button>
@@ -447,8 +449,9 @@ Assessments scripts/notes x2</textarea>
               <div class="pricebox" id="w5_pricebox"><span class="price" id="w5_price"></span><span class="was" id="w5_was"></span></div>
               <div class="consultbar" id="w5_consult" style="display:none;"></div>
             </div>
-            <div class="steps" id="w5_steps"></div>
-            <div class="pay" id="w5_pay"></div>
+            <div class="steps" id="w5_steps" style="display:none;"></div>
+            <div class="pay" id="w5_pay" style="display:none;"></div>
+            <div class="customboxP3" id="w5_custombox" style="display:none;"><div class="tb" id="w5_custom"></div></div>
           </div>
         </div>
         <div class="bottom">
@@ -601,16 +604,15 @@ function renderP3(){
 
   w5_price.textContent=p4_price.value;
   w5_was.textContent=p4_was.value; w5_was.style.display=p4_was.value.trim()?'inline':'none';
-  const steps=p4_steps.value.split('\n').filter(l=>l.trim());
-  w5_steps.innerHTML=steps.map((st,i)=>`<div class="step"><span class="snum">0${i+1}</span><span>${esc(st.trim())}</span></div>`).join('');
-  w5_pay.innerHTML=p4_pay.value.split('·').map(c=>`<span class="chip">${esc(c.trim())}</span>`).join('');
   const pb=document.getElementById('w5_pricebox');
   if(pb) pb.style.display=(p4_showprice&&p4_showprice.value==='show')?'flex':'none';
   w5_consult.textContent=p5_consult.value;
-  w5_consult.style.display=p5_consult.value.trim()?'block':'none';
+  w5_consult.style.display=(p5_showconsult.checked && p5_consult.value.trim())?'block':'none';
   const wb=document.getElementById('w5_whybox');
   if(wb) wb.style.display=p5_why.value.trim()?'block':'none';
   w5_why.textContent=p5_why.value;
+  w5_custom.textContent=p3_custom.value;
+  w5_custombox.style.display=p3_custom.value.trim()?'block':'none';
   autoFitActive();
 }
 function renderP4(){
@@ -1040,15 +1042,15 @@ const LS_KEY='thissemester_studio_v7';
 const CONTENT_IDS=[
   'p1_pkg','p1_headline','p1_ver','p1_grade','p1_factag','p1_statustag','p1_teaser','p1_cta',
   'p2_eyebrow','p2_items','p2_tips','p2_custom',
-  'p3_eyebrow','p3_body','p3_samplecount',
-  'p4_price','p4_was','p4_tag','p4_steps','p4_pay','p4_showprice','p5_why','p5_consult',
+  'p3_eyebrow','p3_body','p3_samplecount','p3_custom',
+  'p4_price','p4_was','p4_showprice','p5_why','p5_consult',
   'p4_h','p4_en','p4_items','p4_about'
 ];
 const DESIGN_IDS=['c_bg','c_ink','c_sub','c_accent','c_tan'];
 const SELECT_IDS=['logoSel','f_display','f_body'];
 const PHOTO_KEYS=['1','2','5a','5b'];
 const CFG_PAGES=['1','2','5'];
-const CHECK_IDS=['p2_show','p3_show','p4_show'];
+const CHECK_IDS=['p2_show','p3_show','p4_show','p5_showconsult'];
 
 let ACTIVE='未命名 Untitled';
 let COURSES_STATE={};
