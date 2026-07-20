@@ -332,10 +332,15 @@ Assessments scripts/notes x2</textarea>
     <div class="row"><label style="flex:none">套用去背</label><input type="checkbox" id="p5_bgon" onchange="reprocess('5a');reprocess('5b')"></div>
     <p class="hint">Notes screenshot 通常唔使去背，預設關閉。</p>
 
-    <label>Why this source（可留空）</label>
-    <textarea id="p5_why" style="min-height:64px" oninput="renderP3()">✍️ 由拎高分嘅同學親手整理
-📊 連 past paper analysis
-🛟 24/7 after-sale course tips</textarea>
+    <label style="flex:none;font-weight:700;">Why this source — 剔咗先會顯示，文字可自己改</label>
+    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp1" checked onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp1_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Comprehensive and neatly organised exam notes and templates for better preparation and easy reference</textarea></label>
+    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp2" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp2_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Focused on exam-tested content; written by a top-scoring senior student, not a random note-taker</textarea></label>
+    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp3" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp3_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Cross-checked against past paper patterns and marking schemes, saving you hours of re-organising</textarea></label>
+    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp4" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp4_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Track record of past buyers scoring A/A- with this set</textarea></label>
+    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp5" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp5_txt" style="min-height:44px;flex:1;" oninput="renderP3()">After-sale support — ask follow-up questions regarding the notes and course</textarea></label>
+    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp6" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp6_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Ready-made templates so you can just fill in and go; formatted for quick review before the exam</textarea></label>
+    <label>其他 Your own point（可留空）</label>
+    <textarea id="p5_why_extra" style="min-height:44px" oninput="renderP3()"></textarea>
     <label>Consultation（可留空 = 唔顯示）</label>
     <input type="text" id="p5_consult" value="" oninput="renderP3()" placeholder="例：💬 包 Consultation · 提供課程諮詢">
     <label>價錢</label><input type="text" id="p4_price" value="$XXX" oninput="renderP3()">
@@ -616,8 +621,15 @@ function renderP3(){
     tworow.style.gridTemplateColumns=visibleCount===2?'1fr 1fr':'1fr';
   }
   const wb=document.getElementById('w5_whybox');
-  if(wb) wb.style.display=p5_why.value.trim()?'block':'none';
-  w5_why.textContent=p5_why.value;
+  const spLines=[];
+  [['p5_sp1','p5_sp1_txt'],['p5_sp2','p5_sp2_txt'],['p5_sp3','p5_sp3_txt'],['p5_sp4','p5_sp4_txt'],['p5_sp5','p5_sp5_txt'],['p5_sp6','p5_sp6_txt']].forEach(([chk,txt])=>{
+    const chkEl=document.getElementById(chk), txtEl=document.getElementById(txt);
+    if(chkEl&&chkEl.checked&&txtEl&&txtEl.value.trim()) spLines.push(txtEl.value.trim());
+  });
+  if(p5_why_extra.value.trim()) spLines.push(p5_why_extra.value.trim());
+  const whyText=spLines.join('\n');
+  if(wb) wb.style.display=whyText?'block':'none';
+  w5_why.textContent=whyText;
   w5_custom.textContent=p3_custom.value;
   w5_custombox.style.display=p3_custom.value.trim()?'block':'none';
   autoFitActive();
@@ -1050,14 +1062,15 @@ const CONTENT_IDS=[
   'p1_pkg','p1_headline','p1_ver','p1_grade','p1_factag','p1_statustag','p1_teaser','p1_cta',
   'p2_eyebrow','p2_items','p2_tips','p2_custom',
   'p3_eyebrow','p3_body','p3_samplecount','p3_custom',
-  'p4_price','p4_was','p5_why','p5_consult',
+  'p4_price','p4_was','p5_consult',
+  'p5_sp1_txt','p5_sp2_txt','p5_sp3_txt','p5_sp4_txt','p5_sp5_txt','p5_sp6_txt','p5_why_extra',
   'p4_h','p4_en','p4_items','p4_about'
 ];
 const DESIGN_IDS=['c_bg','c_ink','c_sub','c_accent','c_tan'];
 const SELECT_IDS=['logoSel','f_display','f_body'];
 const PHOTO_KEYS=['1','2','5a','5b'];
 const CFG_PAGES=['1','2','5'];
-const CHECK_IDS=['p2_show','p3_show','p4_show','p5_showconsult','p4_showprice_chk'];
+const CHECK_IDS=['p2_show','p3_show','p4_show','p5_showconsult','p4_showprice_chk','p5_sp1','p5_sp2','p5_sp3','p5_sp4','p5_sp5','p5_sp6'];
 
 let ACTIVE='未命名 Untitled';
 let COURSES_STATE={};
@@ -1088,7 +1101,8 @@ function applyContent(slot){
     });
   }
   fontCtrl.loadForActivePage();
-  CHECK_IDS.forEach(id=>{ const el=document.getElementById(id); if(el) el.checked=(slot.checks && id in slot.checks)?!!slot.checks[id]:(id!=='p4_show'&&id!=='p4_showprice_chk'); });
+  const uncheckedByDefault=['p4_show','p4_showprice_chk','p5_sp2','p5_sp3','p5_sp4','p5_sp5','p5_sp6'];
+  CHECK_IDS.forEach(id=>{ const el=document.getElementById(id); if(el) el.checked=(slot.checks && id in slot.checks)?!!slot.checks[id]:!uncheckedByDefault.includes(id); });
   CFG_PAGES.forEach(pg=>{
     const cfg=slot.photoCfg && slot.photoCfg[pg];
     if(!cfg) return;
