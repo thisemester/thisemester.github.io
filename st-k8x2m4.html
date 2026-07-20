@@ -1386,8 +1386,14 @@ function buildCourseSel(){
   const sel=document.getElementById('courseSel');
   const savedKeys=Object.keys(COURSES_STATE);
   const catKeys=CATALOG.map((c,i)=>({key:courseKey(c), i}));
+  const titleByKey={};
+  CATALOG.forEach(c=>{ titleByKey[courseKey(c)]=c.title; });
   let html='<option value="">— 切換 / 新增課程 Switch course —</option>';
-  savedKeys.forEach(k=>{ html+=`<option value="k:${k.replace(/"/g,'&quot;')}" ${k===ACTIVE?'selected':''}>💾 ${k}</option>`; });
+  savedKeys.forEach(k=>{
+    const t=titleByKey[k];
+    const label=t?`${k} — ${t.slice(0,40)}`:k;
+    html+=`<option value="k:${k.replace(/"/g,'&quot;')}" ${k===ACTIVE?'selected':''}>💾 ${label}</option>`;
+  });
   catKeys.forEach(({key,i})=>{ if(!savedKeys.includes(key)) html+=`<option value="c:${i}">➕ ${key} — ${CATALOG[i].title.slice(0,40)}</option>`; });
   sel.innerHTML=html;
   sel.style.display=(savedKeys.length||CATALOG.length)?'block':'none';
