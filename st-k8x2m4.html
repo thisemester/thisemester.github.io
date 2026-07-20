@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v24</title>
+<title>This Semester — Studio v30</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -64,10 +64,10 @@
   .tpl.active{ display:flex;}
   .tpl::before{ content:''; position:absolute; inset:0; background:repeating-linear-gradient(to bottom, transparent 0 62px, color-mix(in srgb, var(--ink) 5%, transparent) 62px 64px); pointer-events:none; z-index:1;}
   .tpl::after{ content:''; position:absolute; top:0; bottom:0; left:86px; width:3px; background:var(--accent); opacity:0.5; pointer-events:none; z-index:1;}
-  .masthead{ display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid var(--ink); padding-bottom:26px; flex-shrink:0;}
+  .masthead{ display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid var(--ink); padding-bottom:18px; flex-shrink:0;}
   .masthead img{ height:42px; width:auto; display:block;}
   .masthead .issue{ font-family:var(--mono); font-size:22px; letter-spacing:0.14em; color:var(--sub); text-transform:uppercase;}
-  .content{ flex:1; min-height:0; display:flex; flex-direction:column; justify-content:flex-start; padding-top:84px; overflow:hidden;}
+  .content{ flex:1; min-height:0; display:flex; flex-direction:column; justify-content:flex-start; padding-top:40px; overflow:hidden;}
   .bottom{ flex-shrink:0; margin-top:36px;}
   .dotsline{ display:flex; align-items:center; justify-content:space-between; margin-bottom:28px;}
   .dotsline .dots{ display:flex; gap:16px;}
@@ -104,27 +104,27 @@
   #tplP2 .num{ font-family:var(--mono); font-weight:600; font-size:30px; color:var(--accent); min-width:60px;}
 
   /* ---- P3 DETAILS ---- */
-  .hd-single{ margin-top:6px; margin-bottom:8px; display:flex; align-items:center; gap:18px; flex:0 0 auto;}
+  .hd-single{ margin-top:0; margin-bottom:8px; display:flex; align-items:center; gap:18px; flex:0 0 auto;}
   .hd-single .cn{ font-family:var(--font-display); font-weight:900; font-size:calc(94px * var(--scale-head)); line-height:1; color:var(--ink); white-space:nowrap;}
   .hd-single .en-stack{ display:flex; flex-direction:column; gap:2px;}
   .hd-single .en-stack span{ display:block; font-family:var(--font-body); font-weight:700; font-size:calc(26px * var(--scale-head)); line-height:1.15; color:var(--accent); letter-spacing:0.03em; text-transform:uppercase; white-space:nowrap;}
   #tplP3 .notes-checklist{ list-style:none; margin:16px 0 0; padding:0; flex:0 0 auto;}
-  #tplP3 .notes-checklist li{ font-family:var(--font-body); font-size:calc(44px * var(--scale-body) * var(--fit,1)); line-height:1.7; color:var(--sub); padding-left:44px; position:relative; margin-bottom:12px;}
+  #tplP3 .notes-checklist li{ font-family:var(--font-body); font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.7; color:var(--sub); padding-left:44px; position:relative; margin-bottom:12px;}
   #tplP3 .notes-checklist li::before{ content:'✓'; position:absolute; left:0; color:var(--accent); font-weight:900;}
   #tplP3 .tipsbox{ margin-top:34px; border:2px solid var(--tan); background:color-mix(in srgb, var(--tan) 12%, transparent); border-radius:14px; padding:32px 36px;}
   #tplP2 .tipsbox{ margin-top:22px; border:2px solid var(--tan); background:color-mix(in srgb, var(--tan) 12%, transparent); border-radius:14px; padding:24px 28px;}
   #tplP2 .customboxP2{ margin-top:22px; border:2px dashed color-mix(in srgb, var(--ink) 35%, transparent); border-radius:14px; padding:28px 32px;}
-  #tplP2 .customboxP2 .tb{ font-family:var(--font-body); font-weight:500; font-size:calc(32px * var(--scale-body) * var(--fit,1)); line-height:1.8; color:var(--ink); white-space:pre-line;}
+  #tplP2 .customboxP2 .tb{ font-family:var(--font-body); font-weight:500; font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.8; color:var(--ink); white-space:pre-line;}
   #tplP3 .customboxP3{ border:2px dashed color-mix(in srgb, var(--ink) 35%, transparent); border-radius:14px; padding:24px 28px;}
-  #tplP3 .customboxP3 .tb{ font-family:var(--font-body); font-weight:500; font-size:calc(30px * var(--scale-body) * var(--fit,1)); line-height:1.75; color:var(--ink); white-space:pre-line;}
+  #tplP3 .customboxP3 .tb{ font-family:var(--font-body); font-weight:500; font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.75; color:var(--ink); white-space:pre-line;}
   #tplP3 .tipsbox .tl{ font-family:var(--mono); font-size:23px; letter-spacing:0.2em; color:var(--tan); margin-bottom:10px;}
   #tplP2 .tipsbox .tl{ font-family:var(--mono); font-size:23px; letter-spacing:0.2em; color:var(--tan); margin-bottom:10px;}
-  #tplP3 .tipsbox .tb{ font-family:var(--font-body); font-weight:500; font-size:calc(36px * var(--scale-body) * var(--fit,1)); line-height:1.85; color:var(--ink); white-space:pre-line;}
-  #tplP2 .tipsbox .tb{ font-family:var(--font-body); font-weight:500; font-size:calc(36px * var(--scale-body) * var(--fit,1)); line-height:1.85; color:var(--ink); white-space:pre-line;}
-  #tplP3 .consultbar{ margin-top:0; background:var(--accent); color:var(--bg); font-family:var(--font-body); font-weight:900; font-size:calc(34px * var(--scale-body) * var(--fit,1)); padding:18px 28px; border-radius:12px; text-align:center;}
+  #tplP3 .tipsbox .tb{ font-family:var(--font-body); font-weight:500; font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.85; color:var(--ink); white-space:pre-line;}
+  #tplP2 .tipsbox .tb{ font-family:var(--font-body); font-weight:500; font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.85; color:var(--ink); white-space:pre-line;}
+  #tplP3 .consultbar{ margin-top:0; background:var(--accent); color:var(--bg); font-family:var(--font-body); font-weight:900; font-size:calc(40px * var(--scale-body) * var(--fit,1)); padding:26px 32px; border-radius:12px; text-align:center;}
   #tplP3 .whybox{ margin-top:0;}
   #tplP3 .whybox .wt{ font-family:var(--mono); font-size:23px; letter-spacing:0.18em; color:var(--accent);}
-  #tplP3 .whybox .wb{ font-family:var(--font-body); font-weight:500; font-size:calc(32px * var(--scale-body) * var(--fit,1)); line-height:1.75; color:var(--ink); white-space:pre-line; margin-top:10px;}
+  #tplP3 .whybox .wb{ font-family:var(--font-body); font-weight:500; font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.75; color:var(--ink); white-space:pre-line; margin-top:10px;}
 
   /* ---- ORDER details (last page) ---- */
   #tplP3 .pricebox{ display:flex; align-items:baseline; gap:28px;}
@@ -156,7 +156,7 @@
   #tplP3 .orderbox>*{ margin-top:16px;}
   #tplP3 .orderbox>*:first-child{ margin-top:0;}
   #tplP3 .tworow{ display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:stretch;}
-  #tplP3 .tworow .pricebox{ margin-top:0; background:color-mix(in srgb, var(--ink) 4%, transparent); border-radius:12px; padding:14px 20px; justify-content:center;}
+  #tplP3 .tworow .pricebox{ margin-top:0; background:color-mix(in srgb, var(--ink) 4%, transparent); border-radius:12px; padding:26px 32px; justify-content:center;}
   #tplP3 .tworow .consultbar{ margin-top:0;}
   .sample-frame img{ max-width:100%; max-height:100%; object-fit:contain; display:none;}
   .sample-frame .ph{ font-family:var(--mono); font-size:24px; color:var(--sub); letter-spacing:0.1em;}
@@ -604,9 +604,17 @@ function renderP3(){
   w5_price.textContent=p4_price.value;
   w5_was.textContent=p4_was.value; w5_was.style.display=p4_was.value.trim()?'inline':'none';
   const pb=document.getElementById('w5_pricebox');
-  if(pb) pb.style.display=(p4_showprice_chk&&p4_showprice_chk.checked)?'flex':'none';
+  const showPrice=!!(p4_showprice_chk&&p4_showprice_chk.checked);
+  if(pb) pb.style.display=showPrice?'flex':'none';
   w5_consult.textContent=p5_consult.value;
-  w5_consult.style.display=(p5_showconsult.checked && p5_consult.value.trim())?'block':'none';
+  const showConsult=!!(p5_showconsult.checked && p5_consult.value.trim());
+  w5_consult.style.display=showConsult?'block':'none';
+  const tworow=document.querySelector('#tplP3 .tworow');
+  if(tworow){
+    const visibleCount=(showPrice?1:0)+(showConsult?1:0);
+    tworow.style.display=visibleCount>0?'grid':'none';
+    tworow.style.gridTemplateColumns=visibleCount===2?'1fr 1fr':'1fr';
+  }
   const wb=document.getElementById('w5_whybox');
   if(wb) wb.style.display=p5_why.value.trim()?'block':'none';
   w5_why.textContent=p5_why.value;
@@ -1014,7 +1022,7 @@ function fillFromCatalog(c){
   }
   if(c.grade){ p1_grade.value='🎓 '+c.grade; filled.push('Grade'); } else p1_grade.value='';
   if(c.tips){ p2_tips.value=c.tips; filled.push('Tips'); } else p2_tips.value='';
-  if(c.price){ p4_price.value=c.price; p4_showprice_chk.checked=true; filled.push('價錢'); } else { p4_showprice_chk.checked=false; }
+  if(c.price){ p4_price.value=c.price; filled.push('價錢'); } p4_showprice_chk.checked=false;
   if(c.consult){ p5_consult.value='💬 Consultation available · 提供課程諮詢'; filled.push('Consultation'); } else p5_consult.value='';
   const tagParts=[];
   if(c.uni) tagParts.push(c.uni);
