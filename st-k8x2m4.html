@@ -92,7 +92,7 @@
   #tplP2 .items{ list-style:none; margin:48px 0 0; padding:0;}
   #tplP2 .items li{ display:flex; gap:30px; align-items:baseline; padding:24px 0; border-bottom:1.5px solid color-mix(in srgb, var(--ink) 30%, transparent); font-family:var(--font-body); font-weight:500; color:var(--ink); line-height:1.5;}
   #tplP2 .items li:last-child{ border-bottom:none;}
-  #tplP2 .items li.note-line{ font-style:italic; font-size:calc(24px * var(--scale-body) * var(--fit,1)); color:var(--sub); border-bottom:none; padding-top:8px; padding-bottom:8px;}
+  #tplP2 .items li.note-line{ font-style:italic; font-size:calc(32px * var(--scale-body) * var(--fit,1)); color:var(--sub); border-bottom:none; padding-top:8px; padding-bottom:8px;}
   #tplP4 .sec{ display:flex; align-items:baseline; gap:26px;}
   #tplP4 .sec h2{ font-family:var(--font-display); font-weight:900; font-size:calc(76px * var(--scale-head)); color:var(--ink); margin:0;}
   #tplP4 .sec .en{ font-family:var(--mono); font-size:25px; color:var(--sub); letter-spacing:0.14em;}
@@ -104,9 +104,10 @@
   #tplP2 .num{ font-family:var(--mono); font-weight:600; font-size:30px; color:var(--accent); min-width:60px;}
 
   /* ---- P3 DETAILS ---- */
-  .hd-single{ margin-top:6px; margin-bottom:8px; white-space:nowrap; overflow:hidden;}
-  .hd-single .cn{ font-family:var(--font-display); font-weight:900; font-size:calc(94px * var(--scale-head)); line-height:1; color:var(--ink);}
-  .hd-single .en{ font-family:var(--font-body); font-weight:500; font-size:calc(30px * var(--scale-head)); line-height:1; color:var(--accent); margin-left:18px;}
+  .hd-single{ margin-top:6px; margin-bottom:8px; display:flex; align-items:center; gap:18px;}
+  .hd-single .cn{ font-family:var(--font-display); font-weight:900; font-size:calc(94px * var(--scale-head)); line-height:1; color:var(--ink); white-space:nowrap;}
+  .hd-single .en-stack{ display:flex; flex-direction:column; gap:2px;}
+  .hd-single .en-stack span{ display:block; font-family:var(--font-body); font-weight:700; font-size:calc(26px * var(--scale-head)); line-height:1.15; color:var(--accent); letter-spacing:0.03em; text-transform:uppercase; white-space:nowrap;}
   #tplP3 .notes-checklist{ list-style:none; margin:40px 0 0; padding:0;}
   #tplP3 .notes-checklist li{ font-family:var(--font-body); font-size:calc(44px * var(--scale-body) * var(--fit,1)); line-height:1.7; color:var(--sub); padding-left:44px; position:relative; margin-bottom:12px;}
   #tplP3 .notes-checklist li::before{ content:'✓'; position:absolute; left:0; color:var(--accent); font-weight:900;}
@@ -219,9 +220,9 @@
       <option value="'LXGW WenKai TC',serif">LXGW WenKai</option>
     </select>
     <div class="row"><label style="flex:none;font-weight:700;">文字大小控制 Text size control</label></div>
-    <div class="row" style="gap:14px;">
-      <label style="flex:none;"><input type="radio" name="scaleScope" value="page" checked onchange="fontCtrl.scope='page'; fontCtrl.apply();"> 淨係呢頁 This page only</label>
-      <label style="flex:none;"><input type="radio" name="scaleScope" value="all" onchange="fontCtrl.scope='all'; fontCtrl.apply();"> 全部頁 All pages</label>
+    <div class="row" id="scopeRow" style="gap:14px; display:none;">
+      <label style="flex:none;"><input type="radio" name="scaleScope" value="linked" checked onchange="fontCtrl.setScope('linked');"> P2+P3 一致 Same as P2/P3</label>
+      <label style="flex:none;"><input type="radio" name="scaleScope" value="solo" onchange="fontCtrl.setScope('solo');"> 只調呢頁 This page only</label>
     </div>
     <label>標題大小 Title size</label><input type="range" id="s_head" min="60" max="180" value="100" oninput="fontCtrl.setHead(this.value)"><span class="val" id="v_head">100%</span>
     <label>內文大小 Body size</label><input type="range" id="s_body" min="60" max="180" value="100" oninput="fontCtrl.setBody(this.value)"><span class="val" id="v_body">100%</span>
@@ -541,13 +542,17 @@ function renderP1(){
   w1_cta.innerHTML=esc(p1_cta.value)+'<span class="chev">»</span>';
   autoFitActive();
 }
+function buildHeadline(full){
+  const idx=full.indexOf(' ');
+  const cn=idx>=0?full.slice(0,idx):full;
+  const enRaw=idx>=0?full.slice(idx+1).trim():'';
+  const words=enRaw?enRaw.split(/\s+/):[];
+  const enHtml=words.length?`<span class="en-stack">${words.map(w=>`<span>${esc(w)}</span>`).join('')}</span>`:'';
+  return `<span class="cn">${esc(cn)}</span>${enHtml}`;
+}
 function renderP2(){
   {
-    const full=p2_eyebrow.value.trim();
-    const idx=full.indexOf(' ');
-    const cn=idx>=0?full.slice(0,idx):full;
-    const en=idx>=0?full.slice(idx+1):'';
-    w2_headline.innerHTML=`<span class="cn">${esc(cn)}</span>${en?`<span class="en">${esc(en)}</span>`:''}`;
+    w2_headline.innerHTML=buildHeadline(p2_eyebrow.value.trim());
   }
   const raw=p2_items.value.split('\n').map(l=>l.trim()).filter(Boolean);
   const noteRe=/^(\*\*|as of|\(?註[:：]|note:)/i;
@@ -569,11 +574,7 @@ function renderP2(){
 }
 function renderP3(){
   {
-    const full=p3_eyebrow.value.trim();
-    const idx=full.indexOf(' ');
-    const cn=idx>=0?full.slice(0,idx):full;
-    const en=idx>=0?full.slice(idx+1):'';
-    w3_headline.innerHTML=`<span class="cn">${esc(cn)}</span>${en?`<span class="en">${esc(en)}</span>`:''}`;
+    w3_headline.innerHTML=buildHeadline(p3_eyebrow.value.trim());
   }
   const items=p3_body.value.split('\n').map(l=>l.trim()).filter(Boolean);
   w3_body.innerHTML=items.map(x=>`<li>${esc(x)}</li>`).join('');
@@ -613,47 +614,66 @@ function renderP4(){
   autoFitActive();
 }
 const fontCtrl={
-  scope:'page',
+  scopeLinked:true,
+  linked:{head:1,body:1},
   pageScale:{P1:{head:1,body:1},P2:{head:1,body:1},P3:{head:1,body:1},P4:{head:1,body:1}},
+  isP23(page){ return page==='P2'||page==='P3'; },
+  activeScale(){
+    const page=ACTIVE_PAGE;
+    return (this.isP23(page)&&this.scopeLinked)?this.linked:this.pageScale[page];
+  },
   setHead(val){
-    const v=val/100;
-    if(this.scope==='all'){
-      R.setProperty('--scale-head',v);
-      ['P1','P2','P3','P4'].forEach(k=>{ const t=document.getElementById('tpl'+k); if(t) t.style.removeProperty('--scale-head'); this.pageScale[k].head=v; });
+    const v=val/100, page=ACTIVE_PAGE;
+    if(this.isP23(page)&&this.scopeLinked){
+      this.linked.head=v;
+      ['P2','P3'].forEach(k=>{ const t=document.getElementById('tpl'+k); if(t) t.style.setProperty('--scale-head',v); this.pageScale[k].head=v; });
     }else{
-      const t=document.getElementById('tpl'+ACTIVE_PAGE);
-      if(t) t.style.setProperty('--scale-head',v);
-      this.pageScale[ACTIVE_PAGE].head=v;
+      this.pageScale[page].head=v;
+      const t=document.getElementById('tpl'+page); if(t) t.style.setProperty('--scale-head',v);
     }
     v_head.textContent=val+'%';
     [renderP1,renderP2,renderP3,renderP4].forEach(f=>{try{f()}catch(e){}});
     autoFitActive(); autoSave();
   },
   setBody(val){
-    const v=val/100;
-    if(this.scope==='all'){
-      R.setProperty('--scale-body',v);
-      ['P1','P2','P3','P4'].forEach(k=>{ const t=document.getElementById('tpl'+k); if(t) t.style.removeProperty('--scale-body'); this.pageScale[k].body=v; });
+    const v=val/100, page=ACTIVE_PAGE;
+    if(this.isP23(page)&&this.scopeLinked){
+      this.linked.body=v;
+      ['P2','P3'].forEach(k=>{ const t=document.getElementById('tpl'+k); if(t) t.style.setProperty('--scale-body',v); this.pageScale[k].body=v; });
     }else{
-      const t=document.getElementById('tpl'+ACTIVE_PAGE);
-      if(t) t.style.setProperty('--scale-body',v);
-      this.pageScale[ACTIVE_PAGE].body=v;
+      this.pageScale[page].body=v;
+      const t=document.getElementById('tpl'+page); if(t) t.style.setProperty('--scale-body',v);
     }
     v_body.textContent=val+'%';
     autoFitActive(); autoSave();
   },
+  setScope(mode){
+    this.scopeLinked=(mode==='linked');
+    if(this.scopeLinked){
+      ['P2','P3'].forEach(k=>{
+        this.pageScale[k]={head:this.linked.head,body:this.linked.body};
+        const t=document.getElementById('tpl'+k);
+        if(t){ t.style.setProperty('--scale-head',this.linked.head); t.style.setProperty('--scale-body',this.linked.body); }
+      });
+    }else{
+      this.linked.head=this.pageScale[ACTIVE_PAGE].head;
+      this.linked.body=this.pageScale[ACTIVE_PAGE].body;
+    }
+    this.loadForActivePage();
+    [renderP1,renderP2,renderP3,renderP4].forEach(f=>{try{f()}catch(e){}});
+    autoFitActive(); autoSave();
+  },
   apply(){ this.loadForActivePage(); },
   loadForActivePage(){
-    let head,body;
-    if(this.scope==='all'){
-      head=parseFloat(R.getPropertyValue('--scale-head'))||1;
-      body=parseFloat(R.getPropertyValue('--scale-body'))||1;
-    }else{
-      head=this.pageScale[ACTIVE_PAGE].head;
-      body=this.pageScale[ACTIVE_PAGE].body;
-    }
-    s_head.value=Math.round(head*100); s_body.value=Math.round(body*100);
-    v_head.textContent=Math.round(head*100)+'%'; v_body.textContent=Math.round(body*100)+'%';
+    const page=ACTIVE_PAGE;
+    const s=this.activeScale();
+    s_head.value=Math.round(s.head*100); s_body.value=Math.round(s.body*100);
+    v_head.textContent=Math.round(s.head*100)+'%'; v_body.textContent=Math.round(s.body*100)+'%';
+    const row=document.getElementById('scopeRow');
+    if(row) row.style.display=this.isP23(page)?'flex':'none';
+    document.querySelectorAll('input[name="scaleScope"]').forEach(r=>{ r.checked=(r.value==='linked')===this.scopeLinked; });
+    const t=document.getElementById('tpl'+page);
+    if(t){ t.style.setProperty('--scale-head',s.head); t.style.setProperty('--scale-body',s.body); }
   }
 };
 let ACTIVE_PAGE='P1';
