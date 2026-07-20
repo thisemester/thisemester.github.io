@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v48</title>
+<title>This Semester — Studio v49</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -60,13 +60,13 @@
 
   /* ===== page structure: clean flow, no overlaps ===== */
   .tpl{ width:1080px; height:1350px; display:none; position:relative; overflow:hidden;
-        background:var(--bg); color:var(--ink); padding:96px 170px 90px 110px;
+        background:var(--bg); color:var(--ink); padding:96px 170px 56px 110px;
         flex-direction:column;}
   .tpl.active{ display:flex;}
   .tpl::before{ content:''; position:absolute; inset:0; background:repeating-linear-gradient(to bottom, transparent 0 62px, rgba(var(--ink-rgb), 0.05) 62px 64px); pointer-events:none; z-index:1;}
   .tpl::after{ content:''; position:absolute; top:0; bottom:0; left:86px; width:3px; background:var(--accent); opacity:0.5; pointer-events:none; z-index:1;}
   .masthead{ display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid var(--ink); padding-bottom:18px; flex-shrink:0;}
-  .masthead img{ height:42px; width:auto; display:block;}
+  .masthead img{ height:52px; width:auto; display:block;}
   .masthead .issue{ font-family:var(--mono); font-size:22px; letter-spacing:0.14em; color:var(--sub); text-transform:uppercase;}
   .content{ flex:1; min-height:0; display:flex; flex-direction:column; justify-content:flex-start; padding-top:26px; overflow:hidden;}
   .bottom{ flex-shrink:0; margin-top:36px;}
@@ -130,10 +130,10 @@
   #tplP3 .whybox{ margin-top:0;}
   #tplP3 .whybox .wt{ font-family:var(--mono); font-size:28px; letter-spacing:0.18em; color:var(--accent); font-weight:700;}
   #tplP3 .whybox .wb{ font-family:var(--font-body); font-weight:500; font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.75; color:var(--ink); margin-top:10px;}
-  .bullet-line{ display:flex; gap:14px; align-items:baseline; margin-bottom:14px;}
+  .bullet-line{ display:flex; gap:14px; align-items:baseline; margin-bottom:14px; font-family:var(--font-body);}
   .bullet-line:last-child{ margin-bottom:0;}
-  .bullet-line .dot{ color:var(--accent); font-weight:900; flex:none;}
-  .bullet-line .txt{ flex:1; text-align:justify;}
+  .bullet-line .dot{ color:var(--accent); font-weight:900; flex:none; font-family:var(--font-body);}
+  .bullet-line .txt{ flex:1; text-align:justify; font-family:var(--font-body);}
   #w4_rembox .bullet-line{ margin-bottom:8px;}
 
   /* ---- ORDER details (last page) ---- */
@@ -187,7 +187,7 @@
 <body>
 
 <div class="sidebar">
-  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v48</span></h1>
+  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v49</span></h1>
   <p class="sub">4 頁 funnel：Cover → 清單 → 詳情 → 試閱+落單<br>📷 可拖放上載 · 🎨 相片色調 tint · 🗑 一鍵移除相<br>✅ 自動儲存 · 💾 儲存副本</p>
   <div style="display:flex; gap:8px; margin-bottom:12px;">
     <button class="save-btn" onclick="saveHtmlCopy()">💾 儲存 HTML 副本</button>
@@ -386,7 +386,7 @@ Assessments scripts/notes x2</textarea>
 ✓ 【All grades verified】 — every result shown comes from a real, checked transcript.
 
 How do I order?
-Search for your course → DM to order → Receive your PDF 【within 2 days】. This PDF is viewable on phone or laptop — no special app needed.
+Search for your course → DM to order → Receive your PDF 【within 2 days】.
 
 What's the consultation for?
 Consultation covers 【exam preparation, course tips, and career questions】.
@@ -1332,7 +1332,7 @@ function updatePageVisibility(){
   const visible=['P1']; if(s3) visible.push('P3'); if(s2) visible.push('P2'); if(s4) visible.push('P4');
   if(s5) visible.push('P5'); if(s6) visible.push('P6'); if(s7) visible.push('P7');
   const total=visible.length;
-  const labels={P1:'COVER', P2:'ASSESSMENT + TIPS', P3:'NOTES + SAMPLES', P4:'FAQ', P5:'EXTRA 1', P6:'EXTRA 2', P7:'EXTRA 3'};
+  const labels={P1:'', P2:'ASSESSMENT + TIPS', P3:'NOTES + SAMPLES', P4:'FAQ', P5:'EXTRA 1', P6:'EXTRA 2', P7:'EXTRA 3'};
   ['P1','P2','P3','P4','P5','P6','P7'].forEach(k=>{
     const tpl=document.getElementById('tpl'+k);
     if(!tpl) return;
@@ -1342,7 +1342,7 @@ function updatePageVisibility(){
     const handleEl=tpl.querySelector('.handle');
     const swipeEl=tpl.querySelector('.swipe');
     if(dotsEl) dotsEl.innerHTML=Array.from({length:total}).map((_,i)=>`<div class="dot${i===pos?' on':''}"></div>`).join('');
-    if(handleEl) handleEl.textContent=String(pos+1).padStart(2,'0')+' · '+labels[k];
+    if(handleEl) handleEl.textContent=String(pos+1).padStart(2,'0')+(labels[k]?' · '+labels[k]:'');
     if(swipeEl) swipeEl.style.visibility=(pos===total-1)?'hidden':'visible';
   });
   const map={P2:'p2_show',P3:'p3_show',P4:'p4_show',P5:'px1_show',P6:'px2_show',P7:'px3_show'};
