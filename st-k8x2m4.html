@@ -150,7 +150,7 @@
   .photo-bg .dim{ position:absolute; inset:0; background:var(--bg); opacity:0.35;}
 
   /* P5 sample-notes frame */
-  .sample-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:16px; flex:1 1 auto; min-height:220px; max-height:600px;}
+  .sample-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:16px; flex:1 1 auto; min-height:340px; max-height:600px;}
   .sample-frame{ border:2px solid color-mix(in srgb, var(--ink) 30%, transparent); border-radius:20px; overflow:hidden; background:color-mix(in srgb, var(--ink) 4%, transparent); display:flex; align-items:center; justify-content:center; height:100%;}
   #tplP3 .orderbox{ margin-top:20px; border-top:2px solid var(--ink); padding-top:16px; flex:0 0 auto;}
   #tplP3 .orderbox>*{ margin-top:16px;}
@@ -332,20 +332,19 @@ Assessments scripts/notes x2</textarea>
     <div class="row"><label style="flex:none">套用去背</label><input type="checkbox" id="p5_bgon" onchange="reprocess('5a');reprocess('5b')"></div>
     <p class="hint">Notes screenshot 通常唔使去背，預設關閉。</p>
 
-    <label>Consultation（可留空 = 唔顯示）</label>
-    <input type="text" id="p5_consult" value="" oninput="renderP3()" placeholder="例：💬 包 Consultation · 提供課程諮詢">
-    <label style="flex:none"><input type="checkbox" id="p5_showconsult" checked onchange="renderP3()"> 顯示 Consultation button</label>
     <label>Why this source（可留空）</label>
     <textarea id="p5_why" style="min-height:64px" oninput="renderP3()">✍️ 由拎高分嘅同學親手整理
 📊 連 past paper analysis
 🛟 24/7 after-sale course tips</textarea>
-    <label>價錢顯示 Price display</label>
-    <select id="p4_showprice" onchange="renderP3()">
-      <option value="hide" selected>隱藏 Hide（DM for price）</option>
-      <option value="show">顯示 Show</option>
-    </select>
+    <label>Consultation（可留空 = 唔顯示）</label>
+    <input type="text" id="p5_consult" value="" oninput="renderP3()" placeholder="例：💬 包 Consultation · 提供課程諮詢">
     <label>價錢</label><input type="text" id="p4_price" value="$XXX" oninput="renderP3()">
     <label>原價（刪除線，可留空）</label><input type="text" id="p4_was" value="" oninput="renderP3()">
+    <div class="row" style="gap:20px; margin-top:6px;">
+      <label style="flex:none"><input type="checkbox" id="p4_showprice_chk" onchange="renderP3()"> 顯示 Price/Free button</label>
+      <label style="flex:none"><input type="checkbox" id="p5_showconsult" checked onchange="renderP3()"> 顯示 Consultation button</label>
+    </div>
+    <input type="hidden" id="p4_showprice" value="show">
     <input type="hidden" id="p4_tag" value="">
     <input type="hidden" id="p4_steps" value="">
     <input type="hidden" id="p4_pay" value="">
@@ -605,7 +604,7 @@ function renderP3(){
   w5_price.textContent=p4_price.value;
   w5_was.textContent=p4_was.value; w5_was.style.display=p4_was.value.trim()?'inline':'none';
   const pb=document.getElementById('w5_pricebox');
-  if(pb) pb.style.display=(p4_showprice&&p4_showprice.value==='show')?'flex':'none';
+  if(pb) pb.style.display=(p4_showprice_chk&&p4_showprice_chk.checked)?'flex':'none';
   w5_consult.textContent=p5_consult.value;
   w5_consult.style.display=(p5_showconsult.checked && p5_consult.value.trim())?'block':'none';
   const wb=document.getElementById('w5_whybox');
@@ -1015,7 +1014,7 @@ function fillFromCatalog(c){
   }
   if(c.grade){ p1_grade.value='🎓 '+c.grade; filled.push('Grade'); } else p1_grade.value='';
   if(c.tips){ p2_tips.value=c.tips; filled.push('Tips'); } else p2_tips.value='';
-  if(c.price){ p4_price.value=c.price; p4_showprice.value='show'; filled.push('價錢'); } else { p4_showprice.value='hide'; }
+  if(c.price){ p4_price.value=c.price; p4_showprice_chk.checked=true; filled.push('價錢'); } else { p4_showprice_chk.checked=false; }
   if(c.consult){ p5_consult.value='💬 Consultation available · 提供課程諮詢'; filled.push('Consultation'); } else p5_consult.value='';
   const tagParts=[];
   if(c.uni) tagParts.push(c.uni);
@@ -1043,14 +1042,14 @@ const CONTENT_IDS=[
   'p1_pkg','p1_headline','p1_ver','p1_grade','p1_factag','p1_statustag','p1_teaser','p1_cta',
   'p2_eyebrow','p2_items','p2_tips','p2_custom',
   'p3_eyebrow','p3_body','p3_samplecount','p3_custom',
-  'p4_price','p4_was','p4_showprice','p5_why','p5_consult',
+  'p4_price','p4_was','p5_why','p5_consult',
   'p4_h','p4_en','p4_items','p4_about'
 ];
 const DESIGN_IDS=['c_bg','c_ink','c_sub','c_accent','c_tan'];
 const SELECT_IDS=['logoSel','f_display','f_body'];
 const PHOTO_KEYS=['1','2','5a','5b'];
 const CFG_PAGES=['1','2','5'];
-const CHECK_IDS=['p2_show','p3_show','p4_show','p5_showconsult'];
+const CHECK_IDS=['p2_show','p3_show','p4_show','p5_showconsult','p4_showprice_chk'];
 
 let ACTIVE='未命名 Untitled';
 let COURSES_STATE={};
@@ -1081,7 +1080,7 @@ function applyContent(slot){
     });
   }
   fontCtrl.loadForActivePage();
-  CHECK_IDS.forEach(id=>{ const el=document.getElementById(id); if(el) el.checked=(slot.checks && id in slot.checks)?!!slot.checks[id]:(id!=='p4_show'); });
+  CHECK_IDS.forEach(id=>{ const el=document.getElementById(id); if(el) el.checked=(slot.checks && id in slot.checks)?!!slot.checks[id]:(id!=='p4_show'&&id!=='p4_showprice_chk'); });
   CFG_PAGES.forEach(pg=>{
     const cfg=slot.photoCfg && slot.photoCfg[pg];
     if(!cfg) return;
