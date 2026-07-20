@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v46</title>
+<title>This Semester — Studio v48</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -10,7 +10,7 @@
   :root{
     --bg:#F2F0EB; --ink:#1E1E1E; --sub:#6E6A5E; --accent:#2C5F8A; --tan:#B99B5E;
     --scale-head:1; --scale-body:1;
-    --ink-rgb:30,30,30; --tan-rgb:185,155,94;
+    --ink-rgb:30,30,30; --tan-rgb:185,155,94; --accent-rgb:44,95,138;
     --font-display:'Playfair Display','Noto Serif TC',serif;
     --font-body:'Noto Sans TC',sans-serif;
     --mono:'IBM Plex Mono',monospace;
@@ -187,7 +187,7 @@
 <body>
 
 <div class="sidebar">
-  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v46</span></h1>
+  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v48</span></h1>
   <p class="sub">4 頁 funnel：Cover → 清單 → 詳情 → 試閱+落單<br>📷 可拖放上載 · 🎨 相片色調 tint · 🗑 一鍵移除相<br>✅ 自動儲存 · 💾 儲存副本</p>
   <div style="display:flex; gap:8px; margin-bottom:12px;">
     <button class="save-btn" onclick="saveHtmlCopy()">💾 儲存 HTML 副本</button>
@@ -394,10 +394,10 @@ Consultation covers 【exam preparation, course tips, and career questions】.
 Can I see a sample before I buy?
 Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
     <label>About Us（可留空 = 唔顯示）</label>
-    <textarea id="p4_about" style="min-height:70px" oninput="renderP4()">A good reference helps you 【truly learn】. We sell 【student-written study notes】 based on our own coursework experience, and may share older-year versions for free.</textarea>
+    <textarea id="p4_about" style="min-height:70px" oninput="renderP4()">A good reference helps you 【truly learn】. We constantly update information that help you survive this semester. We have 【student-written study notes】 and consultation available. Sometimes we share 【past-year notes】 for free.</textarea>
     <label style="flex:none;font-weight:700;">Reminders — 剔咗先會顯示</label>
     <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p4_rem1" checked onchange="renderP4()"><textarea id="p4_rem1_txt" style="min-height:44px;flex:1;" oninput="renderP4()">Notes are supplementary study material and 【do not guarantee any specific grade】.</textarea></label>
-    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p4_rem2" checked onchange="renderP4()"><textarea id="p4_rem2_txt" style="min-height:44px;flex:1;" oninput="renderP4()">Notes reflect the syllabus and course structure at the time of writing; please 【check for any recent updates】.</textarea></label>
+    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p4_rem2" checked onchange="renderP4()"><textarea id="p4_rem2_txt" style="min-height:44px;flex:1;" oninput="renderP4()">Notes reflect the syllabus and course structure at the time of writing; 【check for updates】.</textarea></label>
     <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p4_rem3" checked onchange="renderP4()"><textarea id="p4_rem3_txt" style="min-height:44px;flex:1;" oninput="renderP4()">【No refunds】 once the PDF has been sent, unless the file is faulty or wrong.</textarea></label>
     <button class="dl-btn" onclick="download('tplP4','p4-faq')">⬇ PNG · Page 4</button>
     <button class="dl-all" onclick="downloadAll()">⬇⬇ Download 全部</button>
@@ -530,8 +530,8 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
             <div style="font-family:var(--mono); font-size:23px; letter-spacing:0.18em; color:var(--accent); margin-bottom:8px;">REMINDERS</div>
             <div id="w4_rem" style="font-family:var(--font-body); font-weight:500; font-size:calc(24px * var(--scale-body) * var(--fit,1)); line-height:1.5; color:var(--sub);"></div>
           </div>
-          <div id="w4_aboutbox" style="margin-top:18px; border:2px solid var(--ink); border-radius:14px; padding:16px 20px; display:none;">
-            <div style="font-family:var(--mono); font-size:23px; letter-spacing:0.18em; color:var(--sub); margin-bottom:8px;">ABOUT US 關於我們</div>
+          <div id="w4_aboutbox" style="margin-top:18px; border:2px solid var(--accent); background:rgba(var(--accent-rgb), 0.1); border-radius:14px; padding:16px 20px; display:none;">
+            <div style="font-family:var(--mono); font-size:23px; letter-spacing:0.18em; color:var(--accent); margin-bottom:8px;">ABOUT US 關於我們</div>
             <div id="w4_about" style="font-family:var(--font-body); font-size:calc(28px * var(--scale-body) * var(--fit,1)); line-height:1.65; color:var(--ink); white-space:pre-line; text-align:justify;"></div>
           </div>
         </div>
@@ -614,6 +614,7 @@ function hexToRgbStr(hex){
 function syncRgbVars(){
   try{ R.setProperty('--ink-rgb', hexToRgbStr(c_ink.value)); }catch(e){}
   try{ R.setProperty('--tan-rgb', hexToRgbStr(c_tan.value)); }catch(e){}
+  try{ R.setProperty('--accent-rgb', hexToRgbStr(c_accent.value)); }catch(e){}
 }
 
 const THEMES=[
@@ -648,7 +649,7 @@ function setLogo(which){ document.querySelectorAll('.logoimg').forEach(img=>img.
 c_bg.oninput=()=>R.setProperty('--bg',c_bg.value);
 c_ink.oninput=()=>{R.setProperty('--ink',c_ink.value); syncRgbVars();};
 c_sub.oninput=()=>R.setProperty('--sub',c_sub.value);
-c_accent.oninput=()=>R.setProperty('--accent',c_accent.value);
+c_accent.oninput=()=>{R.setProperty('--accent',c_accent.value); syncRgbVars();};
 c_tan.oninput=()=>{R.setProperty('--tan',c_tan.value); syncRgbVars();};
 logoSel.onchange=()=>setLogo(logoSel.value);
 
