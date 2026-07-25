@@ -52,7 +52,6 @@
   .badge.uni{ background:transparent; border:none; color:var(--sub); font-weight:700; letter-spacing:0.1em; padding:5px 6px;}
   .badge.new{ background:color-mix(in srgb, var(--tan) 14%, transparent); color:var(--tan); font-weight:700; border:1px solid var(--tan);}
   .rating-wrap{ display:flex; gap:14px; align-items:center; margin:12px 0 14px; position:relative;}
-  .rating-easyA{ position:absolute; top:-20px; left:0; background:var(--tan); color:#fff; font-family:var(--mono); font-size:10px; font-weight:700; padding:3px 11px; border-radius:999px;}
   .grade-box{ border-radius:12px; padding:11px 14px; display:flex; flex-direction:column; align-items:center; justify-content:center; flex:none; min-width:76px;}
   .grade-box.has{ background:var(--accent);}
   .grade-box.na{ background:#F1EFE8; border:1.5px dashed var(--sub);}
@@ -340,12 +339,10 @@ function starRow(val){
 }
 function ratingCardHTML(c){
   if(c.difficulty==null && c.workload==null && c.rating==null) return '';
-  const isEasyA=(c.difficulty!=null && c.workload!=null && c.rating!=null && c.difficulty<=2 && c.workload<=2 && c.rating>=4);
   const gradeBox=c.rating!=null
     ? `<div class="grade-box has"><div class="gl">GRADE 成績</div><div class="gv">${c.rating.toFixed(1)}</div><div class="gs">${starRow(c.rating)}</div></div>`
     : `<div class="grade-box na"><div class="gl">GRADE 成績</div><div class="gv">N/A</div><div class="gs">${starRow(null)}</div></div>`;
   return `<div class="rating-wrap">
-    ${isEasyA?'<div class="rating-easyA">輕鬆攞高分 EASY A</div>':''}
     ${gradeBox}
     <div class="rating-bars">
       <div class="rating-row"><div class="rl"><span>Difficulty 難度</span>${c.difficulty!=null?`<b style="color:${levelColor(c.difficulty)}">${c.difficulty.toFixed(1)}</b>`:'<b style="color:var(--sub)">N/A</b>'}</div><div class="rbars">${barSegments(c.difficulty, levelColor)}</div></div>
