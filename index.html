@@ -410,9 +410,23 @@ function render(){
       <div class="foot">${btn}</div>
     </div>`;
   }).join('');
+  matchRatingHeights();
+}
+function matchRatingHeights(){
+  document.querySelectorAll('.rating-wrap').forEach(wrap=>{
+    const gradeBox=wrap.querySelector('.grade-box');
+    const rows=wrap.querySelector('.rating-rows');
+    if(!gradeBox||!rows) return;
+    gradeBox.style.height='auto';
+    rows.style.height='auto';
+    const h=Math.max(gradeBox.offsetHeight, rows.offsetHeight);
+    gradeBox.style.height=h+'px';
+    rows.style.height=h+'px';
+  });
 }
 
 document.getElementById('q').addEventListener('input', render);
+window.addEventListener('resize', matchRatingHeights);
 document.getElementById('sortBy').addEventListener('change', render);
 load();
 </script>
