@@ -213,7 +213,7 @@ function load(){
       const head=rows[0].map(h=>(h||'').trim().toLowerCase());
       const find=(...names)=>{ for(const n of names){ const i=head.findIndex(h=>h.includes(n)); if(i>=0) return i; } return -1; };
       let iTitle=find('course name','course and course code','course'),
-          iVer=find('version'), iGrade=find('grade'),
+          iVer=find('version'),
           iAssess=find('assessment','評核'),
           iTips=find('study tips','tips'),
           iNotes=find('notes','note'),
@@ -222,12 +222,12 @@ function load(){
           iFac=find('faculty','學院'),
           iNew=find('new'),
           iDiff=find('difficulty','難度'), iWork=find('workload','工作量'),
-          iRating=find('rating'),
           iPrice=find('price'), iStatus=find('status'), iUpd=find('updated');
+      const gradeCols=head.map((h,i)=>h.includes('grade')?i:-1).filter(i=>i>=0);
       let dataRows;
       if(iTitle>=0){ dataRows=rows.slice(1); }
       else{
-        iTitle=0; iVer=1; iGrade=2; iAssess=3; iTips=4; iNotes=5; iConsult=6; iPrice=7; iStatus=-1; iUpd=-1; iDiff=-1; iWork=-1; iRating=-1;
+        iTitle=0; iVer=1; iAssess=3; iTips=4; iNotes=5; iConsult=6; iPrice=7; iStatus=-1; iUpd=-1; iDiff=-1; iWork=-1;
         dataRows=rows.filter(r=>!/^course\s*name$/i.test((r[0]||'').trim()));
       }
       const val=(r,i)=>(i>=0?(r[i]||''):'').trim();
@@ -243,10 +243,17 @@ function load(){
         }
         const price=val(r,iPrice);
         const free=/^free$/i.test(price)||/免費/.test(price);
+        let letterGrade='', numRating=null;
+        gradeCols.forEach(gi=>{
+          const raw=val(r,gi);
+          if(!raw) return;
+          if(/^[abc][+-]?$/i.test(raw)){ if(!letterGrade) letterGrade=raw; }
+          else{ const n=parseFloat(raw); if(!isNaN(n) && numRating==null) numRating=n; }
+        });
         return{
           code, title:name||rawTitle,
-          version:val(r,iVer), grade:val(r,iGrade),
-          difficulty:numVal(r,iDiff), workload:numVal(r,iWork), rating:numVal(r,iRating),
+          version:val(r,iVer), grade:letterGrade,
+          difficulty:numVal(r,iDiff), workload:numVal(r,iWork), rating:numRating,
           assess:splitLines(val(r,iAssess)),
           tips:splitLines(val(r,iTips)),
           notes:splitLines(val(r,iNotes)),
