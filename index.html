@@ -25,7 +25,7 @@
   h1 em{ font-style:normal; color:var(--accent);}
   p.lead{ color:var(--sub); margin:0 0 22px; line-height:1.7; font-size:15px;}
 
-  .searchbox{ display:flex; gap:10px;}
+  .searchbox{ display:flex; gap:10px; flex-wrap:wrap;}
   .searchbox input{ flex:1; padding:15px 18px; font-size:16px; font-family:var(--sans); border:2px solid var(--ink); border-radius:12px; background:#FBFAF7; color:var(--ink); outline:none;}
   .searchbox input:focus{ border-color:var(--accent);}
 
@@ -74,15 +74,10 @@
   .dm.ghost{ background:transparent; color:var(--sub); border:1.5px solid var(--sub); pointer-events:none;}
   .dm.warn{ background:var(--warn);}
 
-  .toolbar{ display:flex; gap:10px; align-items:center; margin:14px 0 4px; flex-wrap:wrap;}
-  .toolbar label{ font-family:var(--mono); font-size:11px; letter-spacing:0.08em; color:var(--sub); text-transform:uppercase;}
-  .toolbar select{ font-family:var(--sans); font-size:13px; padding:8px 12px; border:1.5px solid var(--ink); border-radius:10px; background:#FBFAF7; color:var(--ink);}
-  .facchips{ display:flex; gap:6px; flex-wrap:wrap; margin:10px 0 4px;}
-  .facchip{ font-family:var(--mono); font-size:11px; letter-spacing:0.04em; padding:6px 13px; border-radius:999px; background:transparent; cursor:pointer; border:1.5px solid var(--sub);}
-  .facchip.active{ color:#fff;}
-  .gradechips{ display:flex; gap:6px; flex-wrap:wrap; margin:8px 0 14px;}
-  .gradechip{ font-family:var(--mono); font-size:11px; padding:6px 12px; border-radius:999px; background:transparent; border:1.5px solid var(--ink); cursor:pointer;}
-  .gradechip.active{ background:var(--ink); color:var(--bg);}
+  .sortWrap{ display:inline-flex; align-items:center; gap:8px; margin:14px 0 4px;}
+  .sortWrap .sortLabel{ font-family:var(--mono); font-size:11px; letter-spacing:0.08em; color:var(--sub); text-transform:uppercase;}
+  .sortWrap select{ appearance:none; -webkit-appearance:none; -moz-appearance:none; font-family:var(--sans); font-size:13px; font-weight:700; padding:2px 20px 2px 2px; border:none; border-radius:0; background:transparent url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22 viewBox=%220 0 12 8%22><path d=%22M1 1l5 5 5-5%22 stroke=%22%232C5F8A%22 stroke-width=%222%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>') no-repeat right center; background-size:11px 7px; color:var(--ink); cursor:pointer;}
+  .sortWrap select:focus{ outline:none;}
 
   .empty, .loading, .error{ text-align:center; padding:60px 20px; color:var(--sub); font-size:15px; line-height:1.8;}
   .empty .dm, .error .dm{ display:inline-block; margin-top:14px;}
@@ -113,18 +108,16 @@
     <input id="q" type="search" placeholder="輸入 course code 或者關鍵字，即刻睇到 · Enter your course code or a keyword to check instantly." autocomplete="off">
   </div>
 
-  <div class="toolbar">
-    <label>排序 Sort</label>
-    <select id="sortBy">
+  <div class="sortWrap">
+      <span class="sortLabel">SORT</span>
+      <select id="sortBy">
       <option value="default">預設 Default</option>
-      <option value="year-desc">年份 Year (new→old)</option>
-      <option value="year-asc">年份 Year (old→new)</option>
-      <option value="grade">成績 Grade (A+→C)</option>
-      <option value="faculty">學院 Faculty (A→Z)</option>
-    </select>
+      <option value="grade-desc">成績 A+ → A-</option>
+      <option value="grade-asc">成績 A- → A+</option>
+      <option value="year-desc">年份 New → Old</option>
+      <option value="year-asc">年份 Old → New</option>
+      </select>
   </div>
-  <div class="facchips" id="facChips"></div>
-  <div class="gradechips" id="gradeChips"></div>
 
   <div class="meta" id="meta"></div>
 
@@ -163,8 +156,6 @@ const CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vTIC7UwVrDEdNpSip
 const DM_LINK='https://ig.me/m/thisemester';
 const FORM_URL='https://forms.gle/95hsHoCBsoDWeBg26';
 let COURSES=[];
-let activeFac=null;
-let activeGrade=null;
 
 const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
@@ -245,8 +236,6 @@ function load(){
           updated:val(r,iUpd)
         };
       }).filter(c=>c.code||c.title);
-      buildFacChips();
-      buildGradeChips();
       render();
     })
     .catch(()=>{
@@ -291,49 +280,15 @@ function gradeRank(g){
   return GRADE_RANK[k]??99;
 }
 
-function buildFacChips(){
-  const facs=[...new Set(COURSES.map(c=>c.fac).filter(Boolean))].sort();
-  const el=document.getElementById('facChips');
-  el.innerHTML=facs.map(f=>{
-    const color=FAC_COLOR[f]||'var(--sub)';
-    const label=FAC_LABEL[f]||f;
-    return `<button class="facchip" data-fac="${esc(f)}" style="border-color:${color};color:${color};" onclick="toggleFac('${f.replace(/'/g,"\\'")}')">${esc(label)}</button>`;
-  }).join('');
-}
-function toggleFac(f){
-  activeFac=(activeFac===f)?null:f;
-  document.querySelectorAll('.facchip').forEach(b=>{
-    const on=b.dataset.fac===activeFac;
-    b.classList.toggle('active', on);
-    b.style.background=on?b.style.color:'transparent';
-    b.style.color=on?'#fff':(FAC_COLOR[b.dataset.fac]||'var(--sub)');
-  });
-  render();
-}
-function buildGradeChips(){
-  const grades=[...new Set(COURSES.map(c=>c.grade).filter(Boolean))]
-    .sort((a,b)=>gradeRank(a)-gradeRank(b));
-  const el=document.getElementById('gradeChips');
-  el.innerHTML=grades.map(g=>`<button class="gradechip" data-grade="${esc(g)}" onclick="toggleGrade('${g.replace(/'/g,"\\'")}')">${esc(g)}</button>`).join('');
-}
-function toggleGrade(g){
-  activeGrade=(activeGrade===g)?null:g;
-  document.querySelectorAll('.gradechip').forEach(b=>b.classList.toggle('active', b.dataset.grade===activeGrade));
-  render();
-}
-
 function render(){
   const q=document.getElementById('q').value.trim().toLowerCase();
   const sortBy=document.getElementById('sortBy').value;
   let items=COURSES.slice();
   if(q) items=items.filter(c=>(c.title+' '+c.code+' '+c.assess.join(' ')+' '+c.tips.join(' ')+' '+c.grade+' '+c.notes.join(' ')+' '+c.fac+' '+(FAC_LABEL[c.fac]||'')+' '+c.uni+(c.consult?' consultation 諮詢 '+c.consult:'')+(c.free?' free 免費':'')).toLowerCase().includes(q));
-  if(activeFac) items=items.filter(c=>c.fac===activeFac);
-  if(activeGrade) items=items.filter(c=>c.grade===activeGrade);
-
-  if(sortBy==='year-desc') items.sort((a,b)=>yearKey(b.version)-yearKey(a.version));
+  if(sortBy==='grade-desc') items.sort((a,b)=>gradeRank(a.grade)-gradeRank(b.grade));
+  else if(sortBy==='grade-asc') items.sort((a,b)=>gradeRank(b.grade)-gradeRank(a.grade));
+  else if(sortBy==='year-desc') items.sort((a,b)=>yearKey(b.version)-yearKey(a.version));
   else if(sortBy==='year-asc') items.sort((a,b)=>yearKey(a.version)-yearKey(b.version));
-  else if(sortBy==='grade') items.sort((a,b)=>gradeRank(a.grade)-gradeRank(b.grade));
-  else if(sortBy==='faculty') items.sort((a,b)=>(FAC_LABEL[a.fac]||a.fac).localeCompare(FAC_LABEL[b.fac]||b.fac));
   else items.sort((a,b)=>(ORDER[a.status]??3)-(ORDER[b.status]??3) || (a.code||a.title).localeCompare(b.code||b.title));
 
   const st=document.getElementById('state');
