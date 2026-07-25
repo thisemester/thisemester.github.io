@@ -51,6 +51,25 @@
   .badge.consult{ background:color-mix(in srgb, var(--accent) 10%, transparent); color:var(--accent); border:1px solid var(--accent); text-decoration:none;}
   .badge.uni{ background:transparent; border:none; color:var(--sub); font-weight:700; letter-spacing:0.1em; padding:5px 6px;}
   .badge.new{ background:color-mix(in srgb, var(--tan) 14%, transparent); color:var(--tan); font-weight:700; border:1px solid var(--tan);}
+  .rating-wrap{ display:flex; gap:14px; align-items:center; margin:12px 0 14px; position:relative;}
+  .rating-easyA{ position:absolute; top:-20px; left:0; background:var(--tan); color:#fff; font-family:var(--mono); font-size:10px; font-weight:700; padding:3px 11px; border-radius:999px;}
+  .grade-box{ border-radius:12px; padding:11px 14px; display:flex; flex-direction:column; align-items:center; justify-content:center; flex:none; min-width:76px;}
+  .grade-box.has{ background:var(--accent);}
+  .grade-box.na{ background:#F1EFE8; border:1.5px dashed var(--sub);}
+  .grade-box .gl{ font-size:8.5px; font-weight:700; letter-spacing:0.04em;}
+  .grade-box.has .gl{ color:#B5D4F4;}
+  .grade-box.na .gl{ color:var(--sub);}
+  .grade-box .gv{ font-family:var(--serif); font-weight:900; font-size:22px;}
+  .grade-box.has .gv{ color:#fff;}
+  .grade-box.na .gv{ color:var(--sub); font-size:14px;}
+  .grade-box .gs{ font-size:12px; letter-spacing:1px; margin-top:2px;}
+  .grade-box.has .gs{ color:#F2C879;}
+  .grade-box.na .gs{ color:#d8d5cc;}
+  .rating-bars{ flex:1; display:flex; flex-direction:column; gap:10px;}
+  .rating-row .rl{ display:flex; justify-content:space-between; align-items:baseline; font-size:10.5px; color:var(--sub); margin-bottom:4px;}
+  .rating-row .rl b{ font-size:11px; font-weight:700;}
+  .rating-row .rbars{ display:flex; gap:3px;}
+  .rating-row .rbars span{ flex:1; height:6px; border-radius:3px; background:#e5e2d8;}
   .metaline{ display:flex; gap:16px; font-size:12.5px; color:var(--sub); margin:14px 0 4px;}
   .sec{ border-top:1px dashed var(--tan); margin-top:12px; padding-top:11px;}
   .sec .h{ font-size:13px; font-weight:700; margin:0 0 6px; color:var(--ink);}
@@ -202,14 +221,17 @@ function load(){
           iUni=find('university','uni'),
           iFac=find('faculty','學院'),
           iNew=find('new'),
+          iDiff=find('difficulty','難度'), iWork=find('workload','工作量'),
+          iRating=find('rating'),
           iPrice=find('price'), iStatus=find('status'), iUpd=find('updated');
       let dataRows;
       if(iTitle>=0){ dataRows=rows.slice(1); }
       else{
-        iTitle=0; iVer=1; iGrade=2; iAssess=3; iTips=4; iNotes=5; iConsult=6; iPrice=7; iStatus=-1; iUpd=-1;
+        iTitle=0; iVer=1; iGrade=2; iAssess=3; iTips=4; iNotes=5; iConsult=6; iPrice=7; iStatus=-1; iUpd=-1; iDiff=-1; iWork=-1; iRating=-1;
         dataRows=rows.filter(r=>!/^course\s*name$/i.test((r[0]||'').trim()));
       }
       const val=(r,i)=>(i>=0?(r[i]||''):'').trim();
+      const numVal=(r,i)=>{ const v=val(r,i); if(!v) return null; const n=parseFloat(v); return isNaN(n)?null:n; };
       const splitLines=t=>t.split('\n').map(x=>x.trim()).filter(Boolean);
       COURSES=dataRows.map(r=>{
         const rawTitle=val(r,iTitle);
@@ -224,6 +246,7 @@ function load(){
         return{
           code, title:name||rawTitle,
           version:val(r,iVer), grade:val(r,iGrade),
+          difficulty:numVal(r,iDiff), workload:numVal(r,iWork), rating:numVal(r,iRating),
           assess:splitLines(val(r,iAssess)),
           tips:splitLines(val(r,iTips)),
           notes:splitLines(val(r,iNotes)),
@@ -288,6 +311,41 @@ function gradeCompare(a,b,ascending){
   return ascending?(rb-ra):(ra-rb);
 }
 
+function barSegments(val, colorFn){
+  if(val==null) return Array.from({length:5}).map(()=>'<span></span>').join('');
+  let html='';
+  for(let i=1;i<=5;i++){
+    if(val>=i) html+=`<span style="background:${colorFn(val)}"></span>`;
+    else if(val>=i-0.5) html+=`<span style="background:linear-gradient(90deg,${colorFn(val)} 50%,#e5e2d8 50%)"></span>`;
+    else html+='<span></span>';
+  }
+  return html;
+}
+function levelColor(val){
+  if(val<=2.5) return '#0E7A54';
+  if(val<3.5) return '#B58900';
+  return '#E24B4A';
+}
+function starRow(val){
+  if(val==null) return '☆☆☆☆☆';
+  const full=Math.round(val);
+  return '★'.repeat(full)+'☆'.repeat(5-full);
+}
+function ratingCardHTML(c){
+  if(c.difficulty==null && c.workload==null && c.rating==null) return '';
+  const isEasyA=(c.difficulty!=null && c.workload!=null && c.rating!=null && c.difficulty<=2 && c.workload<=2 && c.rating>=4);
+  const gradeBox=c.rating!=null
+    ? `<div class="grade-box has"><div class="gl">GRADE 成績</div><div class="gv">${c.rating.toFixed(1)}</div><div class="gs">${starRow(c.rating)}</div></div>`
+    : `<div class="grade-box na"><div class="gl">GRADE 成績</div><div class="gv">N/A</div><div class="gs">${starRow(null)}</div></div>`;
+  return `<div class="rating-wrap">
+    ${isEasyA?'<div class="rating-easyA">輕鬆攞高分 EASY A</div>':''}
+    ${gradeBox}
+    <div class="rating-bars">
+      <div class="rating-row"><div class="rl"><span>Difficulty 難度</span>${c.difficulty!=null?`<b style="color:${levelColor(c.difficulty)}">${c.difficulty.toFixed(1)}</b>`:'<b style="color:var(--sub)">N/A</b>'}</div><div class="rbars">${barSegments(c.difficulty, levelColor)}</div></div>
+      <div class="rating-row"><div class="rl"><span>Workload 工作量</span>${c.workload!=null?`<b style="color:${levelColor(c.workload)}">${c.workload.toFixed(1)}</b>`:'<b style="color:var(--sub)">N/A</b>'}</div><div class="rbars">${barSegments(c.workload, levelColor)}</div></div>
+    </div>
+  </div>`;
+}
 function render(){
   const q=document.getElementById('q').value.trim().toLowerCase();
   const sortBy=document.getElementById('sortBy').value;
@@ -323,6 +381,7 @@ function render(){
     return `<div class="card ${s}">
       <div class="name" style="margin:0;">${c.code?`<b class="code-inline" style="${FAC_COLOR[c.fac]?`color:${FAC_COLOR[c.fac]}`:''}">${esc(c.code)}</b> — `:''}${esc(c.title)}</div>
       <div class="metaline">${c.version?`<span>📅 Version: ${esc(c.version)}</span>`:''}${c.grade?`<span>🎓 Grade: ${esc(c.grade)}</span>`:''}</div>
+      ${ratingCardHTML(c)}
       ${c.assess.length?(()=>{
         const noteRe=/^(\*\*|as of|\(?註[:：]|note:)/i;
         let out=[], buf=[], n=1;
