@@ -111,7 +111,7 @@
   <div class="sortWrap">
       <span class="sortLabel">SORT</span>
       <select id="sortBy">
-      <option value="default"> Default</option>
+      <option value="default">Default</option>
       <option value="grade-desc">Grade: A+ → A-</option>
       <option value="grade-asc">Grade: A- → A+</option>
       <option value="year-desc">Year: New → Old</option>
@@ -279,14 +279,22 @@ function gradeRank(g){
   const k=String(g||'').trim().toLowerCase().replace(/\s+/g,'');
   return GRADE_RANK[k]??99;
 }
+function gradeCompare(a,b,ascending){
+  const ra=gradeRank(a.grade), rb=gradeRank(b.grade);
+  const aUnknown=ra===99, bUnknown=rb===99;
+  if(aUnknown&&bUnknown) return 0;
+  if(aUnknown) return 1;
+  if(bUnknown) return -1;
+  return ascending?(rb-ra):(ra-rb);
+}
 
 function render(){
   const q=document.getElementById('q').value.trim().toLowerCase();
   const sortBy=document.getElementById('sortBy').value;
   let items=COURSES.slice();
   if(q) items=items.filter(c=>(c.title+' '+c.code+' '+c.assess.join(' ')+' '+c.tips.join(' ')+' '+c.grade+' '+c.notes.join(' ')+' '+c.fac+' '+(FAC_LABEL[c.fac]||'')+' '+c.uni+(c.consult?' consultation 諮詢 '+c.consult:'')+(c.free?' free 免費':'')).toLowerCase().includes(q));
-  if(sortBy==='grade-desc') items.sort((a,b)=>gradeRank(a.grade)-gradeRank(b.grade));
-  else if(sortBy==='grade-asc') items.sort((a,b)=>gradeRank(b.grade)-gradeRank(a.grade));
+  if(sortBy==='grade-desc') items.sort((a,b)=>gradeCompare(a,b,false));
+  else if(sortBy==='grade-asc') items.sort((a,b)=>gradeCompare(a,b,true));
   else if(sortBy==='year-desc') items.sort((a,b)=>yearKey(b.version)-yearKey(a.version));
   else if(sortBy==='year-asc') items.sort((a,b)=>yearKey(a.version)-yearKey(b.version));
   else items.sort((a,b)=>(ORDER[a.status]??3)-(ORDER[b.status]??3) || (a.code||a.title).localeCompare(b.code||b.title));
