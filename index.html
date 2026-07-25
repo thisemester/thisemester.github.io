@@ -50,7 +50,7 @@
   .badge.free{ background:color-mix(in srgb, var(--ok) 14%, transparent); color:var(--ok); border:1px solid var(--ok);}
   .badge.consult{ background:color-mix(in srgb, var(--accent) 10%, transparent); color:var(--accent); border:1px solid var(--accent); text-decoration:none;}
   .badge.uni{ background:transparent; border:none; color:var(--sub); font-weight:700; letter-spacing:0.1em; padding:5px 6px;}
-  .badge.new{ background:var(--tan); color:#3A2E12; font-weight:700;}
+  .badge.new{ background:color-mix(in srgb, var(--tan) 14%, transparent); color:var(--tan); font-weight:700; border:1px solid var(--tan);}
   .metaline{ display:flex; gap:16px; font-size:12.5px; color:var(--sub); margin:14px 0 4px;}
   .sec{ border-top:1px dashed var(--tan); margin-top:12px; padding-top:11px;}
   .sec .h{ font-size:13px; font-weight:700; margin:0 0 6px; color:var(--ink);}
@@ -59,7 +59,6 @@
   .notes-list{ margin:0; padding:0; list-style:none;}
   .notes-list li{ font-size:13px; color:var(--sub); line-height:1.7; padding-left:22px; position:relative;}
   .notes-list li::before{ content:'✓'; position:absolute; left:0; color:var(--accent); font-weight:900;}
-  .badge{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.1em; padding:5px 11px; border-radius:999px; white-space:nowrap; text-transform:uppercase;}
   .badge.available{ background:color-mix(in srgb, var(--ok) 14%, transparent); color:var(--ok); border:1px solid var(--ok);}
   .badge.soldout{ background:color-mix(in srgb, var(--ink) 10%, transparent); color:var(--sub); border:1px solid var(--sub);}
   .badge.coming{ background:color-mix(in srgb, var(--warn) 14%, transparent); color:var(--warn); border:1px solid var(--warn);}
@@ -74,6 +73,16 @@
   .foot .dm{ display:block; width:100%; text-align:center;}
   .dm.ghost{ background:transparent; color:var(--sub); border:1.5px solid var(--sub); pointer-events:none;}
   .dm.warn{ background:var(--warn);}
+
+  .toolbar{ display:flex; gap:10px; align-items:center; margin:14px 0 4px; flex-wrap:wrap;}
+  .toolbar label{ font-family:var(--mono); font-size:11px; letter-spacing:0.08em; color:var(--sub); text-transform:uppercase;}
+  .toolbar select{ font-family:var(--sans); font-size:13px; padding:8px 12px; border:1.5px solid var(--ink); border-radius:10px; background:#FBFAF7; color:var(--ink);}
+  .facchips{ display:flex; gap:6px; flex-wrap:wrap; margin:10px 0 4px;}
+  .facchip{ font-family:var(--mono); font-size:11px; letter-spacing:0.04em; padding:6px 13px; border-radius:999px; background:transparent; cursor:pointer; border:1.5px solid var(--sub);}
+  .facchip.active{ color:#fff;}
+  .gradechips{ display:flex; gap:6px; flex-wrap:wrap; margin:8px 0 14px;}
+  .gradechip{ font-family:var(--mono); font-size:11px; padding:6px 12px; border-radius:999px; background:transparent; border:1.5px solid var(--ink); cursor:pointer;}
+  .gradechip.active{ background:var(--ink); color:var(--bg);}
 
   .empty, .loading, .error{ text-align:center; padding:60px 20px; color:var(--sub); font-size:15px; line-height:1.8;}
   .empty .dm, .error .dm{ display:inline-block; margin-top:14px;}
@@ -103,6 +112,20 @@
   <div class="searchbox">
     <input id="q" type="search" placeholder="輸入 course code 或者關鍵字，即刻睇到 · Enter your course code or a keyword to check instantly." autocomplete="off">
   </div>
+
+  <div class="toolbar">
+    <label>排序 Sort</label>
+    <select id="sortBy">
+      <option value="default">預設 Default</option>
+      <option value="year-desc">年份 Year (new→old)</option>
+      <option value="year-asc">年份 Year (old→new)</option>
+      <option value="grade">成績 Grade (A+→C)</option>
+      <option value="faculty">學院 Faculty (A→Z)</option>
+    </select>
+  </div>
+  <div class="facchips" id="facChips"></div>
+  <div class="gradechips" id="gradeChips"></div>
+
   <div class="meta" id="meta"></div>
 
   <div id="list" class="grid"></div>
@@ -140,6 +163,8 @@ const CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vTIC7UwVrDEdNpSip
 const DM_LINK='https://ig.me/m/thisemester';
 const FORM_URL='https://forms.gle/95hsHoCBsoDWeBg26';
 let COURSES=[];
+let activeFac=null;
+let activeGrade=null;
 
 const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
@@ -220,6 +245,8 @@ function load(){
           updated:val(r,iUpd)
         };
       }).filter(c=>c.code||c.title);
+      buildFacChips();
+      buildGradeChips();
       render();
     })
     .catch(()=>{
@@ -234,24 +261,80 @@ function load(){
 
 const ORDER={available:0, coming:1};
 const FAC_COLOR={
-  law:'#8A6D00', pcll:'#8A6D00',
-  arts:'#1F3A5F',
-  business:'#2F6F3E', economics:'#2F6F3E', 'business & economics':'#2F6F3E',
-  science:'#B85C00',
-  'social sciences':'#6B4A6B', 'social science':'#6B4A6B',
-  engineering:'#8A3E2E',
-  medicine:'#1E6B6B',
-  dentistry:'#8B4A6B',
-  education:'#3E5C76',
-  architecture:'#6B4A2E'
+  law:'#A6820D', pcll:'#A6820D',
+  arts:'#1F3F8F',
+  business:'#8C6239', economics:'#8C6239', 'business & economics':'#8C6239',
+  science:'#8C8C87',
+  'social sciences':'#1F5C3B', 'social science':'#1F5C3B',
+  engineering:'#C9A227',
+  medicine:'#C1272D',
+  dentistry:'#7B1E3A',
+  education:'#3E82B8',
+  architecture:'#6B6B66',
+  philosophy:'#6B1F33'
 };
+const FAC_LABEL={
+  law:'Law', pcll:'Law', arts:'Arts', business:'Business & Econ', economics:'Business & Econ',
+  'business & economics':'Business & Econ', science:'Science', 'social sciences':'Social Sciences',
+  'social science':'Social Sciences', engineering:'Engineering', medicine:'Medicine',
+  dentistry:'Dentistry', education:'Education', architecture:'Architecture', philosophy:'Philosophy'
+};
+const GRADE_RANK={'a+':0,'a':1,'a-':2,'b+':3,'b':4,'b-':5,'c+':6,'c':7,'c-':8};
 const BADGE={available:'有 AVAILABLE', coming:'即將推出 COMING SOON'};
+
+function yearKey(v){
+  const m=String(v||'').match(/(\d{4})/);
+  return m?parseInt(m[1],10):0;
+}
+function gradeRank(g){
+  const k=String(g||'').trim().toLowerCase().replace(/\s+/g,'');
+  return GRADE_RANK[k]??99;
+}
+
+function buildFacChips(){
+  const facs=[...new Set(COURSES.map(c=>c.fac).filter(Boolean))].sort();
+  const el=document.getElementById('facChips');
+  el.innerHTML=facs.map(f=>{
+    const color=FAC_COLOR[f]||'var(--sub)';
+    const label=FAC_LABEL[f]||f;
+    return `<button class="facchip" data-fac="${esc(f)}" style="border-color:${color};color:${color};" onclick="toggleFac('${f.replace(/'/g,"\\'")}')">${esc(label)}</button>`;
+  }).join('');
+}
+function toggleFac(f){
+  activeFac=(activeFac===f)?null:f;
+  document.querySelectorAll('.facchip').forEach(b=>{
+    const on=b.dataset.fac===activeFac;
+    b.classList.toggle('active', on);
+    b.style.background=on?b.style.color:'transparent';
+    b.style.color=on?'#fff':(FAC_COLOR[b.dataset.fac]||'var(--sub)');
+  });
+  render();
+}
+function buildGradeChips(){
+  const grades=[...new Set(COURSES.map(c=>c.grade).filter(Boolean))]
+    .sort((a,b)=>gradeRank(a)-gradeRank(b));
+  const el=document.getElementById('gradeChips');
+  el.innerHTML=grades.map(g=>`<button class="gradechip" data-grade="${esc(g)}" onclick="toggleGrade('${g.replace(/'/g,"\\'")}')">${esc(g)}</button>`).join('');
+}
+function toggleGrade(g){
+  activeGrade=(activeGrade===g)?null:g;
+  document.querySelectorAll('.gradechip').forEach(b=>b.classList.toggle('active', b.dataset.grade===activeGrade));
+  render();
+}
 
 function render(){
   const q=document.getElementById('q').value.trim().toLowerCase();
+  const sortBy=document.getElementById('sortBy').value;
   let items=COURSES.slice();
-  if(q) items=items.filter(c=>(c.title+' '+c.code+' '+c.assess.join(' ')+' '+c.tips.join(' ')+' '+c.grade+' '+c.notes.join(' ')+(c.consult?' consultation 諮詢 '+c.consult:'')+(c.free?' free 免費':'')).toLowerCase().includes(q));
-  items.sort((a,b)=>(ORDER[a.status]??3)-(ORDER[b.status]??3) || (a.code||a.title).localeCompare(b.code||b.title));
+  if(q) items=items.filter(c=>(c.title+' '+c.code+' '+c.assess.join(' ')+' '+c.tips.join(' ')+' '+c.grade+' '+c.notes.join(' ')+' '+c.fac+' '+(FAC_LABEL[c.fac]||'')+' '+c.uni+(c.consult?' consultation 諮詢 '+c.consult:'')+(c.free?' free 免費':'')).toLowerCase().includes(q));
+  if(activeFac) items=items.filter(c=>c.fac===activeFac);
+  if(activeGrade) items=items.filter(c=>c.grade===activeGrade);
+
+  if(sortBy==='year-desc') items.sort((a,b)=>yearKey(b.version)-yearKey(a.version));
+  else if(sortBy==='year-asc') items.sort((a,b)=>yearKey(a.version)-yearKey(b.version));
+  else if(sortBy==='grade') items.sort((a,b)=>gradeRank(a.grade)-gradeRank(b.grade));
+  else if(sortBy==='faculty') items.sort((a,b)=>(FAC_LABEL[a.fac]||a.fac).localeCompare(FAC_LABEL[b.fac]||b.fac));
+  else items.sort((a,b)=>(ORDER[a.status]??3)-(ORDER[b.status]??3) || (a.code||a.title).localeCompare(b.code||b.title));
 
   const st=document.getElementById('state');
   const list=document.getElementById('list');
@@ -297,6 +380,7 @@ function render(){
 }
 
 document.getElementById('q').addEventListener('input', render);
+document.getElementById('sortBy').addEventListener('change', render);
 load();
 </script>
 </body>
