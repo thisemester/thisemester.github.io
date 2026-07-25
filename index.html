@@ -51,8 +51,8 @@
   .badge.consult{ background:color-mix(in srgb, var(--accent) 10%, transparent); color:var(--accent); border:1px solid var(--accent); text-decoration:none;}
   .badge.uni{ background:transparent; border:none; color:var(--sub); font-weight:700; letter-spacing:0.1em; padding:5px 6px;}
   .badge.new{ background:color-mix(in srgb, var(--tan) 14%, transparent); color:var(--tan); font-weight:700; border:1px solid var(--tan);}
-  .rating-wrap{ display:flex; gap:14px; align-items:center; margin:12px 0 14px; position:relative;}
-  .grade-box{ border-radius:12px; padding:11px 14px; display:flex; flex-direction:column; align-items:center; justify-content:center; flex:none; min-width:76px;}
+  .rating-wrap{ display:grid; grid-template-columns:auto 1fr; gap:14px; margin:12px 0 14px;}
+  .grade-box{ grid-row:1/-1; border-radius:12px; padding:11px 14px; display:flex; flex-direction:column; align-items:center; justify-content:center; min-width:76px;}
   .grade-box.has{ background:var(--accent);}
   .grade-box.na{ background:#F1EFE8; border:1.5px dashed var(--sub);}
   .grade-box .gl{ font-size:8.5px; font-weight:700; letter-spacing:0.04em;}
@@ -64,7 +64,6 @@
   .grade-box .gs{ font-size:12px; letter-spacing:1px; margin-top:2px;}
   .grade-box.has .gs{ color:#F2C879;}
   .grade-box.na .gs{ color:#d8d5cc;}
-  .rating-bars{ flex:1; display:flex; flex-direction:column; gap:10px;}
   .rating-row .rl{ display:flex; justify-content:space-between; align-items:baseline; font-size:10.5px; color:var(--sub); margin-bottom:4px;}
   .rating-row .rl b{ font-size:11px; font-weight:700;}
   .rating-row .rbars{ display:flex; gap:3px;}
@@ -220,13 +219,13 @@ function load(){
           iUni=find('university','uni'),
           iFac=find('faculty','學院'),
           iNew=find('new'),
-          iDiff=find('difficulty','難度'), iWork=find('workload','工作量'),
+          iDiff=find('difficulty','難度'), iWork=find('workload','工作量'), iInterest=find('interesting','有趣'),
           iPrice=find('price'), iStatus=find('status'), iUpd=find('updated');
       const gradeCols=head.map((h,i)=>h.includes('grade')?i:-1).filter(i=>i>=0);
       let dataRows;
       if(iTitle>=0){ dataRows=rows.slice(1); }
       else{
-        iTitle=0; iVer=1; iAssess=3; iTips=4; iNotes=5; iConsult=6; iPrice=7; iStatus=-1; iUpd=-1; iDiff=-1; iWork=-1;
+        iTitle=0; iVer=1; iAssess=3; iTips=4; iNotes=5; iConsult=6; iPrice=7; iStatus=-1; iUpd=-1; iDiff=-1; iWork=-1; iInterest=-1;
         dataRows=rows.filter(r=>!/^course\s*name$/i.test((r[0]||'').trim()));
       }
       const val=(r,i)=>(i>=0?(r[i]||''):'').trim();
@@ -252,7 +251,7 @@ function load(){
         return{
           code, title:name||rawTitle,
           version:val(r,iVer), grade:letterGrade,
-          difficulty:numVal(r,iDiff), workload:numVal(r,iWork), rating:numRating,
+          difficulty:numVal(r,iDiff), workload:numVal(r,iWork), interesting:numVal(r,iInterest), rating:numRating,
           assess:splitLines(val(r,iAssess)),
           tips:splitLines(val(r,iTips)),
           notes:splitLines(val(r,iNotes)),
@@ -332,22 +331,27 @@ function levelColor(val){
   if(val<3.5) return '#B58900';
   return '#E24B4A';
 }
+function interestColor(){ return '#7F77DD'; }
 function starRow(val){
   if(val==null) return '☆☆☆☆☆';
   const full=Math.round(val);
   return '★'.repeat(full)+'☆'.repeat(5-full);
 }
+function ratingRowHTML(label, val, colorFn){
+  const color=val!=null?colorFn(val):'var(--sub)';
+  const display=val!=null?val.toFixed(1):'N/A';
+  return `<div class="rating-row"><div class="rl"><span>${label}</span><b style="color:${color}">${display}</b></div><div class="rbars">${barSegments(val, colorFn)}</div></div>`;
+}
 function ratingCardHTML(c){
-  if(c.difficulty==null && c.workload==null && c.rating==null) return '';
+  if(c.difficulty==null && c.workload==null && c.interesting==null && c.rating==null) return '';
   const gradeBox=c.rating!=null
     ? `<div class="grade-box has"><div class="gl">GRADE 成績</div><div class="gv">${c.rating.toFixed(1)}</div><div class="gs">${starRow(c.rating)}</div></div>`
     : `<div class="grade-box na"><div class="gl">GRADE 成績</div><div class="gv">N/A</div><div class="gs">${starRow(null)}</div></div>`;
   return `<div class="rating-wrap">
     ${gradeBox}
-    <div class="rating-bars">
-      <div class="rating-row"><div class="rl"><span>Difficulty 難度</span>${c.difficulty!=null?`<b style="color:${levelColor(c.difficulty)}">${c.difficulty.toFixed(1)}</b>`:'<b style="color:var(--sub)">N/A</b>'}</div><div class="rbars">${barSegments(c.difficulty, levelColor)}</div></div>
-      <div class="rating-row"><div class="rl"><span>Workload 工作量</span>${c.workload!=null?`<b style="color:${levelColor(c.workload)}">${c.workload.toFixed(1)}</b>`:'<b style="color:var(--sub)">N/A</b>'}</div><div class="rbars">${barSegments(c.workload, levelColor)}</div></div>
-    </div>
+    ${ratingRowHTML('Difficulty 難度', c.difficulty, levelColor)}
+    ${ratingRowHTML('Workload 工作量', c.workload, levelColor)}
+    ${ratingRowHTML('Interesting 有趣程度', c.interesting, interestColor)}
   </div>`;
 }
 function render(){
