@@ -50,6 +50,7 @@
   .badge{ font-family:var(--mono); font-size:10.5px; letter-spacing:0.06em; padding:5px 11px; border-radius:999px; white-space:nowrap; display:inline-flex; align-items:center; line-height:1.2; box-sizing:border-box;}
   .badge.free{ background:color-mix(in srgb, var(--ok) 14%, transparent); color:var(--ok); border:1px solid var(--ok);}
   .badge.consult{ background:color-mix(in srgb, var(--accent) 10%, transparent); color:var(--accent); border:1px solid var(--accent); text-decoration:none;}
+  .badge.price{ background:color-mix(in srgb, var(--tan) 12%, transparent); color:var(--tan); border:1px solid var(--tan); font-weight:700;}
   .badge.uni{ background:transparent; border:none; color:var(--sub); font-weight:700; letter-spacing:0.1em; padding:5px 6px;}
   .badge.new{ background:color-mix(in srgb, var(--tan) 14%, transparent); color:var(--tan); font-weight:700; border:1px solid var(--tan);}
   .rating-wrap{ display:flex; align-items:stretch; gap:14px; margin:12px 0 14px;}
@@ -225,12 +226,13 @@ function load(){
           iNew=find('new'),
           iDiff=find('difficulty','難度'), iWork=find('workload','工作量'), iInterest=find('interesting','有趣'),
           iProf=find('professor','lecturer','教授','講師'),
+          iFreeOrNot=find('free or not','免費與否'),
           iPrice=find('price'), iStatus=find('status'), iUpd=find('updated');
       const gradeCols=head.map((h,i)=>h.includes('grade')?i:-1).filter(i=>i>=0);
       let dataRows;
       if(iTitle>=0){ dataRows=rows.slice(1); }
       else{
-        iTitle=0; iVer=1; iAssess=3; iTips=4; iNotes=5; iConsult=6; iPrice=7; iStatus=-1; iUpd=-1; iDiff=-1; iWork=-1; iInterest=-1; iProf=-1;
+        iTitle=0; iVer=1; iAssess=3; iTips=4; iNotes=5; iConsult=6; iPrice=7; iStatus=-1; iUpd=-1; iDiff=-1; iWork=-1; iInterest=-1; iProf=-1; iFreeOrNot=-1;
         dataRows=rows.filter(r=>!/^course\s*name$/i.test((r[0]||'').trim()));
       }
       const val=(r,i)=>(i>=0?(r[i]||''):'').trim();
@@ -245,7 +247,8 @@ function load(){
           name=rawTitle.replace(codeMatch[0],'').replace(/^[\s\-\u2013\u2014:\u00b7]+|[\s\-\u2013\u2014:\u00b7]+$/g,'').trim();
         }
         const price=val(r,iPrice);
-        const free=/^free$/i.test(price)||/免費/.test(price);
+        const freeOrNot=val(r,iFreeOrNot).toLowerCase();
+        const free=/^free$/i.test(freeOrNot)||freeOrNot.includes('免費');
         let letterGrade='', numRating=null;
         gradeCols.forEach(gi=>{
           const raw=val(r,gi);
@@ -424,6 +427,7 @@ function render(){
     const badges=[];
     if(c.free) badges.push('<span class="badge free">FREE NOTE</span>');
     if(c.consult) badges.push(`<a class="badge consult" href="${DM_LINK}" target="_blank" rel="noopener">💬 TUTOR CONSULTATION</a>`);
+    if(!c.free && c.price) badges.push(`<span class="badge price">${esc(c.price)}</span>`);
     if(c.uni) badges.push(`<span class="badge uni">${esc(c.uni)}</span>`);
     if(c.isNew) badges.push('<span class="badge new">NEW</span>');
     const btn=c.free
