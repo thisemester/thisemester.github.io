@@ -224,12 +224,13 @@ function load(){
           iFac=find('faculty','學院'),
           iNew=find('new'),
           iDiff=find('difficulty','難度'), iWork=find('workload','工作量'), iInterest=find('interesting','有趣'),
+          iProf=find('professor','lecturer','教授','講師'),
           iPrice=find('price'), iStatus=find('status'), iUpd=find('updated');
       const gradeCols=head.map((h,i)=>h.includes('grade')?i:-1).filter(i=>i>=0);
       let dataRows;
       if(iTitle>=0){ dataRows=rows.slice(1); }
       else{
-        iTitle=0; iVer=1; iAssess=3; iTips=4; iNotes=5; iConsult=6; iPrice=7; iStatus=-1; iUpd=-1; iDiff=-1; iWork=-1; iInterest=-1;
+        iTitle=0; iVer=1; iAssess=3; iTips=4; iNotes=5; iConsult=6; iPrice=7; iStatus=-1; iUpd=-1; iDiff=-1; iWork=-1; iInterest=-1; iProf=-1;
         dataRows=rows.filter(r=>!/^course\s*name$/i.test((r[0]||'').trim()));
       }
       const val=(r,i)=>(i>=0?(r[i]||''):'').trim();
@@ -256,6 +257,7 @@ function load(){
           code, title:name||rawTitle,
           version:val(r,iVer), grade:letterGrade,
           difficulty:numVal(r,iDiff), workload:numVal(r,iWork), interesting:numVal(r,iInterest), rating:numRating,
+          prof:val(r,iProf),
           assess:splitLines(val(r,iAssess)),
           tips:splitLines(val(r,iTips)),
           notes:splitLines(val(r,iNotes)),
@@ -371,16 +373,20 @@ const SEARCH_SYNONYMS={
 };
 function relevanceScore(c, q){
   const code=(c.code||'').toLowerCase();
+  const codeNoSpace=code.replace(/\s+/g,'');
+  const qNoSpace=q.replace(/\s+/g,'');
   const title=(c.title||'').toLowerCase();
   const facLabel=(FAC_LABEL[c.fac]||'').toLowerCase();
   const fac=(c.fac||'').toLowerCase();
+  const prof=(c.prof||'').toLowerCase();
   const qx=SEARCH_SYNONYMS[q]||'';
-  if(code.startsWith(q)||(qx&&code.startsWith(qx))) return 0;
-  if(code.includes(q)||(qx&&code.includes(qx))) return 1;
+  if(code.startsWith(q)||(qx&&code.startsWith(qx))||codeNoSpace.startsWith(qNoSpace)) return 0;
+  if(code.includes(q)||(qx&&code.includes(qx))||codeNoSpace.includes(qNoSpace)) return 1;
   if(title.startsWith(q)||(qx&&title.startsWith(qx))) return 2;
   if(facLabel===q || fac===q || (qx&&(facLabel===qx||fac===qx))) return 3;
   if(facLabel.startsWith(q) || fac.startsWith(q) || (qx&&(facLabel.startsWith(qx)||fac.startsWith(qx)))) return 4;
   if(title.includes(q)||(qx&&title.includes(qx))) return 5;
+  if(prof.includes(q)) return 5.5;
   if(facLabel.includes(q) || fac.includes(q) || (qx&&(facLabel.includes(qx)||fac.includes(qx)))) return 6;
   return 7;
 }
@@ -389,9 +395,11 @@ function render(){
   const sortBy=document.getElementById('sortBy').value;
   let items=COURSES.slice();
   const qExpanded=SEARCH_SYNONYMS[q]||'';
+  const qNoSpace=q.replace(/\s+/g,'');
   if(q) items=items.filter(c=>{
-    const blob=(c.title+' '+c.code+' '+c.assess.join(' ')+' '+c.tips.join(' ')+' '+c.grade+' '+c.notes.join(' ')+' '+c.fac+' '+(FAC_LABEL[c.fac]||'')+' '+c.uni+(c.consult?' consultation 諮詢 '+c.consult:'')+(c.free?' free 免費':'')).toLowerCase();
-    return blob.includes(q) || (qExpanded && blob.includes(qExpanded));
+    const blob=(c.title+' '+c.code+' '+c.assess.join(' ')+' '+c.tips.join(' ')+' '+c.grade+' '+c.notes.join(' ')+' '+c.fac+' '+(FAC_LABEL[c.fac]||'')+' '+c.uni+' '+c.prof+(c.consult?' consultation 諮詢 '+c.consult:'')+(c.free?' free 免費':'')).toLowerCase();
+    const codeNoSpace=(c.code||'').toLowerCase().replace(/\s+/g,'');
+    return blob.includes(q) || (qExpanded && blob.includes(qExpanded)) || (qNoSpace && codeNoSpace.includes(qNoSpace));
   });
   if(sortBy==='grade-desc') items.sort((a,b)=>gradeCompare(a,b,false));
   else if(sortBy==='grade-asc') items.sort((a,b)=>gradeCompare(a,b,true));
