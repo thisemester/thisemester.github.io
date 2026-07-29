@@ -427,7 +427,8 @@ function render(){
     const badges=[];
     if(c.free) badges.push('<span class="badge free">FREE NOTE</span>');
     if(c.consult) badges.push(`<a class="badge consult" href="${DM_LINK}" target="_blank" rel="noopener">💬 TUTOR CONSULTATION</a>`);
-    if(!c.free && c.price) badges.push(`<span class="badge price">Notes package: ${esc(c.price)}</span>`);
+    const priceClean=(c.price||'').replace(/^\s*notes\s*package\s*:\s*/i,'').trim();
+    if(!c.free && priceClean) badges.push(`<span class="badge price">Notes package: ${esc(priceClean)}</span>`);
     if(c.uni) badges.push(`<span class="badge uni">${esc(c.uni)}</span>`);
     if(c.isNew) badges.push('<span class="badge new">NEW</span>');
     const btn=c.free
