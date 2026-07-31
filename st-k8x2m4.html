@@ -60,7 +60,7 @@
 
   /* ===== page structure: clean flow, no overlaps ===== */
   .tpl{ width:1080px; height:1350px; display:none; position:relative; overflow:hidden;
-        background:var(--bg); color:var(--ink); padding:96px 170px 56px 110px;
+        background:var(--bg); color:var(--ink); padding:96px 108px 56px 110px;
         flex-direction:column;}
   .tpl.active{ display:flex;}
   .tpl::before{ content:''; position:absolute; inset:0; background:repeating-linear-gradient(to bottom, transparent 0 62px, rgba(var(--ink-rgb), 0.05) 62px 64px); pointer-events:none; z-index:1;}
@@ -78,6 +78,8 @@
   .footer{ display:flex; justify-content:space-between; align-items:center; border-top:2px solid var(--ink); padding-top:30px;}
   .footer .handle{ font-family:var(--mono); font-size:26px; letter-spacing:0.12em; color:var(--sub);}
   .footer .cta{ background:var(--accent); color:var(--bg); font-family:var(--font-body); font-weight:900; font-size:30px; padding:16px 38px; border-radius:10px;}
+  .footer .footL{ display:flex; flex-direction:column; gap:6px;}
+  .footer .tagline{ font-family:var(--font-body); font-weight:700; font-size:20px; color:var(--sub); letter-spacing:0.02em;}
   .hl{ color:var(--accent); font-weight:800; font-style:normal; font-family:inherit;}
 
   /* ---- P1 COVER ---- */
@@ -239,15 +241,16 @@
       <option value="'LXGW WenKai TC',serif">LXGW WenKai</option>
     </select>
     <div class="row"><label style="flex:none;font-weight:700;">文字大小控制 Text size control</label></div>
-    <p class="hint">呢個大小設定係全部 course 通用 — 轉第個 course 唔會變返細。<br>Size settings apply across all courses — switching courses won't reset them.</p>
+    <p class="hint">下面3個掣揀緊拉掣而家改嘅範圍：<br>The 3 options below choose what the sliders affect right now:</p>
     <div class="row" id="scopeRow" style="display:flex; flex-direction:column; gap:6px; align-items:flex-start;">
-      <label style="flex:none;"><input type="radio" name="scaleScope" value="global" onchange="fontCtrl.setScope('global');"> 🌐 全部 4 頁 + 全部 course All 4 pages, all courses</label>
-      <label style="flex:none;" id="scopeLinkedLabel"><input type="radio" name="scaleScope" value="linked" checked onchange="fontCtrl.setScope('linked');"> P2+P3 一齊（呢個 course，淨係喺 P2/P3 頁先可以揀）P2+P3 together (this course, only selectable on P2/P3 tabs)</label>
-      <label style="flex:none;"><input type="radio" name="scaleScope" value="solo" onchange="fontCtrl.setScope('solo');"> 淨係呢頁（呢個 course）Only this page (this course)</label>
+      <label style="flex:none;"><input type="radio" name="scaleScope" value="global" onchange="fontCtrl.setScope('global');"> 🌐 全部 4 頁＋全部 course，永久生效 All 4 pages, all courses — sticks going forward</label>
+      <label style="flex:none;" id="scopeLinkedLabel"><input type="radio" name="scaleScope" value="linked" checked onchange="fontCtrl.setScope('linked');"> 📎 P2+P3（只限呢個 course）P2+P3 linked — this course only</label>
+      <label style="flex:none;"><input type="radio" name="scaleScope" value="solo" onchange="fontCtrl.setScope('solo');"> 📄 淨係呢頁（只限呢個 course）This page only — this course only</label>
     </div>
     <label>標題大小 Title size</label><input type="range" id="s_head" min="60" max="180" value="100" oninput="fontCtrl.setHead(this.value)"><span class="val" id="v_head">100%</span>
     <label>內文大小 Body size</label><input type="range" id="s_body" min="60" max="180" value="100" oninput="fontCtrl.setBody(this.value)"><span class="val" id="v_body">100%</span>
-    <button class="dl-btn" onclick="applyToAllPages()" style="margin-top:8px;">📐 一鍵套用而家嘅大小去全部 4 頁 + 全部 course Apply current size to all 4 pages/all courses now</button>
+    <p class="hint" style="margin-top:10px;">呢個掣同上面3個掣唔同：唔理揀咗邊個範圍，撳低就即刻將而家嘅大細一次過派去全部4頁＋全部course。<br>This button is separate from the 3 options above — whatever scope is selected, pressing it broadcasts the current size to all 4 pages and all courses right now.</p>
+    <button class="dl-btn" onclick="applyToAllPages()" style="margin-top:0;">📐 一鍵派去全部頁＋全部 course Broadcast now</button>
   </details>
 
   <div class="tabs">
@@ -281,9 +284,9 @@ Criminal Litigation & Advocacy</textarea>
       <input type="file" id="p1_photo_file" accept="image/*" onchange="onPhoto('1', this)">
     </div>
     <div class="row"><label>去背 tolerance</label><input type="range" id="p1_tol" min="10" max="180" value="60" oninput="reprocess('1')"><span class="val" id="p1_tolv">60</span></div>
-    <div class="row"><label style="flex:none">套用去背</label><input type="checkbox" id="p1_bgon" checked onchange="reprocess('1')"></div>
+    <div class="row"><label style="flex:none">套用去背（只適合單一主體相，成頁背景相唔好剔）</label><input type="checkbox" id="p1_bgon" onchange="reprocess('1')"></div>
     <div class="row"><label>背景淡化</label><input type="range" id="p1_dim" min="0" max="80" value="35" oninput="setDim('1')"><span class="val" id="p1_dimv">35%</span></div>
-    <div class="row"><label>相片色調 Tint</label><input type="color" id="p1_tint" value="#D9381E" oninput="reprocess('1')"></div>
+    <div class="row"><label>相片色調 Tint</label><input type="color" id="p1_tint" value="#D9381E" oninput="tintColorChanged('1')" onchange="tintColorChanged('1')"></div>
     <div class="row"><label>Tint 強度</label><input type="range" id="p1_tints" min="0" max="100" value="0" oninput="reprocess('1')"><span class="val" id="p1_tintsv">0%</span></div>
     <button class="del-btn" onclick="removePhoto('1')">🗑 移除背景相片</button>
     <p class="hint">去背後主體會浮喺頁面上；「背景淡化」可以較相片透明度，等文字睇得清。</p>
@@ -309,9 +312,9 @@ Criminal Litigation & Advocacy</textarea>
       <input type="file" id="p2_photo_file" accept="image/*" onchange="onPhoto('2', this)">
     </div>
     <div class="row"><label>去背 tolerance</label><input type="range" id="p2_tol" min="10" max="180" value="60" oninput="reprocess('2')"><span class="val" id="p2_tolv">60</span></div>
-    <div class="row"><label style="flex:none">套用去背</label><input type="checkbox" id="p2_bgon" checked onchange="reprocess('2')"></div>
+    <div class="row"><label style="flex:none">套用去背（只適合單一主體相，成頁背景相唔好剔）</label><input type="checkbox" id="p2_bgon" onchange="reprocess('2')"></div>
     <div class="row"><label>背景淡化</label><input type="range" id="p2_dim" min="0" max="80" value="35" oninput="setDim('2')"><span class="val" id="p2_dimv">35%</span></div>
-    <div class="row"><label>相片色調 Tint</label><input type="color" id="p2_tint" value="#D9381E" oninput="reprocess('2')"></div>
+    <div class="row"><label>相片色調 Tint</label><input type="color" id="p2_tint" value="#D9381E" oninput="tintColorChanged('2')" onchange="tintColorChanged('2')"></div>
     <div class="row"><label>Tint 強度</label><input type="range" id="p2_tints" min="0" max="100" value="0" oninput="reprocess('2')"><span class="val" id="p2_tintsv">0%</span></div>
     <button class="del-btn" onclick="removePhoto('2')">🗑 移除背景相片</button>
     <button class="dl-btn" onclick="download('tplP2','p2-catalogue')">⬇ PNG · Page 2</button>
@@ -350,12 +353,13 @@ Assessments scripts/notes x2</textarea>
     <p class="hint">Notes screenshot 通常唔使去背，預設關閉。</p>
 
     <label style="flex:none;font-weight:700;">Why this source — 剔咗先會顯示；用【字】highlight 關鍵字</label>
-    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp1" checked onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp1_txt" style="min-height:44px;flex:1;" oninput="renderP3()">【Comprehensive】 and neatly organised exam notes and templates for better preparation and easy reference</textarea></label>
-    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp2" checked onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp2_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Focused on 【exam-tested content】; written by a top-scoring senior student</textarea></label>
-    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp3" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp3_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Cross-checked against past paper patterns and marking schemes, saving you 【hours of re-organising】</textarea></label>
+    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp1" checked onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp1_txt" style="min-height:44px;flex:1;" oninput="renderP3()">【Comprehensive】 and neatly organised notes and templates for better preparation and easy reference</textarea></label>
+    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp2" checked onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp2_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Focused on 【exam-tested content】; formatted for quick review before the exam; written by a top-scoring senior student</textarea></label>
+    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp3" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp3_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Cross-checked against exam patterns and marking schemes, saving you 【hours of re-organising】</textarea></label>
     <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp4" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp4_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Track record of past buyers scoring 【A/A-】 with this set</textarea></label>
-    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp5" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp5_txt" style="min-height:44px;flex:1;" oninput="renderP3()">【After-sale support】 — ask follow-up questions regarding the notes and course</textarea></label>
+    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp5" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp5_txt" style="min-height:44px;flex:1;" oninput="renderP3()">【After-sale support】 — ask follow-up questions regarding the notes and course, and engage the tutor</textarea></label>
     <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp6" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp6_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Ready-made 【templates】 so you can just fill in and go; formatted for quick review before the exam</textarea></label>
+    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p5_sp7" onchange="renderP3()" style="margin-top:10px;"><textarea id="p5_sp7_txt" style="min-height:44px;flex:1;" oninput="renderP3()">Comes with a 【full sample essay】 for reference, so you can see exactly what a top-scoring answer looks like</textarea></label>
     <label>其他 Your own point（可留空）</label>
     <textarea id="p5_why_extra" style="min-height:44px" oninput="renderP3()"></textarea>
     <label>Consultation（可留空 = 唔顯示）</label>
@@ -394,11 +398,10 @@ Consultation covers 【exam preparation, course tips】. We can also answer 【u
 Can I see a sample before I buy?
 Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
     <label>About Us（可留空 = 唔顯示）</label>
-    <textarea id="p4_about" style="min-height:70px" oninput="renderP4()">A good reference helps you 【truly learn】. We constantly update information that help you survive this semester. We have 【student-written study notes】 and consultation available. Sometimes we share 【past-year notes】 for free.</textarea>
+    <textarea id="p4_about" style="min-height:70px" oninput="renderP4()">We constantly update information that helps you 【thrive】 in this semester. We have 【student-written study notes】 and consultation available. A good reference helps you 【truly learn】. Sometimes we share 【past-year notes】 for free.</textarea>
     <label style="flex:none;font-weight:700;">Reminders — 剔咗先會顯示</label>
     <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p4_rem1" checked onchange="renderP4()"><textarea id="p4_rem1_txt" style="min-height:44px;flex:1;" oninput="renderP4()">Notes are supplementary study material and 【do not guarantee any specific grade】.</textarea></label>
     <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p4_rem2" checked onchange="renderP4()"><textarea id="p4_rem2_txt" style="min-height:44px;flex:1;" oninput="renderP4()">Notes reflect the syllabus and course structure at the time of writing; 【check for updates】.</textarea></label>
-    <label style="display:flex;align-items:flex-start;gap:8px;"><input type="checkbox" id="p4_rem3" checked onchange="renderP4()"><textarea id="p4_rem3_txt" style="min-height:44px;flex:1;" oninput="renderP4()">【No refunds】 once the PDF has been sent, unless the file is faulty or wrong.</textarea></label>
     <button class="dl-btn" onclick="download('tplP4','p4-faq')">⬇ PNG · Page 4</button>
     <button class="dl-all" onclick="downloadAll()">⬇⬇ Download 全部</button>
   </div>
@@ -462,7 +465,7 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
             <div class="dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
             <span class="swipe">SWIPE →</span>
           </div>
-          <div class="footer"><span class="handle">01 · COVER</span><span class="cta" id="w1_cta"></span></div>
+          <div class="footer"><div class="footL"><span class="handle">01 · COVER</span><span class="tagline">今個學期｜This semester, we're here with you</span></div><span class="cta" id="w1_cta"></span></div>
         </div>
       </div>
 
@@ -482,7 +485,7 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
             <div class="dots"><div class="dot"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
             <span class="swipe">SWIPE →</span>
           </div>
-          <div class="footer"><span class="handle">02 · CATALOGUE</span></div>
+          <div class="footer"><span class="handle">02 · CATALOGUE</span><span class="tagline">今個學期｜This semester, we're here with you</span></div>
         </div>
       </div>
 
@@ -515,7 +518,7 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
             <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot on"></div><div class="dot"></div></div>
             <span class="swipe">SWIPE →</span>
           </div>
-          <div class="footer"><span class="handle">03 · DETAILS</span></div>
+          <div class="footer"><span class="handle">03 · DETAILS</span><span class="tagline">今個學期｜This semester, we're here with you</span></div>
         </div>
       </div>
 
@@ -540,7 +543,7 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
             <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div></div>
             <span class="swipe">SWIPE →</span>
           </div>
-          <div class="footer"><span class="handle">04 · FAQ</span></div>
+          <div class="footer"><span class="handle">04 · FAQ</span><span class="tagline">今個學期｜This semester, we're here with you</span></div>
         </div>
       </div>
 
@@ -557,7 +560,7 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
             <div class="dots"></div>
             <span class="swipe">SWIPE →</span>
           </div>
-          <div class="footer"><span class="handle"></span></div>
+          <div class="footer"><span class="handle"></span><span class="tagline">今個學期｜This semester, we're here with you</span></div>
         </div>
       </div>
 
@@ -574,7 +577,7 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
             <div class="dots"></div>
             <span class="swipe">SWIPE →</span>
           </div>
-          <div class="footer"><span class="handle"></span></div>
+          <div class="footer"><span class="handle"></span><span class="tagline">今個學期｜This semester, we're here with you</span></div>
         </div>
       </div>
 
@@ -591,7 +594,7 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
             <div class="dots"></div>
             <span class="swipe">SWIPE →</span>
           </div>
-          <div class="footer"><span class="handle"></span></div>
+          <div class="footer"><span class="handle"></span><span class="tagline">今個學期｜This semester, we're here with you</span></div>
         </div>
       </div>
 
@@ -743,7 +746,7 @@ function renderP3(){
   }
   const wb=document.getElementById('w5_whybox');
   const spLines=[];
-  [['p5_sp1','p5_sp1_txt'],['p5_sp2','p5_sp2_txt'],['p5_sp3','p5_sp3_txt'],['p5_sp4','p5_sp4_txt'],['p5_sp5','p5_sp5_txt'],['p5_sp6','p5_sp6_txt']].forEach(([chk,txt])=>{
+  [['p5_sp1','p5_sp1_txt'],['p5_sp2','p5_sp2_txt'],['p5_sp3','p5_sp3_txt'],['p5_sp4','p5_sp4_txt'],['p5_sp5','p5_sp5_txt'],['p5_sp6','p5_sp6_txt'],['p5_sp7','p5_sp7_txt']].forEach(([chk,txt])=>{
     const chkEl=document.getElementById(chk), txtEl=document.getElementById(txt);
     if(chkEl&&chkEl.checked&&txtEl&&txtEl.value.trim()) spLines.push(txtEl.value.trim());
   });
@@ -766,7 +769,7 @@ function renderP4(){
   w4_about.innerHTML=hl(p4_about.value);
   document.getElementById('w4_aboutbox').style.display=p4_about.value.trim()?'block':'none';
   const remLines=[];
-  [['p4_rem1','p4_rem1_txt'],['p4_rem2','p4_rem2_txt'],['p4_rem3','p4_rem3_txt']].forEach(([chk,txt])=>{
+  [['p4_rem1','p4_rem1_txt'],['p4_rem2','p4_rem2_txt']].forEach(([chk,txt])=>{
     const chkEl=document.getElementById(chk), txtEl=document.getElementById(txt);
     if(chkEl&&chkEl.checked&&txtEl&&txtEl.value.trim()) remLines.push(txtEl.value.trim());
   });
@@ -1007,6 +1010,12 @@ function setDim(page){
   autoSave();
 }
 
+function tintColorChanged(page){
+  const c=ctrl(page);
+  const ts=document.getElementById('p'+c+'_tints');
+  if(ts && parseInt(ts.value,10)===0){ ts.value=30; }
+  reprocess(page);
+}
 function reprocess(page){
   const c=ctrl(page);
   const tolEl=document.getElementById('p'+c+'_tol');
@@ -1240,6 +1249,7 @@ function fillFromCatalog(c){
   if(c.price){ p4_price.value=c.price; filled.push('價錢'); } p4_showprice_chk.checked=false;
   if(c.consult){ p5_consult.value='💬 Consultation available'; filled.push('Consultation'); } else p5_consult.value='';
   p5_showconsult.checked=false;
+  if(p5_sp5) p5_sp5.checked=!!c.consult;
   const tagParts=[];
   if(c.uni) tagParts.push(c.uni);
   if(c.fac) tagParts.push(c.fac);
@@ -1264,15 +1274,15 @@ const CONTENT_IDS=[
   'p2_eyebrow','p2_items','p2_tips','p2_custom',
   'p3_eyebrow','p3_body','p3_samplecount','p3_custom',
   'p4_price','p4_was','p5_consult',
-  'p5_sp1_txt','p5_sp2_txt','p5_sp3_txt','p5_sp4_txt','p5_sp5_txt','p5_sp6_txt','p5_why_extra',
-  'p4_h','p4_en','p4_items','p4_about','p4_rem1_txt','p4_rem2_txt','p4_rem3_txt',
+  'p5_sp1_txt','p5_sp2_txt','p5_sp3_txt','p5_sp4_txt','p5_sp5_txt','p5_sp6_txt','p5_sp7_txt','p5_why_extra',
+  'p4_h','p4_en','p4_items','p4_about','p4_rem1_txt','p4_rem2_txt',
   'px1_h','px1_en','px1_body','px2_h','px2_en','px2_body','px3_h','px3_en','px3_body'
 ];
 const DESIGN_IDS=['c_bg','c_ink','c_sub','c_accent','c_tan'];
 const SELECT_IDS=['logoSel','f_display','f_body'];
 const PHOTO_KEYS=['1','2','5a','5b'];
 const CFG_PAGES=['1','2','5'];
-const CHECK_IDS=['p2_show','p3_show','p4_show','p5_showconsult','p4_showprice_chk','p5_sp1','p5_sp2','p5_sp3','p5_sp4','p5_sp5','p5_sp6','p4_rem1','p4_rem2','p4_rem3','px1_show','px2_show','px3_show'];
+const CHECK_IDS=['p2_show','p3_show','p4_show','p5_showconsult','p4_showprice_chk','p5_sp1','p5_sp2','p5_sp3','p5_sp4','p5_sp5','p5_sp6','p5_sp7','p4_rem1','p4_rem2','px1_show','px2_show','px3_show'];
 
 let ACTIVE='未命名 Untitled';
 let COURSES_STATE={};
@@ -1296,7 +1306,7 @@ function applyContent(slot){
   if(!slot) return;
   CONTENT_IDS.forEach(id=>{ const el=document.getElementById(id); if(el && slot.fields && id in slot.fields) el.value=slot.fields[id]; });
   fontCtrl.loadForActivePage();
-  const uncheckedByDefault=['p4_show','p4_showprice_chk','p5_showconsult','p5_sp3','p5_sp4','p5_sp5','p5_sp6','px1_show','px2_show','px3_show'];
+  const uncheckedByDefault=['p4_show','p4_showprice_chk','p5_showconsult','p5_sp3','p5_sp4','p5_sp5','p5_sp6','p5_sp7','px1_show','px2_show','px3_show'];
   CHECK_IDS.forEach(id=>{ const el=document.getElementById(id); if(el) el.checked=(slot.checks && id in slot.checks)?!!slot.checks[id]:!uncheckedByDefault.includes(id); });
   CFG_PAGES.forEach(pg=>{
     const cfg=slot.photoCfg && slot.photoCfg[pg];
