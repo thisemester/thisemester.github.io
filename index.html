@@ -43,8 +43,8 @@
   .card.soldout{ opacity:0.62;}
   .row1{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
   .code{ font-family:var(--mono); font-weight:700; font-size:19px; color:var(--accent); letter-spacing:0.02em; line-height:1.3;}
-  .code-inline{ font-family:var(--serif); font-weight:900; color:var(--accent);}
-  .tag-grey{ font-family:var(--serif); font-weight:900; color:var(--tan);}
+  .code-inline{ font-family:var(--serif); font-weight:900; color:var(--sub);}
+  .tag-grey{ font-family:var(--serif); font-weight:900; color:var(--sub);}
   .badges{ display:flex; gap:8px; flex-wrap:nowrap; justify-content:flex-end; align-items:center; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none; max-width:100%;}
   .badges::-webkit-scrollbar{ display:none;}
   .badges-foot{ margin-top:12px; margin-bottom:14px;}
@@ -442,7 +442,7 @@ function render(){
       ?`<a class="dm" style="background:var(--ok)" href="${FORM_URL}" target="_blank" rel="noopener">Request free copy</a>`
       :`<a class="dm" href="${DM_LINK}" target="_blank" rel="noopener">DM for more</a>`;
     return `<div class="card ${s}">
-      <div class="name" style="margin:0;">${c.code?`<b class="code-inline" style="${FAC_COLOR[c.fac]?`color:${FAC_COLOR[c.fac]}`:''}">${esc(c.code)}</b>`:''}${c.tag?` <span class="tag-grey">(${esc(c.tag)})</span>`:''}${(c.code||c.tag)?' — ':''}${esc(c.title)}</div>
+      <div class="name" style="margin:0;">${c.code?`<b class="code-inline">${esc(c.code)}</b>`:''}${c.tag?` <span class="tag-grey">(${esc(c.tag)})</span>`:''}${(c.code||c.tag)?' — ':''}${esc(c.title)}</div>
       <div class="metaline">${c.version?`<span>📅 Version: ${esc(c.version)}</span>`:''}${c.grade?`<span>🎓 Grade: ${esc(c.grade)}</span>`:''}</div>
       ${ratingCardHTML(c)}
       ${c.assess.length?(()=>{
