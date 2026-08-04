@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v55</title>
+<title>This Semester — Studio v57</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -85,6 +85,17 @@
   /* ---- P1 COVER ---- */
   #tplP1 .pkg{ align-self:flex-start; font-family:var(--mono); font-size:25px; letter-spacing:0.22em; text-transform:uppercase; background:var(--ink); color:var(--bg); padding:13px 28px;}
   #tplP1 .headline{ font-family:var(--font-display); font-weight:900; line-height:1.22; color:var(--ink); margin-top:52px; white-space:pre-line;}
+  .ratingbox{ margin-top:26px; display:none; gap:0; border:2px solid rgba(var(--ink-rgb), 0.15); border-radius:16px; overflow:hidden;}
+  .ratingbox .rb-grade{ background:#33475B; color:#fff; flex:0 0 220px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; text-align:center;}
+  .ratingbox .rb-grade .rb-label{ font-family:var(--mono); font-size:17px; letter-spacing:0.15em; color:rgba(255,255,255,0.75); text-transform:uppercase;}
+  .ratingbox .rb-grade .rb-num{ font-family:var(--font-display); font-weight:900; font-size:52px; margin:6px 0;}
+  .ratingbox .rb-grade .rb-stars{ color:#F2C14E; font-size:24px; letter-spacing:2px;}
+  .ratingbox .rb-metrics{ flex:1; display:flex; flex-direction:column; justify-content:center; gap:14px; padding:20px 26px; background:rgba(var(--ink-rgb), 0.02);}
+  .ratingbox .rb-row-top{ display:flex; justify-content:space-between; align-items:baseline; font-family:var(--font-body); font-size:21px; color:var(--ink); margin-bottom:6px;}
+  .ratingbox .rb-row-top .rb-val{ font-weight:900; font-size:22px;}
+  .ratingbox .rb-bar{ display:flex; gap:6px;}
+  .ratingbox .rb-seg{ flex:1; height:10px; border-radius:6px; background:rgba(var(--ink-rgb), 0.12);}
+  .ratingbox .rb-seg.on{ background:var(--rb-color, var(--accent));}
   #tplP1 .version{ align-self:flex-start; margin-top:48px; font-family:var(--mono); font-size:29px; color:var(--ink); border:2px solid var(--ink); padding:12px 26px;}
   #tplP1 .teaser{ font-family:var(--font-body); font-size:calc(37px * var(--scale-body) * var(--fit,1)); line-height:1.7; color:var(--sub); margin-top:40px; white-space:pre-line;}
 
@@ -189,7 +200,7 @@
 <body>
 
 <div class="sidebar">
-  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v55</span></h1>
+  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v57</span></h1>
   <p class="sub">4 頁 funnel：Cover → 清單 → 詳情 → 試閱+落單<br>📷 可拖放上載 · 🎨 相片色調 tint · 🗑 一鍵移除相<br>✅ 自動儲存 · 💾 儲存副本</p>
   <div style="display:flex; gap:8px; margin-bottom:12px;">
     <button class="save-btn" onclick="saveHtmlCopy()">💾 儲存 HTML 副本</button>
@@ -253,8 +264,8 @@
 
   <div class="tabs">
     <button class="active" onclick="switchTpl('P1',this)">1 Cover</button>
-    <button onclick="switchTpl('P3',this)">2 筆記+Sample</button>
-    <button onclick="switchTpl('P2',this)">3 評核+Tips</button>
+    <button onclick="switchTpl('P2',this)">2 評核+Tips</button>
+    <button onclick="switchTpl('P3',this)">3 筆記+Sample</button>
     <button onclick="switchTpl('P4',this)">4 FAQ</button>
     <button onclick="switchTpl('P5',this)">5 Extra 1</button>
     <button onclick="switchTpl('P6',this)">6 Extra 2</button>
@@ -270,6 +281,12 @@
 Criminal Litigation & Advocacy</textarea>
     <label>Version 框</label><input type="text" id="p1_ver" value="📍 2025-2026 Version" oninput="renderP1()">
     <label>Grade（可留空，accent 色框）</label><input type="text" id="p1_grade" value="" oninput="renderP1()">
+    <label>⭐ Rating Card（Grade 成績＋Difficulty/Workload/Interesting，自動由 Excel 填）</label>
+    <div class="row"><input type="checkbox" id="p1_showrating" onchange="renderP1()"> 顯示 Rating Card</div>
+    <label>Grade 成績 (0–5)</label><input type="number" id="p1_ratingscore" min="0" max="5" step="0.5" value="" oninput="renderP1()">
+    <label>Difficulty 難度 (0–5)</label><input type="number" id="p1_difficulty" min="0" max="5" step="0.5" value="" oninput="renderP1()">
+    <label>Workload 工作量 (0–5)</label><input type="number" id="p1_workload" min="0" max="5" step="0.5" value="" oninput="renderP1()">
+    <label>Interesting 有趣程度 (0–5)</label><input type="number" id="p1_interesting" min="0" max="5" step="0.5" value="" oninput="renderP1()">
     <label>Faculty / University 標籤（自動由 Excel 填，可手動改）</label><input type="text" id="p1_factag" value="" oninput="renderP1()">
     <label>Free note 標籤（可留空 = 唔顯示）</label><input type="text" id="p1_freetag" value="" oninput="renderP1()">
     <label>Consultation 標籤（可留空 = 唔顯示）</label><input type="text" id="p1_consulttag" value="" oninput="renderP1()">
@@ -457,6 +474,7 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
             <span id="w1_consulttag" style="font-family:var(--mono); font-size:24px; letter-spacing:0.05em; color:var(--accent); font-weight:700; border:2px solid var(--accent); padding:10px 22px; display:none;"></span>
           </div>
           <div class="teaser" id="w1_teaser"></div>
+          <div class="ratingbox" id="w1_ratingbox"></div>
         </div>
         <div class="bottom">
           <div class="dotsline">
@@ -664,6 +682,16 @@ function fitHead(el, text, base){
   el.style.fontSize=`calc(${Math.round(size)}px * var(--scale-head))`;
 }
 
+function starsHTML(score){
+  const filled=Math.max(0,Math.min(5,Math.round(score)));
+  return '★★★★★'.slice(0,filled)+'☆☆☆☆☆'.slice(0,5-filled);
+}
+function ratingBarHTML(score,color){
+  const filled=Math.max(0,Math.min(5,Math.round(score)));
+  let segs='';
+  for(let i=0;i<5;i++){ segs+=`<div class="rb-seg${i<filled?' on':''}"></div>`; }
+  return `<div class="rb-bar" style="--rb-color:${color}">${segs}</div>`;
+}
 function renderP1(){
   w1_pkg.textContent=p1_pkg.value;
   w1_headline.innerHTML=hl(p1_headline.value);
@@ -677,6 +705,22 @@ function renderP1(){
   if(p1_freetag&&w1free){ w1free.textContent=p1_freetag.value; w1free.style.display=p1_freetag.value.trim()?'inline':'none'; }
   if(p1_consulttag&&w1consult){ w1consult.textContent=p1_consulttag.value; w1consult.style.display=p1_consulttag.value.trim()?'inline':'none'; }
   w1_cta.innerHTML=esc(p1_cta.value)+'<span class="chev">»</span>';
+  {
+    const rb=document.getElementById('w1_ratingbox');
+    const g=parseFloat(p1_ratingscore.value), d=parseFloat(p1_difficulty.value), w=parseFloat(p1_workload.value), it=parseFloat(p1_interesting.value);
+    const hasData=!isNaN(g)||!isNaN(d)||!isNaN(w)||!isNaN(it);
+    const showRating=!!(p1_showrating && p1_showrating.checked && hasData);
+    if(rb){
+      rb.style.display=showRating?'flex':'none';
+      if(showRating){
+        const gv=isNaN(g)?0:g, dv=isNaN(d)?0:d, wv=isNaN(w)?0:w, iv=isNaN(it)?0:it;
+        rb.innerHTML=`<div class="rb-grade"><div class="rb-label">GRADE 成績</div><div class="rb-num">${gv.toFixed(1)}</div><div class="rb-stars">${starsHTML(gv)}</div></div><div class="rb-metrics">`+
+          `<div class="rb-row"><div class="rb-row-top"><span>Difficulty 難度</span><span class="rb-val">${dv.toFixed(1)}</span></div>${ratingBarHTML(dv,'#4CAF7A')}</div>`+
+          `<div class="rb-row"><div class="rb-row-top"><span>Workload 工作量</span><span class="rb-val">${wv.toFixed(1)}</span></div>${ratingBarHTML(wv,'#4CAF7A')}</div>`+
+          `<div class="rb-row"><div class="rb-row-top"><span>Interesting 有趣程度</span><span class="rb-val">${iv.toFixed(1)}</span></div>${ratingBarHTML(iv,'#8B7FD6')}</div></div>`;
+      }
+    }
+  }
   autoFitActive();
 }
 function bulletHTML(lines){
@@ -1137,7 +1181,11 @@ function mapRowsToCatalog(rows){
       iConsult=find('consultation','諮詢'),
       iFac=find('faculty','學院'),
       iUni=find('university','uni'),
-      iPrice=find('price');
+      iPrice=find('price'),
+      iRating=find('rating','成績','score'),
+      iDiff=find('difficulty','難度'),
+      iWork=find('workload','工作量'),
+      iInterest=find('interesting','有趣');
   let dataRows;
   if(iTitle>=0){ dataRows=rows.slice(1); }
   else{
@@ -1160,7 +1208,8 @@ function mapRowsToCatalog(rows){
       contents:splitLines(val(r,iNotes)),
       assess:val(r,iAssess), tips:val(r,iTips),
       consult:val(r,iConsult), price, free,
-      fac:val(r,iFac), uni:val(r,iUni)
+      fac:val(r,iFac), uni:val(r,iUni),
+      rating:val(r,iRating), difficulty:val(r,iDiff), workload:val(r,iWork), interesting:val(r,iInterest)
     };
   }).filter(c=>c.code||c.title);
 }
@@ -1245,6 +1294,12 @@ function fillFromCatalog(c){
     filled.push('評核');
   }
   if(c.grade){ p1_grade.value='🎓 '+c.grade; filled.push('Grade'); } else p1_grade.value='';
+  if(p1_ratingscore) p1_ratingscore.value=c.rating||'';
+  if(p1_difficulty) p1_difficulty.value=c.difficulty||'';
+  if(p1_workload) p1_workload.value=c.workload||'';
+  if(p1_interesting) p1_interesting.value=c.interesting||'';
+  if(p1_showrating) p1_showrating.checked=!!(c.rating||c.difficulty||c.workload||c.interesting);
+  if(c.rating||c.difficulty||c.workload||c.interesting) filled.push('Rating');
   if(c.tips){ p2_tips.value=c.tips; filled.push('Tips'); } else p2_tips.value='';
   if(c.price){ p4_price.value=c.price; filled.push('價錢'); } p4_showprice_chk.checked=false;
   if(c.consult){ p5_consult.value='💬 Consultation available'; filled.push('Consultation'); } else p5_consult.value='';
@@ -1271,6 +1326,7 @@ function onCourseSel(v){
 const LS_KEY='thissemester_studio_v7';
 const CONTENT_IDS=[
   'p1_pkg','p1_headline','p1_ver','p1_grade','p1_factag','p1_freetag','p1_consulttag','p1_teaser','p1_cta',
+  'p1_ratingscore','p1_difficulty','p1_workload','p1_interesting',
   'p2_eyebrow','p2_items','p2_tips','p2_custom',
   'p3_eyebrow','p3_body','p3_samplecount','p3_custom',
   'p4_price','p4_was','p5_consult',
@@ -1282,7 +1338,7 @@ const DESIGN_IDS=['c_bg','c_ink','c_sub','c_accent','c_tan'];
 const SELECT_IDS=['logoSel','f_display','f_body'];
 const PHOTO_KEYS=['1','2','5a','5b'];
 const CFG_PAGES=['1','2','5'];
-const CHECK_IDS=['p2_show','p3_show','p4_show','p5_showconsult','p4_showprice_chk','p5_sp1','p5_sp2','p5_sp3','p5_sp4','p5_sp5','p5_sp6','p5_sp7','p4_rem1','p4_rem2','px1_show','px2_show','px3_show'];
+const CHECK_IDS=['p2_show','p3_show','p4_show','p5_showconsult','p4_showprice_chk','p5_sp1','p5_sp2','p5_sp3','p5_sp4','p5_sp5','p5_sp6','p5_sp7','p4_rem1','p4_rem2','px1_show','px2_show','px3_show','p1_showrating'];
 
 let ACTIVE='未命名 Untitled';
 let COURSES_STATE={};
@@ -1306,7 +1362,7 @@ function applyContent(slot){
   if(!slot) return;
   CONTENT_IDS.forEach(id=>{ const el=document.getElementById(id); if(el && slot.fields && id in slot.fields) el.value=slot.fields[id]; });
   fontCtrl.loadForActivePage();
-  const uncheckedByDefault=['p4_show','p4_showprice_chk','p5_showconsult','p5_sp3','p5_sp4','p5_sp5','p5_sp6','p5_sp7','px1_show','px2_show','px3_show'];
+  const uncheckedByDefault=['p4_show','p4_showprice_chk','p5_showconsult','p5_sp3','p5_sp4','p5_sp5','p5_sp6','p5_sp7','px1_show','px2_show','px3_show','p1_showrating'];
   CHECK_IDS.forEach(id=>{ const el=document.getElementById(id); if(el) el.checked=(slot.checks && id in slot.checks)?!!slot.checks[id]:!uncheckedByDefault.includes(id); });
   CFG_PAGES.forEach(pg=>{
     const cfg=slot.photoCfg && slot.photoCfg[pg];
@@ -1358,7 +1414,7 @@ function updatePageVisibility(){
   const map={P2:'p2_show',P3:'p3_show',P4:'p4_show',P5:'px1_show',P6:'px2_show',P7:'px3_show'};
   const tabLabels={P1:'1 Cover',P2:'2 評核+Tips',P3:'3 筆記+Sample',P4:'4 FAQ',P5:'5 Extra 1',P6:'6 Extra 2',P7:'7 Extra 3'};
   document.querySelectorAll('.tabs button').forEach((btn,i)=>{
-    const keys=['P1','P3','P2','P4','P5','P6','P7'];
+    const keys=['P1','P2','P3','P4','P5','P6','P7'];
     const k=keys[i];
     if(!map[k]){ btn.textContent=tabLabels[k]; return; }
     const el=document.getElementById(map[k]);
