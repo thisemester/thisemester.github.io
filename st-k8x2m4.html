@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v61</title>
+<title>This Semester — Studio v62</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -83,7 +83,7 @@
   .hl{ color:var(--accent); font-weight:800; font-style:normal; font-family:inherit;}
   .hl-sep{ color:rgba(var(--ink-rgb), 0.3); margin:0 8px; font-weight:400;}
   .hl-en{ color:var(--sub); font-weight:400;}
-  .hl-en .hl{ color:rgba(var(--accent-rgb), 0.65); font-weight:700;}
+  .hl-en .hl{ color:rgba(var(--accent-rgb), 0.75); font-weight:700;}
 
   /* ---- P1 COVER ---- */
   #tplP1 .pkg{ align-self:flex-start; font-family:var(--mono); font-size:25px; letter-spacing:0.22em; text-transform:uppercase; background:var(--ink); color:var(--bg); padding:13px 28px;}
@@ -109,8 +109,8 @@
   #tplP4 .items{ list-style:none; margin:20px 0 0; padding:0;}
   #tplP4 .items li{ display:block; padding:16px 0; border-bottom:1.5px solid rgba(var(--ink-rgb), 0.3); font-family:var(--font-body); color:var(--ink); line-height:1.45;}
   #tplP4 .items li:last-child{ border-bottom:none;}
-  #tplP4 .items li .q{ font-weight:700; font-size:calc(56px * var(--scale-body) * var(--fit,1)); display:block; margin-bottom:8px;}
-  #tplP4 .items li .a{ font-weight:400; font-size:calc(48px * var(--scale-body) * var(--fit,1)); color:var(--sub); display:block; text-align:justify;}
+  #tplP4 .items li .q{ font-weight:700; font-size:calc(64px * var(--scale-body) * var(--fit,1)); display:block; margin-bottom:8px;}
+  #tplP4 .items li .a{ font-weight:400; font-size:calc(54px * var(--scale-body) * var(--fit,1)); color:var(--sub); display:block; text-align:justify;}
   #tplP2 .num{ font-family:var(--mono); font-weight:600; font-size:30px; color:var(--accent); min-width:60px;}
 
   /* ---- P3 DETAILS ---- */
@@ -192,7 +192,7 @@
 <body>
 
 <div class="sidebar">
-  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v61</span></h1>
+  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v62</span></h1>
   <p class="sub">4 頁 funnel：Cover → 清單 → 詳情 → 試閱+落單<br>📷 可拖放上載 · 🎨 相片色調 tint · 🗑 一鍵移除相<br>✅ 自動儲存 · 💾 儲存副本</p>
   <div style="display:flex; gap:8px; margin-bottom:12px;">
     <button class="save-btn" onclick="saveHtmlCopy()">💾 儲存 HTML 副本</button>
@@ -531,11 +531,11 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
           <ul class="items" id="w4_items"></ul>
           <div id="w4_rembox" style="margin-top:18px; border:2px dashed rgba(var(--ink-rgb), 0.35); border-radius:14px; padding:16px 20px; display:none;">
             <div style="font-family:var(--mono); font-size:23px; letter-spacing:0.18em; color:var(--accent); margin-bottom:8px;">REMINDERS</div>
-            <div id="w4_rem" style="font-family:var(--font-body); font-weight:500; font-size:calc(38px * var(--scale-body) * var(--fit,1)); line-height:1.4; color:var(--sub);"></div>
+            <div id="w4_rem" style="font-family:var(--font-body); font-weight:500; font-size:calc(42px * var(--scale-body) * var(--fit,1)); line-height:1.4; color:var(--sub);"></div>
           </div>
           <div id="w4_aboutbox" style="margin-top:18px; border:2px solid var(--accent); background:rgba(var(--accent-rgb), 0.1); border-radius:14px; padding:16px 20px; display:none;">
             <div style="font-family:var(--mono); font-size:23px; letter-spacing:0.18em; color:var(--accent); margin-bottom:8px;">ABOUT US 關於我們</div>
-            <div id="w4_about" style="font-family:var(--font-body); font-size:calc(42px * var(--scale-body) * var(--fit,1)); line-height:1.5; color:var(--ink); white-space:pre-line; text-align:justify;"></div>
+            <div id="w4_about" style="font-family:var(--font-body); font-size:calc(46px * var(--scale-body) * var(--fit,1)); line-height:1.5; color:var(--ink); white-space:pre-line; text-align:justify;"></div>
           </div>
         </div>
         <div class="bottom">
