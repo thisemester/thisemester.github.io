@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v58</title>
+<title>This Semester — Studio v59</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -60,24 +60,24 @@
 
   /* ===== page structure: clean flow, no overlaps ===== */
   .tpl{ width:1080px; height:1350px; display:none; position:relative; overflow:hidden;
-        background:var(--bg); color:var(--ink); padding:96px 108px 56px 110px;
+        background:var(--bg); color:var(--ink); padding:60px 108px 36px 110px;
         flex-direction:column;}
   .tpl.active{ display:flex;}
   .tpl::before{ content:''; position:absolute; inset:0; background:repeating-linear-gradient(to bottom, transparent 0 62px, rgba(var(--ink-rgb), 0.05) 62px 64px); pointer-events:none; z-index:1;}
   .tpl::after{ content:''; position:absolute; top:0; bottom:0; left:86px; width:3px; background:var(--accent); opacity:0.5; pointer-events:none; z-index:1;}
-  .masthead{ display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid var(--ink); padding-bottom:18px; flex-shrink:0;}
-  .masthead img{ height:52px; width:auto; display:block;}
+  .masthead{ display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid var(--ink); padding-bottom:12px; flex-shrink:0;}
+  .masthead img{ height:42px; width:auto; display:block;}
   .masthead .issue{ font-family:var(--mono); font-size:22px; letter-spacing:0.14em; color:var(--sub); text-transform:uppercase;}
-  .content{ flex:1; min-height:0; display:flex; flex-direction:column; justify-content:flex-start; padding-top:26px; overflow:hidden;}
-  .bottom{ flex-shrink:0; margin-top:36px;}
-  .dotsline{ display:flex; align-items:center; justify-content:space-between; margin-bottom:28px;}
+  .content{ flex:1; min-height:0; display:flex; flex-direction:column; justify-content:flex-start; padding-top:16px; overflow:hidden;}
+  .bottom{ flex-shrink:0; margin-top:18px;}
+  .dotsline{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
   .dotsline .dots{ display:flex; gap:16px;}
   .dotsline .dot{ width:18px; height:18px; border-radius:50%; border:2.5px solid var(--tan);}
   .dotsline .dot.on{ background:var(--accent); border-color:var(--accent);}
   .dotsline .swipe{ font-family:var(--mono); font-size:30px; color:var(--accent); letter-spacing:0.1em;}
-  .footer{ display:flex; justify-content:space-between; align-items:center; border-top:2px solid var(--ink); padding-top:30px; height:118px; box-sizing:border-box;}
+  .footer{ display:flex; justify-content:space-between; align-items:center; border-top:2px solid var(--ink); padding-top:18px; height:88px; box-sizing:border-box;}
   .footer .handle{ font-family:var(--mono); font-size:26px; letter-spacing:0.12em; color:var(--sub);}
-  .footer .cta{ background:var(--accent); color:var(--bg); font-family:var(--font-body); font-weight:900; font-size:30px; padding:16px 38px; border-radius:10px;}
+  .footer .cta{ background:var(--accent); color:var(--bg); font-family:var(--font-body); font-weight:900; font-size:24px; padding:11px 30px; border-radius:10px;}
   .footer .footL{ display:flex; flex-direction:column; gap:6px;}
   .footer .slogan{ font-family:var(--font-body); font-weight:700; font-size:20px; color:var(--sub); letter-spacing:0.02em;}
   .hl{ color:var(--accent); font-weight:800; font-style:normal; font-family:inherit;}
@@ -189,7 +189,7 @@
 <body>
 
 <div class="sidebar">
-  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v58</span></h1>
+  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v59</span></h1>
   <p class="sub">4 頁 funnel：Cover → 清單 → 詳情 → 試閱+落單<br>📷 可拖放上載 · 🎨 相片色調 tint · 🗑 一鍵移除相<br>✅ 自動儲存 · 💾 儲存副本</p>
   <div style="display:flex; gap:8px; margin-bottom:12px;">
     <button class="save-btn" onclick="saveHtmlCopy()">💾 儲存 HTML 副本</button>
