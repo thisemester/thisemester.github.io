@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v51</title>
+<title>This Semester — Studio v55</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -75,11 +75,11 @@
   .dotsline .dot{ width:18px; height:18px; border-radius:50%; border:2.5px solid var(--tan);}
   .dotsline .dot.on{ background:var(--accent); border-color:var(--accent);}
   .dotsline .swipe{ font-family:var(--mono); font-size:30px; color:var(--accent); letter-spacing:0.1em;}
-  .footer{ display:flex; justify-content:space-between; align-items:center; border-top:2px solid var(--ink); padding-top:30px; min-height:76px;}
+  .footer{ display:flex; justify-content:space-between; align-items:center; border-top:2px solid var(--ink); padding-top:30px; height:118px; box-sizing:border-box;}
   .footer .handle{ font-family:var(--mono); font-size:26px; letter-spacing:0.12em; color:var(--sub);}
   .footer .cta{ background:var(--accent); color:var(--bg); font-family:var(--font-body); font-weight:900; font-size:30px; padding:16px 38px; border-radius:10px;}
   .footer .footL{ display:flex; flex-direction:column; gap:6px;}
-  .footer .tagline{ font-family:var(--font-body); font-weight:700; font-size:20px; color:var(--sub); letter-spacing:0.02em;}
+  .footer .slogan{ font-family:var(--font-body); font-weight:700; font-size:20px; color:var(--sub); letter-spacing:0.02em;}
   .hl{ color:var(--accent); font-weight:800; font-style:normal; font-family:inherit;}
 
   /* ---- P1 COVER ---- */
@@ -106,8 +106,8 @@
   #tplP4 .items{ list-style:none; margin:20px 0 0; padding:0;}
   #tplP4 .items li{ display:block; padding:16px 0; border-bottom:1.5px solid rgba(var(--ink-rgb), 0.3); font-family:var(--font-body); color:var(--ink); line-height:1.45;}
   #tplP4 .items li:last-child{ border-bottom:none;}
-  #tplP4 .items li .q{ font-weight:700; font-size:calc(42px * var(--scale-body) * var(--fit,1)); display:block; margin-bottom:8px;}
-  #tplP4 .items li .a{ font-weight:400; font-size:calc(36px * var(--scale-body) * var(--fit,1)); color:var(--sub); display:block; text-align:justify;}
+  #tplP4 .items li .q{ font-weight:700; font-size:calc(48px * var(--scale-body) * var(--fit,1)); display:block; margin-bottom:8px;}
+  #tplP4 .items li .a{ font-weight:400; font-size:calc(42px * var(--scale-body) * var(--fit,1)); color:var(--sub); display:block; text-align:justify;}
   #tplP2 .num{ font-family:var(--mono); font-weight:600; font-size:30px; color:var(--accent); min-width:60px;}
 
   /* ---- P3 DETAILS ---- */
@@ -189,7 +189,7 @@
 <body>
 
 <div class="sidebar">
-  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v51</span></h1>
+  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v55</span></h1>
   <p class="sub">4 頁 funnel：Cover → 清單 → 詳情 → 試閱+落單<br>📷 可拖放上載 · 🎨 相片色調 tint · 🗑 一鍵移除相<br>✅ 自動儲存 · 💾 儲存副本</p>
   <div style="display:flex; gap:8px; margin-bottom:12px;">
     <button class="save-btn" onclick="saveHtmlCopy()">💾 儲存 HTML 副本</button>
@@ -241,7 +241,6 @@
       <option value="'LXGW WenKai TC',serif">LXGW WenKai</option>
     </select>
     <div class="row"><label style="flex:none;font-weight:700;">文字大小控制 Text size control</label></div>
-    <p class="hint">下面3個掣揀緊拉掣而家改嘅範圍：<br>The 3 options below choose what the sliders affect right now:</p>
     <div class="row" id="scopeRow" style="display:flex; flex-direction:column; gap:6px; align-items:flex-start;">
       <label style="flex:none;"><input type="radio" name="scaleScope" value="global" onchange="fontCtrl.setScope('global');"> 🌐 全部 4 頁＋全部 course，永久生效 All 4 pages, all courses — sticks going forward</label>
       <label style="flex:none;" id="scopeLinkedLabel"><input type="radio" name="scaleScope" value="linked" checked onchange="fontCtrl.setScope('linked');"> 📎 P2+P3（只限呢個 course）P2+P3 linked — this course only</label>
@@ -249,8 +248,7 @@
     </div>
     <label>標題大小 Title size</label><input type="range" id="s_head" min="60" max="180" value="100" oninput="fontCtrl.setHead(this.value)"><span class="val" id="v_head">100%</span>
     <label>內文大小 Body size</label><input type="range" id="s_body" min="60" max="180" value="100" oninput="fontCtrl.setBody(this.value)"><span class="val" id="v_body">100%</span>
-    <p class="hint" style="margin-top:10px;">呢個掣同上面3個掣唔同：唔理揀咗邊個範圍，撳低就即刻將而家嘅大細一次過派去全部4頁＋全部course。<br>This button is separate from the 3 options above — whatever scope is selected, pressing it broadcasts the current size to all 4 pages and all courses right now.</p>
-    <button class="dl-btn" onclick="applyToAllPages()" style="margin-top:0;">📐 一鍵派去全部頁＋全部 course Broadcast now</button>
+    <button class="dl-btn" onclick="applyToAllPages()" style="margin-top:8px;">📐 一鍵派去全部頁＋全部 course Broadcast now</button>
   </details>
 
   <div class="tabs">
@@ -465,7 +463,7 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
             <div class="dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
             <span class="swipe">SWIPE →</span>
           </div>
-          <div class="footer"><div class="footL"><span class="handle">01 · COVER</span><span class="tagline">今個學期｜This semester, we're here with you</span></div><span class="cta" id="w1_cta"></span></div>
+          <div class="footer"><div class="footL"><span class="handle">01 · COVER</span><span class="slogan">今個學期｜This semester, we are here with you</span></div><span class="cta" id="w1_cta"></span></div>
         </div>
       </div>
 
@@ -485,7 +483,7 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
             <div class="dots"><div class="dot"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
             <span class="swipe">SWIPE →</span>
           </div>
-          <div class="footer"><div class="footL"><span class="handle">02 · CATALOGUE</span><span class="tagline">今個學期｜This semester, we're here with you</span></div></div>
+          <div class="footer"><div class="footL"><span class="handle">02 · CATALOGUE</span><span class="slogan">今個學期｜This semester, we are here with you</span></div></div>
         </div>
       </div>
 
@@ -517,7 +515,7 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
             <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot on"></div><div class="dot"></div></div>
             <span class="swipe">SWIPE →</span>
           </div>
-          <div class="footer"><div class="footL"><span class="handle">03 · DETAILS</span><span class="tagline">今個學期｜This semester, we're here with you</span></div></div>
+          <div class="footer"><div class="footL"><span class="handle">03 · DETAILS</span><span class="slogan">今個學期｜This semester, we are here with you</span></div></div>
         </div>
       </div>
 
@@ -530,11 +528,11 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
           <ul class="items" id="w4_items"></ul>
           <div id="w4_rembox" style="margin-top:18px; border:2px dashed rgba(var(--ink-rgb), 0.35); border-radius:14px; padding:16px 20px; display:none;">
             <div style="font-family:var(--mono); font-size:23px; letter-spacing:0.18em; color:var(--accent); margin-bottom:8px;">REMINDERS</div>
-            <div id="w4_rem" style="font-family:var(--font-body); font-weight:500; font-size:calc(30px * var(--scale-body) * var(--fit,1)); line-height:1.4; color:var(--sub);"></div>
+            <div id="w4_rem" style="font-family:var(--font-body); font-weight:500; font-size:calc(34px * var(--scale-body) * var(--fit,1)); line-height:1.4; color:var(--sub);"></div>
           </div>
           <div id="w4_aboutbox" style="margin-top:18px; border:2px solid var(--accent); background:rgba(var(--accent-rgb), 0.1); border-radius:14px; padding:16px 20px; display:none;">
             <div style="font-family:var(--mono); font-size:23px; letter-spacing:0.18em; color:var(--accent); margin-bottom:8px;">ABOUT US 關於我們</div>
-            <div id="w4_about" style="font-family:var(--font-body); font-size:calc(34px * var(--scale-body) * var(--fit,1)); line-height:1.5; color:var(--ink); white-space:pre-line; text-align:justify;"></div>
+            <div id="w4_about" style="font-family:var(--font-body); font-size:calc(38px * var(--scale-body) * var(--fit,1)); line-height:1.5; color:var(--ink); white-space:pre-line; text-align:justify;"></div>
           </div>
         </div>
         <div class="bottom">
@@ -542,7 +540,7 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
             <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot on"></div></div>
             <span class="swipe">SWIPE →</span>
           </div>
-          <div class="footer"><div class="footL"><span class="handle">04 · FAQ</span><span class="tagline">今個學期｜This semester, we're here with you</span></div></div>
+          <div class="footer"><div class="footL"><span class="handle">04 · FAQ</span><span class="slogan">今個學期｜This semester, we are here with you</span></div></div>
         </div>
       </div>
 
@@ -559,7 +557,7 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
             <div class="dots"></div>
             <span class="swipe">SWIPE →</span>
           </div>
-          <div class="footer"><div class="footL"><span class="handle"></span><span class="tagline">今個學期｜This semester, we're here with you</span></div></div>
+          <div class="footer"><div class="footL"><span class="handle"></span><span class="slogan">今個學期｜This semester, we are here with you</span></div></div>
         </div>
       </div>
 
@@ -576,7 +574,7 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
             <div class="dots"></div>
             <span class="swipe">SWIPE →</span>
           </div>
-          <div class="footer"><div class="footL"><span class="handle"></span><span class="tagline">今個學期｜This semester, we're here with you</span></div></div>
+          <div class="footer"><div class="footL"><span class="handle"></span><span class="slogan">今個學期｜This semester, we are here with you</span></div></div>
         </div>
       </div>
 
@@ -593,7 +591,7 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
             <div class="dots"></div>
             <span class="swipe">SWIPE →</span>
           </div>
-          <div class="footer"><div class="footL"><span class="handle"></span><span class="tagline">今個學期｜This semester, we're here with you</span></div></div>
+          <div class="footer"><div class="footL"><span class="handle"></span><span class="slogan">今個學期｜This semester, we are here with you</span></div></div>
         </div>
       </div>
 
@@ -902,7 +900,10 @@ function shoot(tplId,name){
   return html2canvas(el,{width:1080,height:1350,scale:1}).then(canvas=>{
     if(!wasActive) el.classList.remove('active');
     const a=document.createElement('a');
-    a.download='thissemester-'+name+'-1080x1350.png';
+    const rawCode=(typeof ACTIVE!=='undefined' && ACTIVE) ? ACTIVE : 'untitled';
+    const safeCode=rawCode.replace(/[^A-Za-z0-9\u4e00-\u9fff]+/g,'').slice(0,24) || 'untitled';
+    const pageNum=(tplId.match(/P(\d)/)||[])[1] || '';
+    a.download='thissemester_'+safeCode+'_p'+pageNum+'.png';
     a.href=canvas.toDataURL('image/png');
     a.click();
   }).catch(err=>{
@@ -925,8 +926,8 @@ async function downloadAll(){
   try{
     await shoot('tplP1','p1-cover');
     const show2=document.getElementById('p2_show'), show3=document.getElementById('p3_show'), show4=document.getElementById('p4_show');
-    if(!show3||show3.checked) await shoot('tplP3','p2-notes-samples');
-    if(!show2||show2.checked) await shoot('tplP2','p3-assessment-tips');
+    if(!show2||show2.checked) await shoot('tplP2','p2-assessment-tips');
+    if(!show3||show3.checked) await shoot('tplP3','p3-notes-samples');
     if(show4&&show4.checked) await shoot('tplP4','p4-faq');
     const show5=document.getElementById('px1_show'), show6=document.getElementById('px2_show'), show7=document.getElementById('px3_show');
     if(show5&&show5.checked) await shoot('tplP5','p5-extra1');
@@ -1338,7 +1339,7 @@ function updatePageVisibility(){
   const show5=document.getElementById('px1_show'), show6=document.getElementById('px2_show'), show7=document.getElementById('px3_show');
   const s2=show2?show2.checked:true, s3=show3?show3.checked:true, s4=show4?show4.checked:false;
   const s5=show5?show5.checked:false, s6=show6?show6.checked:false, s7=show7?show7.checked:false;
-  const visible=['P1']; if(s3) visible.push('P3'); if(s2) visible.push('P2'); if(s4) visible.push('P4');
+  const visible=['P1']; if(s2) visible.push('P2'); if(s3) visible.push('P3'); if(s4) visible.push('P4');
   if(s5) visible.push('P5'); if(s6) visible.push('P6'); if(s7) visible.push('P7');
   const total=visible.length;
   const labels={P1:'', P2:'ASSESSMENT + TIPS', P3:'NOTES + SAMPLES', P4:'FAQ', P5:'EXTRA 1', P6:'EXTRA 2', P7:'EXTRA 3'};
@@ -1355,7 +1356,7 @@ function updatePageVisibility(){
     if(swipeEl) swipeEl.style.visibility=(pos===total-1)?'hidden':'visible';
   });
   const map={P2:'p2_show',P3:'p3_show',P4:'p4_show',P5:'px1_show',P6:'px2_show',P7:'px3_show'};
-  const tabLabels={P1:'1 Cover',P2:'3 評核+Tips',P3:'2 筆記+Sample',P4:'4 FAQ',P5:'5 Extra 1',P6:'6 Extra 2',P7:'7 Extra 3'};
+  const tabLabels={P1:'1 Cover',P2:'2 評核+Tips',P3:'3 筆記+Sample',P4:'4 FAQ',P5:'5 Extra 1',P6:'6 Extra 2',P7:'7 Extra 3'};
   document.querySelectorAll('.tabs button').forEach((btn,i)=>{
     const keys=['P1','P3','P2','P4','P5','P6','P7'];
     const k=keys[i];
