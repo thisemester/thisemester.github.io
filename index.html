@@ -181,6 +181,7 @@ const FORM_URL='https://forms.gle/95hsHoCBsoDWeBg26';
 let COURSES=[];
 
 const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const escSep=s=>esc(String(s||'').replace(/\\(?=\S)/g,'\\ '));
 
 /* minimal CSV parser: handles quoted fields, commas, newlines-in-quotes */
 function parseCSV(text){
@@ -448,16 +449,16 @@ function render(){
       ${c.assess.length?(()=>{
         const noteRe=/^(\*+\s*(as of)?|as of|\(?註[:：]|note:)/i;
         let out=[], buf=[], n=1;
-        const flush=()=>{ if(buf.length){ out.push(`<ol start="${n-buf.length}">${buf.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>`); buf=[]; } };
+        const flush=()=>{ if(buf.length){ out.push(buf.length===1?`<p class="assess-intro">${escSep(buf[0])}</p>`:`<ol start="${n-buf.length}">${buf.map(x=>`<li>${escSep(x)}</li>`).join('')}</ol>`); buf=[]; } };
         c.assess.forEach(line=>{
-          if(noteRe.test(line.trim())){ flush(); out.push(`<p class="assess-intro">${esc(line.replace(/^\*+\s*/,''))}</p>`); }
+          if(noteRe.test(line.trim())){ flush(); out.push(`<p class="assess-intro">${escSep(line.replace(/^\*+\s*/,''))}</p>`); }
           else{ buf.push(line); n++; }
         });
         flush();
         return `<div class="sec"><p class="h">📋 Assessment requirements</p>${out.join('')}</div>`;
       })():''}
-      ${c.tips.length?`<div class="sec"><p class="h">💡 Study tips</p><ol>${c.tips.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div>`:''}
-      ${c.notes.length?`<div class="sec"><p class="h">📝 Notes included</p><ul class="notes-list">${c.notes.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
+      ${c.tips.length?`<div class="sec"><p class="h">💡 Study tips</p>${c.tips.length===1?`<p class="assess-intro">${escSep(c.tips[0])}</p>`:`<ol>${c.tips.map(x=>`<li>${escSep(x)}</li>`).join('')}</ol>`}</div>`:''}
+      ${c.notes.length?`<div class="sec"><p class="h">📝 Notes included</p>${c.notes.length===1?`<p class="assess-intro">${escSep(c.notes[0])}</p>`:`<ul class="notes-list">${c.notes.map(x=>`<li>${escSep(x)}</li>`).join('')}</ul>`}</div>`:''}
       ${badges.length?`<div class="badges badges-foot">${badges.join('')}</div>`:''}
       <div class="foot">${btn}</div>
     </div>`;
@@ -480,7 +481,7 @@ function matchRatingHeights(){
 
 document.getElementById('q').addEventListener('input', render);
 window.addEventListener('resize', matchRatingHeights);
-document.getElementById('sortBy').addEventListener('change', render);
+document.getElementById('sortBy').addEventListener('change', ()=>{ document.getElementById('q').value=''; render(); });
 load();
 if(document.fonts && document.fonts.ready){
   document.fonts.ready.then(()=>{ try{ matchRatingHeights(); }catch(e){} });
