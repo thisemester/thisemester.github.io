@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v62</title>
+<title>This Semester — Studio v63</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -192,7 +192,7 @@
 <body>
 
 <div class="sidebar">
-  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v62</span></h1>
+  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v63</span></h1>
   <p class="sub">4 頁 funnel：Cover → 清單 → 詳情 → 試閱+落單<br>📷 可拖放上載 · 🎨 相片色調 tint · 🗑 一鍵移除相<br>✅ 自動儲存 · 💾 儲存副本</p>
   <div style="display:flex; gap:8px; margin-bottom:12px;">
     <button class="save-btn" onclick="saveHtmlCopy()">💾 儲存 HTML 副本</button>
@@ -632,12 +632,16 @@ const THEMES=[
   {name:'Cream × Cobalt', bg:'#F2F0EB', ink:'#1B1B1B', sub:'#6E6A5E', accent:'#1D4ED8', tan:'#9AA7C4', logo:'dark'},
   {name:'Cream × Mustard', bg:'#F2F0EB', ink:'#2A2620', sub:'#6E6A5E', accent:'#C98A00', tan:'#B99B5E', logo:'dark'},
   {name:'Navy 學院', bg:'#122A44', ink:'#F4EFE4', sub:'#8FA3BC', accent:'#D8FF3E', tan:'#C9A961', logo:'light'},
+  {name:'Cream × Sage', bg:'#F2F0EB', ink:'#263626', sub:'#6E7A66', accent:'#4E6B4E', tan:'#B99B5E', logo:'dark'},
+  {name:'Cream × Terracotta', bg:'#F2F0EB', ink:'#3A281F', sub:'#8A7264', accent:'#C1613F', tan:'#B99B5E', logo:'dark'},
+  {name:'Cream × Plum', bg:'#F2F0EB', ink:'#2E1F33', sub:'#7A6B7D', accent:'#6B3F6B', tan:'#B99B5E', logo:'dark'},
+  {name:'Charcoal 學院', bg:'#1C1C1C', ink:'#F2F0EB', sub:'#A8A29A', accent:'#E8B84B', tan:'#C9A961', logo:'light'},
 ];
 function applyTheme(t, idx){
   R.setProperty('--bg',t.bg); R.setProperty('--ink',t.ink); R.setProperty('--sub',t.sub);
   R.setProperty('--accent',t.accent); R.setProperty('--tan',t.tan);
-  syncRgbVars();
   c_bg.value=t.bg; c_ink.value=t.ink; c_sub.value=t.sub; c_accent.value=t.accent; c_tan.value=t.tan;
+  syncRgbVars();
   setLogo(t.logo); logoSel.value=t.logo;
   document.querySelectorAll('.theme-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
   autoFitActive();
