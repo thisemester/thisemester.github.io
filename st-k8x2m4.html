@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v77</title>
+<title>This Semester — Studio v78</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -197,7 +197,7 @@
 <body>
 
 <div class="sidebar">
-  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v77</span></h1>
+  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v78</span></h1>
   <p class="sub">4 頁 funnel：Cover → 清單 → 詳情 → 試閱+落單<br>📷 可拖放上載 · 🎨 相片色調 tint · 🗑 一鍵移除相<br>✅ 自動儲存 · 💾 儲存副本</p>
   <div style="display:flex; gap:8px; margin-bottom:12px;">
     <button class="save-btn" onclick="saveHtmlCopy()">💾 儲存 HTML 副本</button>
@@ -1493,7 +1493,7 @@ function updatePageVisibility(){
   });
 }
 function collectDesign(){
-  const g={fields:{},selects:{},checks:{},catPaste:''};
+  const g={fields:{},selects:{},checks:{},catPaste:'',migTipsboxV77:true};
   DESIGN_IDS.forEach(id=>{ const el=document.getElementById(id); if(el) g.fields[id]=el.value; });
   SELECT_IDS.forEach(id=>{ const el=document.getElementById(id); if(el) g.selects[id]=el.value; });
   GLOBAL_CHECK_IDS.forEach(id=>{ const el=document.getElementById(id); if(el) g.checks[id]=el.checked; });
@@ -1622,6 +1622,10 @@ const DEFAULT_CONTENT=collectContent();
   if(st){
     if(st.v===2){
       applyDesign(st.global);
+      if(!st.global || !st.global.migTipsboxV77){
+        const tb=document.getElementById('px1_tipsbox');
+        if(tb) tb.checked=true;
+      }
       COURSES_STATE=st.courses||{};
       const OLD_TITLES=['筆記樣本\n【Notes Sample】','筆記樣本 Notes Sample','Notes【真實試閱】\nSample Pages & How to Order','Notes【真實試閱】+ 落單方法'];
       const OLD_CTAS=['DM 攞完整版 · Get Full Version 💬','DM 攞完整版 💬','DM 落單 · DM TO ORDER 💬','DM to order','DM TO ORDER 💬'];
