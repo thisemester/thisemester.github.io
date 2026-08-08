@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v76</title>
+<title>This Semester — Studio v77</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -197,7 +197,7 @@
 <body>
 
 <div class="sidebar">
-  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v76</span></h1>
+  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v77</span></h1>
   <p class="sub">4 頁 funnel：Cover → 清單 → 詳情 → 試閱+落單<br>📷 可拖放上載 · 🎨 相片色調 tint · 🗑 一鍵移除相<br>✅ 自動儲存 · 💾 儲存副本</p>
   <div style="display:flex; gap:8px; margin-bottom:12px;">
     <button class="save-btn" onclick="saveHtmlCopy()">💾 儲存 HTML 副本</button>
@@ -417,7 +417,7 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
     <div class="row" style="margin-bottom:10px;"><label style="flex:none;font-weight:700;">☑️ 顯示呢頁 Show this page</label><input type="checkbox" id="px1_show" onchange="onPageShowToggle('P5')"></div>
     <div class="row"><label style="flex:none;">📌 擺喺 Tips 頁之後（做第二頁 Tips）Place right after Tips page</label><input type="checkbox" id="px1_after2" checked onchange="onPageShowToggle('P5')"></div>
     <label>Footer 標籤（留空＝乜都唔顯示；想寫先打字，例如 "EXTRA 1"）Footer label (blank = shows nothing; type your own text if you want one, e.g. "EXTRA 1")</label><input type="text" id="px1_label" value="" oninput="onPageShowToggle('P5')">
-    <div class="row"><label style="flex:none;">📦 內容用 box 樣式包住（似 Tips box）Wrap content in a box (like Tips box)</label><input type="checkbox" id="px1_tipsbox" onchange="renderPX(1); autoSave();"></div>
+    <div class="row"><label style="flex:none;">📦 內容用 box 樣式包住（似 Tips box）Wrap content in a box (like Tips box)</label><input type="checkbox" id="px1_tipsbox" checked onchange="renderPX(1); autoSave();"></div>
     <div class="row"><label style="flex:none;">⭐ 顯示 Why This Source 內容（可以自己揀呢頁要邊幾個 reason）Show Why This Source content (choose which reasons appear on this page)</label><input type="checkbox" id="px1_showwhy" onchange="renderPX(1); renderP3(); autoSave();"></div>
     <div style="margin:4px 0 14px 20px; display:flex; flex-direction:column; gap:6px;">
       <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px1_wsp1" checked onchange="renderPX(1); autoSave();" style="margin-top:8px;"><textarea id="px1_wsp1_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(1,1,this.value)"></textarea></label>
