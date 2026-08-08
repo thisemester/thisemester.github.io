@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v74</title>
+<title>This Semester — Studio v75</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -169,7 +169,7 @@
   .sample-grid.enlarged{ min-height:520px; max-height:860px;}
   .extra-body-wrap.boxed{ border:2px solid var(--tan); background:rgba(var(--tan-rgb), 0.12); border-radius:14px; padding:32px 36px; margin-top:10px;}
   #tplP5 .whybox, #tplP6 .whybox, #tplP7 .whybox{ margin-top:24px;}
-  #tplP5 .whybox .wt, #tplP6 .whybox .wt, #tplP7 .whybox .wt{ font-family:var(--mono); font-size:calc(72px * var(--scale-head) * var(--fit,1)); letter-spacing:0.08em; color:var(--ink); font-weight:700;}
+  #tplP5 .whybox .wt, #tplP6 .whybox .wt, #tplP7 .whybox .wt{ font-family:var(--mono); font-size:calc(90px * var(--scale-head) * var(--fit,1)); letter-spacing:0.04em; color:var(--ink); font-weight:700;}
   #tplP5 .whybox .wb, #tplP6 .whybox .wb, #tplP7 .whybox .wb{ font-family:var(--font-body); font-weight:500; font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.5; color:var(--ink); margin-top:10px;}
   .sample-frame{ border:2px solid rgba(var(--ink-rgb), 0.3); border-radius:20px; overflow:hidden; background:rgba(var(--ink-rgb), 0.04); display:flex; align-items:center; justify-content:center; height:100%;}
   #tplP3 .orderbox{ margin-top:14px; border-top:2px solid var(--ink); padding-top:20px; flex:0 0 auto;}
@@ -197,7 +197,7 @@
 <body>
 
 <div class="sidebar">
-  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v74</span></h1>
+  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v75</span></h1>
   <p class="sub">4 頁 funnel：Cover → 清單 → 詳情 → 試閱+落單<br>📷 可拖放上載 · 🎨 相片色調 tint · 🗑 一鍵移除相<br>✅ 自動儲存 · 💾 儲存副本</p>
   <div style="display:flex; gap:8px; margin-bottom:12px;">
     <button class="save-btn" onclick="saveHtmlCopy()">💾 儲存 HTML 副本</button>
@@ -419,14 +419,14 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
     <label>Footer 標籤（留空＝乜都唔顯示；想寫先打字，例如 "EXTRA 1"）Footer label (blank = shows nothing; type your own text if you want one, e.g. "EXTRA 1")</label><input type="text" id="px1_label" value="" oninput="onPageShowToggle('P5')">
     <div class="row"><label style="flex:none;">📦 內容用 box 樣式包住（似 Tips box）Wrap content in a box (like Tips box)</label><input type="checkbox" id="px1_tipsbox" onchange="renderPX(1)"></div>
     <div class="row"><label style="flex:none;">⭐ 顯示 Why This Source 內容（可以自己揀呢頁要邊幾個 reason）Show Why This Source content (choose which reasons appear on this page)</label><input type="checkbox" id="px1_showwhy" onchange="renderPX(1); renderP3();"></div>
-    <div style="margin:4px 0 14px 20px; display:flex; flex-direction:column; gap:5px;">
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px1_wsp1" checked onchange="renderPX(1)"> Comprehensive &amp; organised notes</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px1_wsp2" checked onchange="renderPX(1)"> Exam-tested content</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px1_wsp3" checked onchange="renderPX(1)"> Cross-checked against exam patterns</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px1_wsp4" checked onchange="renderPX(1)"> Track record of A/A- buyers</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px1_wsp5" checked onchange="renderPX(1)"> After-sale support + tutor</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px1_wsp6" checked onchange="renderPX(1)"> Ready-made templates</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px1_wsp7" checked onchange="renderPX(1)"> Full sample essay</label>
+    <div style="margin:4px 0 14px 20px; display:flex; flex-direction:column; gap:6px;">
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px1_wsp1" checked onchange="renderPX(1)" style="margin-top:8px;"><textarea id="px1_wsp1_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(1,1,this.value)"></textarea></label>
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px1_wsp2" checked onchange="renderPX(1)" style="margin-top:8px;"><textarea id="px1_wsp2_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(1,2,this.value)"></textarea></label>
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px1_wsp3" checked onchange="renderPX(1)" style="margin-top:8px;"><textarea id="px1_wsp3_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(1,3,this.value)"></textarea></label>
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px1_wsp4" checked onchange="renderPX(1)" style="margin-top:8px;"><textarea id="px1_wsp4_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(1,4,this.value)"></textarea></label>
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px1_wsp5" checked onchange="renderPX(1)" style="margin-top:8px;"><textarea id="px1_wsp5_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(1,5,this.value)"></textarea></label>
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px1_wsp6" checked onchange="renderPX(1)" style="margin-top:8px;"><textarea id="px1_wsp6_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(1,6,this.value)"></textarea></label>
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px1_wsp7" checked onchange="renderPX(1)" style="margin-top:8px;"><textarea id="px1_wsp7_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(1,7,this.value)"></textarea></label>
     </div>
     <label>標題（中文）</label><input type="text" id="px1_h" value="" oninput="renderPX(1)">
     <label>標題（英文小字）</label><input type="text" id="px1_en" value="" oninput="renderPX(1)">
@@ -438,18 +438,18 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
 
   <div class="editor-panel" id="editP6">
     <div class="row" style="margin-bottom:10px;"><label style="flex:none;font-weight:700;">☑️ 顯示呢頁 Show this page</label><input type="checkbox" id="px2_show" checked onchange="onPageShowToggle('P6')"></div>
-    <div class="row"><label style="flex:none;">📌 擺喺 Tips 頁之後（做第二頁 Tips）Place right after Tips page</label><input type="checkbox" id="px2_after2" checked onchange="onPageShowToggle('P6')"></div>
+    <div class="row"><label style="flex:none;">📌 擺喺 筆記+Sample 頁之後 Place right after the Notes+Samples page</label><input type="checkbox" id="px2_after2" checked onchange="onPageShowToggle('P6')"></div>
     <label>Footer 標籤（留空＝乜都唔顯示；想寫先打字，例如 "EXTRA 2"）Footer label (blank = shows nothing; type your own text if you want one, e.g. "EXTRA 2")</label><input type="text" id="px2_label" value="" oninput="onPageShowToggle('P6')">
     <div class="row"><label style="flex:none;">📦 內容用 box 樣式包住（似 Tips box）Wrap content in a box (like Tips box)</label><input type="checkbox" id="px2_tipsbox" onchange="renderPX(2)"></div>
     <div class="row"><label style="flex:none;">⭐ 顯示 Why This Source 內容（可以自己揀呢頁要邊幾個 reason）Show Why This Source content (choose which reasons appear on this page)</label><input type="checkbox" id="px2_showwhy" checked onchange="renderPX(2); renderP3();"></div>
-    <div style="margin:4px 0 14px 20px; display:flex; flex-direction:column; gap:5px;">
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px2_wsp1" checked onchange="renderPX(2)"> Comprehensive &amp; organised notes</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px2_wsp2" checked onchange="renderPX(2)"> Exam-tested content</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px2_wsp3" checked onchange="renderPX(2)"> Cross-checked against exam patterns</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px2_wsp4" checked onchange="renderPX(2)"> Track record of A/A- buyers</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px2_wsp5" checked onchange="renderPX(2)"> After-sale support + tutor</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px2_wsp6" checked onchange="renderPX(2)"> Ready-made templates</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px2_wsp7" checked onchange="renderPX(2)"> Full sample essay</label>
+    <div style="margin:4px 0 14px 20px; display:flex; flex-direction:column; gap:6px;">
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px2_wsp1" checked onchange="renderPX(2)" style="margin-top:8px;"><textarea id="px2_wsp1_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(2,1,this.value)"></textarea></label>
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px2_wsp2" checked onchange="renderPX(2)" style="margin-top:8px;"><textarea id="px2_wsp2_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(2,2,this.value)"></textarea></label>
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px2_wsp3" checked onchange="renderPX(2)" style="margin-top:8px;"><textarea id="px2_wsp3_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(2,3,this.value)"></textarea></label>
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px2_wsp4" checked onchange="renderPX(2)" style="margin-top:8px;"><textarea id="px2_wsp4_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(2,4,this.value)"></textarea></label>
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px2_wsp5" checked onchange="renderPX(2)" style="margin-top:8px;"><textarea id="px2_wsp5_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(2,5,this.value)"></textarea></label>
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px2_wsp6" checked onchange="renderPX(2)" style="margin-top:8px;"><textarea id="px2_wsp6_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(2,6,this.value)"></textarea></label>
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px2_wsp7" checked onchange="renderPX(2)" style="margin-top:8px;"><textarea id="px2_wsp7_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(2,7,this.value)"></textarea></label>
     </div>
     <label>標題（中文）</label><input type="text" id="px2_h" value="" oninput="renderPX(2)">
     <label>標題（英文小字）</label><input type="text" id="px2_en" value="" oninput="renderPX(2)">
@@ -465,14 +465,14 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
     <label>Footer 標籤（留空＝乜都唔顯示；想寫先打字，例如 "EXTRA 3"）Footer label (blank = shows nothing; type your own text if you want one, e.g. "EXTRA 3")</label><input type="text" id="px3_label" value="" oninput="onPageShowToggle('P7')">
     <div class="row"><label style="flex:none;">📦 內容用 box 樣式包住（似 Tips box）Wrap content in a box (like Tips box)</label><input type="checkbox" id="px3_tipsbox" onchange="renderPX(3)"></div>
     <div class="row"><label style="flex:none;">⭐ 顯示 Why This Source 內容（可以自己揀呢頁要邊幾個 reason）Show Why This Source content (choose which reasons appear on this page)</label><input type="checkbox" id="px3_showwhy" onchange="renderPX(3); renderP3();"></div>
-    <div style="margin:4px 0 14px 20px; display:flex; flex-direction:column; gap:5px;">
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px3_wsp1" checked onchange="renderPX(3)"> Comprehensive &amp; organised notes</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px3_wsp2" checked onchange="renderPX(3)"> Exam-tested content</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px3_wsp3" checked onchange="renderPX(3)"> Cross-checked against exam patterns</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px3_wsp4" checked onchange="renderPX(3)"> Track record of A/A- buyers</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px3_wsp5" checked onchange="renderPX(3)"> After-sale support + tutor</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px3_wsp6" checked onchange="renderPX(3)"> Ready-made templates</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;"><input type="checkbox" id="px3_wsp7" checked onchange="renderPX(3)"> Full sample essay</label>
+    <div style="margin:4px 0 14px 20px; display:flex; flex-direction:column; gap:6px;">
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px3_wsp1" checked onchange="renderPX(3)" style="margin-top:8px;"><textarea id="px3_wsp1_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(3,1,this.value)"></textarea></label>
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px3_wsp2" checked onchange="renderPX(3)" style="margin-top:8px;"><textarea id="px3_wsp2_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(3,2,this.value)"></textarea></label>
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px3_wsp3" checked onchange="renderPX(3)" style="margin-top:8px;"><textarea id="px3_wsp3_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(3,3,this.value)"></textarea></label>
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px3_wsp4" checked onchange="renderPX(3)" style="margin-top:8px;"><textarea id="px3_wsp4_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(3,4,this.value)"></textarea></label>
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px3_wsp5" checked onchange="renderPX(3)" style="margin-top:8px;"><textarea id="px3_wsp5_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(3,5,this.value)"></textarea></label>
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px3_wsp6" checked onchange="renderPX(3)" style="margin-top:8px;"><textarea id="px3_wsp6_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(3,6,this.value)"></textarea></label>
+      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px3_wsp7" checked onchange="renderPX(3)" style="margin-top:8px;"><textarea id="px3_wsp7_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(3,7,this.value)"></textarea></label>
     </div>
     <label>標題（中文）</label><input type="text" id="px3_h" value="" oninput="renderPX(3)">
     <label>標題（英文小字）</label><input type="text" id="px3_en" value="" oninput="renderPX(3)">
@@ -850,6 +850,12 @@ function renderP4(){
   document.getElementById('w4_rembox').style.display=remLines.length?'block':'none';
   autoFitActive();
 }
+function syncWhyText(n,i,val){
+  const src=document.getElementById('p5_sp'+i+'_txt');
+  if(src) src.value=val;
+  renderP3();
+  renderPX(n);
+}
 function renderPX(n){
   const pageId='P'+(4+n);
   const h=document.getElementById('px'+n+'_h'), en=document.getElementById('px'+n+'_en'), body=document.getElementById('px'+n+'_body');
@@ -864,6 +870,11 @@ function renderPX(n){
   const whyBox=document.getElementById('wx'+n+'_whybox'), whyEl=document.getElementById('wx'+n+'_why');
   const showWhy=!!(showwhyEl&&showwhyEl.checked);
   if(whyBox) whyBox.style.display=showWhy?'block':'none';
+  for(let i=1;i<=7;i++){
+    const src=document.getElementById('p5_sp'+i+'_txt');
+    const mirror=document.getElementById('px'+n+'_wsp'+i+'_txt');
+    if(src && mirror && document.activeElement!==mirror) mirror.value=src.value;
+  }
   if(showWhy && whyEl) whyEl.innerHTML=bulletHTML(collectWhySpLines('px'+n+'_wsp'));
   if(fontCtrl.scope==='global'){ ['tplP1','tplP2','tplP3','tplP4','tplP5','tplP6','tplP7'].forEach(id=>autoFit(id)); }
   else if(ACTIVE_PAGE===pageId){ autoFitActive(); }
@@ -1436,9 +1447,9 @@ function computeVisibleOrder(){
   const visible=['P1'];
   if(s2) visible.push('P2');
   if(s5 && a5) visible.push('P5');
-  if(s6 && a6) visible.push('P6');
   if(s7 && a7) visible.push('P7');
   if(s3) visible.push('P3');
+  if(s6 && a6) visible.push('P6');
   if(s5 && !a5) visible.push('P5');
   if(s6 && !a6) visible.push('P6');
   if(s7 && !a7) visible.push('P7');
