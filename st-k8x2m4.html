@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v71</title>
+<title>This Semester — Studio v72</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -169,7 +169,7 @@
   .sample-grid.enlarged{ min-height:520px; max-height:860px;}
   .extra-body-wrap.boxed{ border:2px solid var(--tan); background:rgba(var(--tan-rgb), 0.12); border-radius:14px; padding:32px 36px; margin-top:10px;}
   #tplP5 .whybox, #tplP6 .whybox, #tplP7 .whybox{ margin-top:24px;}
-  #tplP5 .whybox .wt, #tplP6 .whybox .wt, #tplP7 .whybox .wt{ font-family:var(--mono); font-size:calc(38px * var(--scale-head) * var(--fit,1)); letter-spacing:0.14em; color:var(--accent); font-weight:700;}
+  #tplP5 .whybox .wt, #tplP6 .whybox .wt, #tplP7 .whybox .wt{ font-family:var(--mono); font-size:calc(56px * var(--scale-head) * var(--fit,1)); letter-spacing:0.1em; color:var(--accent); font-weight:700;}
   #tplP5 .whybox .wb, #tplP6 .whybox .wb, #tplP7 .whybox .wb{ font-family:var(--font-body); font-weight:500; font-size:calc(40px * var(--scale-body) * var(--fit,1)); line-height:1.5; color:var(--ink); margin-top:10px;}
   .sample-frame{ border:2px solid rgba(var(--ink-rgb), 0.3); border-radius:20px; overflow:hidden; background:rgba(var(--ink-rgb), 0.04); display:flex; align-items:center; justify-content:center; height:100%;}
   #tplP3 .orderbox{ margin-top:14px; border-top:2px solid var(--ink); padding-top:20px; flex:0 0 auto;}
@@ -197,7 +197,7 @@
 <body>
 
 <div class="sidebar">
-  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v71</span></h1>
+  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v72</span></h1>
   <p class="sub">4 頁 funnel：Cover → 清單 → 詳情 → 試閱+落單<br>📷 可拖放上載 · 🎨 相片色調 tint · 🗑 一鍵移除相<br>✅ 自動儲存 · 💾 儲存副本</p>
   <div style="display:flex; gap:8px; margin-bottom:12px;">
     <button class="save-btn" onclick="saveHtmlCopy()">💾 儲存 HTML 副本</button>
@@ -415,7 +415,7 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
 
   <div class="editor-panel" id="editP5">
     <div class="row" style="margin-bottom:10px;"><label style="flex:none;font-weight:700;">☑️ 顯示呢頁 Show this page</label><input type="checkbox" id="px1_show" onchange="onPageShowToggle('P5')"></div>
-    <div class="row"><label style="flex:none;">📌 擺喺 Tips 頁之後（做第二頁 Tips）Place right after Tips page</label><input type="checkbox" id="px1_after2" onchange="onPageShowToggle('P5')"></div>
+    <div class="row"><label style="flex:none;">📌 擺喺 Tips 頁之後（做第二頁 Tips）Place right after Tips page</label><input type="checkbox" id="px1_after2" checked onchange="onPageShowToggle('P5')"></div>
     <label>Footer 標籤（留空＝自動 "EXTRA 1"，擺喺 Tips 之後就預設留空）Footer label (blank = auto "EXTRA 1"; blank by default when placed after Tips)</label><input type="text" id="px1_label" value="" oninput="onPageShowToggle('P5')">
     <div class="row"><label style="flex:none;">📦 內容用 box 樣式包住（似 Tips box）Wrap content in a box (like Tips box)</label><input type="checkbox" id="px1_tipsbox" onchange="renderPX(1)"></div>
     <div class="row"><label style="flex:none;">⭐ 顯示 Why This Source 內容（可以自己揀呢頁要邊幾個 reason）Show Why This Source content (choose which reasons appear on this page)</label><input type="checkbox" id="px1_showwhy" onchange="renderPX(1); renderP3();"></div>
@@ -438,7 +438,7 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
 
   <div class="editor-panel" id="editP6">
     <div class="row" style="margin-bottom:10px;"><label style="flex:none;font-weight:700;">☑️ 顯示呢頁 Show this page</label><input type="checkbox" id="px2_show" checked onchange="onPageShowToggle('P6')"></div>
-    <div class="row"><label style="flex:none;">📌 擺喺 Tips 頁之後（做第二頁 Tips）Place right after Tips page</label><input type="checkbox" id="px2_after2" onchange="onPageShowToggle('P6')"></div>
+    <div class="row"><label style="flex:none;">📌 擺喺 Tips 頁之後（做第二頁 Tips）Place right after Tips page</label><input type="checkbox" id="px2_after2" checked onchange="onPageShowToggle('P6')"></div>
     <label>Footer 標籤（留空＝自動 "EXTRA 2"，擺喺 Tips 之後就預設留空）Footer label (blank = auto "EXTRA 2"; blank by default when placed after Tips)</label><input type="text" id="px2_label" value="" oninput="onPageShowToggle('P6')">
     <div class="row"><label style="flex:none;">📦 內容用 box 樣式包住（似 Tips box）Wrap content in a box (like Tips box)</label><input type="checkbox" id="px2_tipsbox" onchange="renderPX(2)"></div>
     <div class="row"><label style="flex:none;">⭐ 顯示 Why This Source 內容（可以自己揀呢頁要邊幾個 reason）Show Why This Source content (choose which reasons appear on this page)</label><input type="checkbox" id="px2_showwhy" checked onchange="renderPX(2); renderP3();"></div>
@@ -1439,10 +1439,10 @@ function computeVisibleOrder(){
   if(s6 && a6) visible.push('P6');
   if(s7 && a7) visible.push('P7');
   if(s3) visible.push('P3');
-  if(s4) visible.push('P4');
   if(s5 && !a5) visible.push('P5');
   if(s6 && !a6) visible.push('P6');
   if(s7 && !a7) visible.push('P7');
+  if(s4) visible.push('P4');
   const isRepurposed=id=>{ const a=document.getElementById(id+'_after2'), w=document.getElementById(id+'_showwhy'); return !!((a&&a.checked)||(w&&w.checked)); };
   const labels={
     P1:'', P2:'ASSESSMENT + TIPS', P3:'NOTES + SAMPLES', P4:'FAQ',
