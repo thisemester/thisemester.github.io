@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v66</title>
+<title>This Semester — Studio v67</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -192,7 +192,7 @@
 <body>
 
 <div class="sidebar">
-  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v66</span></h1>
+  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v67</span></h1>
   <p class="sub">4 頁 funnel：Cover → 清單 → 詳情 → 試閱+落單<br>📷 可拖放上載 · 🎨 相片色調 tint · 🗑 一鍵移除相<br>✅ 自動儲存 · 💾 儲存副本</p>
   <div style="display:flex; gap:8px; margin-bottom:12px;">
     <button class="save-btn" onclick="saveHtmlCopy()">💾 儲存 HTML 副本</button>
@@ -409,6 +409,8 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
 
   <div class="editor-panel" id="editP5">
     <div class="row" style="margin-bottom:10px;"><label style="flex:none;font-weight:700;">☑️ 顯示呢頁 Show this page</label><input type="checkbox" id="px1_show" onchange="onPageShowToggle('P5')"></div>
+    <div class="row"><label style="flex:none;">📌 擺喺 Tips 頁之後（做第二頁 Tips）Place right after Tips page</label><input type="checkbox" id="px1_after2" onchange="onPageShowToggle('P5')"></div>
+    <label>Footer 標籤（留空＝自動 "EXTRA 1"，擺喺 Tips 之後就預設留空）Footer label (blank = auto "EXTRA 1"; blank by default when placed after Tips)</label><input type="text" id="px1_label" value="" oninput="onPageShowToggle('P5')">
     <label>標題（中文）</label><input type="text" id="px1_h" value="" oninput="renderPX(1)">
     <label>標題（英文小字）</label><input type="text" id="px1_en" value="" oninput="renderPX(1)">
     <label>內容（每行一點；用【字】highlight 關鍵字）</label>
@@ -419,6 +421,8 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
 
   <div class="editor-panel" id="editP6">
     <div class="row" style="margin-bottom:10px;"><label style="flex:none;font-weight:700;">☑️ 顯示呢頁 Show this page</label><input type="checkbox" id="px2_show" onchange="onPageShowToggle('P6')"></div>
+    <div class="row"><label style="flex:none;">📌 擺喺 Tips 頁之後（做第二頁 Tips）Place right after Tips page</label><input type="checkbox" id="px2_after2" onchange="onPageShowToggle('P6')"></div>
+    <label>Footer 標籤（留空＝自動 "EXTRA 2"，擺喺 Tips 之後就預設留空）Footer label (blank = auto "EXTRA 2"; blank by default when placed after Tips)</label><input type="text" id="px2_label" value="" oninput="onPageShowToggle('P6')">
     <label>標題（中文）</label><input type="text" id="px2_h" value="" oninput="renderPX(2)">
     <label>標題（英文小字）</label><input type="text" id="px2_en" value="" oninput="renderPX(2)">
     <label>內容（每行一點；用【字】highlight 關鍵字）</label>
@@ -429,6 +433,8 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
 
   <div class="editor-panel" id="editP7">
     <div class="row" style="margin-bottom:10px;"><label style="flex:none;font-weight:700;">☑️ 顯示呢頁 Show this page</label><input type="checkbox" id="px3_show" onchange="onPageShowToggle('P7')"></div>
+    <div class="row"><label style="flex:none;">📌 擺喺 Tips 頁之後（做第二頁 Tips）Place right after Tips page</label><input type="checkbox" id="px3_after2" onchange="onPageShowToggle('P7')"></div>
+    <label>Footer 標籤（留空＝自動 "EXTRA 3"，擺喺 Tips 之後就預設留空）Footer label (blank = auto "EXTRA 3"; blank by default when placed after Tips)</label><input type="text" id="px3_label" value="" oninput="onPageShowToggle('P7')">
     <label>標題（中文）</label><input type="text" id="px3_h" value="" oninput="renderPX(3)">
     <label>標題（英文小字）</label><input type="text" id="px3_en" value="" oninput="renderPX(3)">
     <label>內容（每行一點；用【字】highlight 關鍵字）</label>
@@ -942,16 +948,12 @@ async function downloadAll(){
   const host=document.getElementById('host');
   const prev=host.style.transform;
   host.style.transform='scale(1)';
+  const nameMap={P1:'p1-cover',P2:'p2-assessment-tips',P3:'p3-notes-samples',P4:'p4-faq',P5:'p5-extra1',P6:'p6-extra2',P7:'p7-extra3'};
   try{
-    await shoot('tplP1','p1-cover');
-    const show2=document.getElementById('p2_show'), show3=document.getElementById('p3_show'), show4=document.getElementById('p4_show');
-    if(!show2||show2.checked) await shoot('tplP2','p2-assessment-tips');
-    if(!show3||show3.checked) await shoot('tplP3','p3-notes-samples');
-    if(show4&&show4.checked) await shoot('tplP4','p4-faq');
-    const show5=document.getElementById('px1_show'), show6=document.getElementById('px2_show'), show7=document.getElementById('px3_show');
-    if(show5&&show5.checked) await shoot('tplP5','p5-extra1');
-    if(show6&&show6.checked) await shoot('tplP6','p6-extra2');
-    if(show7&&show7.checked) await shoot('tplP7','p7-extra3');
+    const {visible}=computeVisibleOrder();
+    for(const k of visible){
+      await shoot('tpl'+k, nameMap[k]);
+    }
   }catch(e){}
   host.style.transform=prev;
 }
@@ -1303,13 +1305,13 @@ const CONTENT_IDS=[
   'p4_price','p4_was','p5_consult',
   'p5_sp1_txt','p5_sp2_txt','p5_sp3_txt','p5_sp4_txt','p5_sp5_txt','p5_sp6_txt','p5_sp7_txt','p5_why_extra',
   'p4_h','p4_en','p4_items','p4_about','p4_rem1_txt','p4_rem2_txt',
-  'px1_h','px1_en','px1_body','px2_h','px2_en','px2_body','px3_h','px3_en','px3_body'
+  'px1_h','px1_en','px1_body','px1_label','px2_h','px2_en','px2_body','px2_label','px3_h','px3_en','px3_body','px3_label'
 ];
 const DESIGN_IDS=['c_bg','c_ink','c_sub','c_accent','c_tan'];
 const SELECT_IDS=['logoSel','f_display','f_body'];
 const PHOTO_KEYS=['1','2','5a','5b'];
 const CFG_PAGES=['1','2','5'];
-const CHECK_IDS=['p2_show','p3_show','p4_show','p5_showconsult','p4_showprice_chk','p5_sp1','p5_sp2','p5_sp3','p5_sp4','p5_sp5','p5_sp6','p5_sp7','p4_rem1','p4_rem2','px1_show','px2_show','px3_show'];
+const CHECK_IDS=['p2_show','p3_show','p4_show','p5_showconsult','p4_showprice_chk','p5_sp1','p5_sp2','p5_sp3','p5_sp4','p5_sp5','p5_sp6','p5_sp7','p4_rem1','p4_rem2','px1_show','px2_show','px3_show','px1_after2','px2_after2','px3_after2'];
 
 let ACTIVE='未命名 Untitled';
 let COURSES_STATE={};
@@ -1361,15 +1363,35 @@ function onPageShowToggle(k){
   updatePageVisibility();
   autoSave();
 }
-function updatePageVisibility(){
+function computeVisibleOrder(){
   const show2=document.getElementById('p2_show'), show3=document.getElementById('p3_show'), show4=document.getElementById('p4_show');
   const show5=document.getElementById('px1_show'), show6=document.getElementById('px2_show'), show7=document.getElementById('px3_show');
   const s2=show2?show2.checked:true, s3=show3?show3.checked:true, s4=show4?show4.checked:false;
   const s5=show5?show5.checked:false, s6=show6?show6.checked:false, s7=show7?show7.checked:false;
-  const visible=['P1']; if(s2) visible.push('P2'); if(s3) visible.push('P3'); if(s4) visible.push('P4');
-  if(s5) visible.push('P5'); if(s6) visible.push('P6'); if(s7) visible.push('P7');
+  const after=id=>{ const el=document.getElementById(id); return !!(el && el.checked); };
+  const a5=after('px1_after2'), a6=after('px2_after2'), a7=after('px3_after2');
+  const labelOf=id=>{ const el=document.getElementById(id); return el?el.value.trim():''; };
+  const visible=['P1'];
+  if(s2) visible.push('P2');
+  if(s5 && a5) visible.push('P5');
+  if(s6 && a6) visible.push('P6');
+  if(s7 && a7) visible.push('P7');
+  if(s3) visible.push('P3');
+  if(s4) visible.push('P4');
+  if(s5 && !a5) visible.push('P5');
+  if(s6 && !a6) visible.push('P6');
+  if(s7 && !a7) visible.push('P7');
+  const labels={
+    P1:'', P2:'ASSESSMENT + TIPS', P3:'NOTES + SAMPLES', P4:'FAQ',
+    P5: labelOf('px1_label') || (a5?'':'EXTRA 1'),
+    P6: labelOf('px2_label') || (a6?'':'EXTRA 2'),
+    P7: labelOf('px3_label') || (a7?'':'EXTRA 3')
+  };
+  return {visible, labels, s2,s3,s4,s5,s6,s7};
+}
+function updatePageVisibility(){
+  const {visible, labels}=computeVisibleOrder();
   const total=visible.length;
-  const labels={P1:'', P2:'ASSESSMENT + TIPS', P3:'NOTES + SAMPLES', P4:'FAQ', P5:'EXTRA 1', P6:'EXTRA 2', P7:'EXTRA 3'};
   ['P1','P2','P3','P4','P5','P6','P7'].forEach(k=>{
     const tpl=document.getElementById('tpl'+k);
     if(!tpl) return;
