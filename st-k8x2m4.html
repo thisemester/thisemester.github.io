@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>This Semester — Studio v85</title>
+<title>This Semester — Studio v86</title>
 <script id="saved-state" type="application/json">null</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=LXGW+WenKai+TC&family=Space+Grotesk:wght@500;700&family=Saira+Stencil+One&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -199,7 +199,7 @@
 <body>
 
 <div class="sidebar">
-  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v85</span></h1>
+  <h1>𝑻𝒉𝒊𝒔 𝑺𝒆𝒎𝒆𝒔𝒕𝒆𝒓 <span>Studio v86</span></h1>
   <p class="sub">4 頁 funnel：Cover → 清單 → 詳情 → 試閱+落單<br>📷 可拖放上載 · 🎨 相片色調 tint · 🗑 一鍵移除相<br>✅ 自動儲存 · 💾 儲存副本</p>
   <div style="display:flex; gap:8px; margin-bottom:12px;">
     <button class="save-btn" onclick="saveHtmlCopy()">💾 儲存 HTML 副本</button>
@@ -306,12 +306,13 @@ Criminal Litigation & Advocacy</textarea>
   <div class="editor-panel" id="editP2">
     <div class="row" style="margin-bottom:10px;"><label style="flex:none;font-weight:700;">☑️ 顯示呢頁 Show this page</label><input type="checkbox" id="p2_show" checked onchange="onPageShowToggle('P2')"></div>
     <div class="row" style="margin-bottom:10px;"><label style="flex:none;">📄➡️ Tips 分兩頁 Split Tips onto 2 pages</label><input type="checkbox" id="px1_show_mirror" onchange="document.getElementById('px1_show').checked=this.checked; onPageShowToggle('P5'); renderP2();"></div>
+    <div class="row" style="margin-bottom:10px;"><label style="flex:none;">呢頁（P1）留幾多點 Points to keep on this page</label><input type="number" id="p2_tips_split_n" min="1" max="9" value="1" style="width:60px;" oninput="renderP2()"></div>
     <label>標題（一行，中英夾雜；可用 \ 分隔中英）</label><input type="text" id="p2_eyebrow" value="課程要求 Course requirements" oninput="renderP2()">
     <label>評核要求（每行一項；開頭係 ** 或 as of 或 註： 或 Note: 嘅一行會自動變斜體、唔計數）</label>
     <textarea id="p2_items" style="min-height:170px" oninput="renderP2()">**As of the academic year 2025-26:
 1. Litigation Component (Coursework 18/50)
 2. Advocacy Component (Bail App 15/50)</textarea>
-    <label>Study Tips（可留空 — 顯示喺特別框；每行一項；用【字】highlight 關鍵字；剔咗上面「Tips 太多」會自動淨係擺第1點喺呢頁，其餘全部搬去 Tips 續頁）</label>
+    <label>Study Tips（可留空 — 顯示喺特別框；每行一項；用【字】highlight 關鍵字；剔咗上面「Tips 太多」會照住你揀嘅點數留喺呢頁，其餘搬去 Tips 續頁）</label>
     <textarea id="p2_tips" style="min-height:70px" oninput="renderP2()"></textarea>
     <label>自由發揮 Your own box（可留空 — 顯示喺虛線框）</label>
     <textarea id="p2_custom" style="min-height:70px" oninput="renderP2()"></textarea>
@@ -422,16 +423,6 @@ Yes — check the 【sample pages】 on this post, or DM for more.</textarea>
     <div class="row"><label style="flex:none;">📌 擺喺 Tips 之後 Place after Tips</label><input type="checkbox" id="px1_after2" checked onchange="onPageShowToggle('P5')"></div>
     <label>Footer 標籤（留空＝乜都唔顯示；想寫先打字，例如 "EXTRA 1"）Footer label (blank = shows nothing; type your own text if you want one, e.g. "EXTRA 1")</label><input type="text" id="px1_label" value="" oninput="onPageShowToggle('P5')">
     <div class="row"><label style="flex:none;">📦 用 box 樣式 Box style</label><input type="checkbox" id="px1_tipsbox" checked onchange="renderPX(1); autoSave();"></div>
-    <div class="row"><label style="flex:none;">⭐ 顯示 Why This Source Show Why This Source</label><input type="checkbox" id="px1_showwhy" onchange="renderPX(1); renderP3(); autoSave();"></div>
-    <div style="margin:4px 0 14px 20px; display:flex; flex-direction:column; gap:6px;">
-      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px1_wsp1" checked onchange="renderPX(1); autoSave();" style="margin-top:8px;"><textarea id="px1_wsp1_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(1,1,this.value)"></textarea></label>
-      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px1_wsp2" checked onchange="renderPX(1); autoSave();" style="margin-top:8px;"><textarea id="px1_wsp2_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(1,2,this.value)"></textarea></label>
-      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px1_wsp3" checked onchange="renderPX(1); autoSave();" style="margin-top:8px;"><textarea id="px1_wsp3_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(1,3,this.value)"></textarea></label>
-      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px1_wsp4" checked onchange="renderPX(1); autoSave();" style="margin-top:8px;"><textarea id="px1_wsp4_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(1,4,this.value)"></textarea></label>
-      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px1_wsp5" checked onchange="renderPX(1); autoSave();" style="margin-top:8px;"><textarea id="px1_wsp5_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(1,5,this.value)"></textarea></label>
-      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px1_wsp6" checked onchange="renderPX(1); autoSave();" style="margin-top:8px;"><textarea id="px1_wsp6_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(1,6,this.value)"></textarea></label>
-      <label style="display:flex;align-items:flex-start;gap:6px;"><input type="checkbox" id="px1_wsp7" checked onchange="renderPX(1); autoSave();" style="margin-top:8px;"><textarea id="px1_wsp7_txt" style="min-height:36px;flex:1;font-size:12px;" oninput="syncWhyText(1,7,this.value)"></textarea></label>
-    </div>
     <label>標題（中文）</label><input type="text" id="px1_h" value="" oninput="renderPX(1)">
     <label>標題（英文小字）</label><input type="text" id="px1_en" value="" oninput="renderPX(1)">
     <label>內容（每行一點；用【字】highlight 關鍵字）</label>
@@ -689,10 +680,10 @@ const THEMES=[
   {name:'Cream × Plum', bg:'#F2F0EB', ink:'#2E1F33', sub:'#7A6B7D', accent:'#6B3F6B', tan:'#B99B5E', logo:'dark'},
   {name:'Charcoal 學院', bg:'#1C1C1C', ink:'#F2F0EB', sub:'#A8A29A', accent:'#E8B84B', tan:'#C9A961', logo:'light'},
   {name:'White × Ink', bg:'#FFFFFF', ink:'#1E1E1E', sub:'#6E6A5E', accent:'#2C2C2A', tan:'#B99B5E', logo:'dark'},
-  {name:'Mint × Charcoal', bg:'#C8E0D0', ink:'#1A2A22', sub:'#4C6A5C', accent:'#2C4A3A', tan:'#B99B5E', logo:'dark'},
-  {name:'Warm Grey × Rust', bg:'#EDE6D6', ink:'#332B1E', sub:'#8A7A62', accent:'#8A5A2E', tan:'#B99B5E', logo:'dark'},
-  {name:'Butter × Ink', bg:'#F7EDC8', ink:'#3A2E14', sub:'#8A7A4A', accent:'#8A6A1E', tan:'#B99B5E', logo:'dark'},
-  {name:'Powder Blue × Navy', bg:'#DCE6F0', ink:'#16263D', sub:'#5C7590', accent:'#2C4E7A', tan:'#9AA7C4', logo:'dark'},
+  {name:'Mint × Charcoal', bg:'#CFDCD4', ink:'#1A2A22', sub:'#4C6A5C', accent:'#2C4A3A', tan:'#B99B5E', logo:'dark'},
+  {name:'Warm Grey × Rust', bg:'#EEE9DD', ink:'#332B1E', sub:'#8A7A62', accent:'#8A5A2E', tan:'#B99B5E', logo:'dark'},
+  {name:'Butter × Ink', bg:'#F3EEDA', ink:'#3A2E14', sub:'#8A7A4A', accent:'#8A6A1E', tan:'#B99B5E', logo:'dark'},
+  {name:'Powder Blue × Navy', bg:'#E1E8EF', ink:'#16263D', sub:'#5C7590', accent:'#2C4E7A', tan:'#9AA7C4', logo:'dark'},
 ];
 function applyTheme(t, idx){
   R.setProperty('--bg',t.bg); R.setProperty('--ink',t.ink); R.setProperty('--sub',t.sub);
@@ -785,8 +776,9 @@ function renderP2(){
   document.querySelectorAll('#tplP2 .items li:not(.note-line)').forEach(li=>li.style.fontSize=`calc(40px * var(--scale-body) * var(--fit,1))`);
   const tipsLines=p2_tips.value.split('\n').map(l=>l.trim()).filter(Boolean);
   const splitOn=!!(px1_show && px1_show.checked);
-  const frontTips=splitOn && tipsLines.length>=2 ? tipsLines.slice(0,1) : tipsLines;
-  const backTips=splitOn && tipsLines.length>=2 ? tipsLines.slice(1) : [];
+  const splitN=Math.max(1, parseInt((document.getElementById('p2_tips_split_n')||{}).value,10)||1);
+  const frontTips=splitOn && tipsLines.length>splitN ? tipsLines.slice(0,splitN) : tipsLines;
+  const backTips=splitOn && tipsLines.length>splitN ? tipsLines.slice(splitN) : [];
   w2_tips.innerHTML=bulletHTML(frontTips);
   w2_tipsbox.style.display=frontTips.length?'block':'none';
   if(splitOn){
@@ -1392,7 +1384,7 @@ function onCourseSel(v){
 const LS_KEY='thissemester_studio_v7';
 const CONTENT_IDS=[
   'p1_pkg','p1_headline','p1_ver','p1_grade','p1_factag','p1_freetag','p1_consulttag','p1_teaser','p1_cta',
-  'p2_eyebrow','p2_items','p2_tips','p2_custom',
+  'p2_eyebrow','p2_items','p2_tips','p2_custom','p2_tips_split_n',
   'p3_eyebrow','p3_body','p3_samplecount','p3_custom',
   'p4_price','p4_was','p5_consult',
   'p5_sp1_txt','p5_sp2_txt','p5_sp3_txt','p5_sp4_txt','p5_sp5_txt','p5_sp6_txt','p5_sp7_txt','p5_why_extra',
