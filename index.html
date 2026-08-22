@@ -43,7 +43,7 @@
   .card.soldout{ opacity:0.62;}
   .row1{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
   .code{ font-family:var(--mono); font-weight:700; font-size:19px; color:var(--accent); letter-spacing:0.02em; line-height:1.3;}
-  .code-inline{ font-family:var(--serif); font-weight:900; color:var(--sub);}
+  .code-inline{ font-family:var(--serif); font-weight:900; color:var(--accent);}
   .tag-grey{ font-family:var(--serif); font-weight:900; color:var(--sub);}
   .badges{ display:flex; gap:8px; flex-wrap:nowrap; justify-content:flex-start; align-items:center; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none; max-width:100%;}
   .badges::-webkit-scrollbar{ display:none;}
@@ -54,7 +54,6 @@
   .badge.consult{ background:color-mix(in srgb, var(--accent) 10%, transparent); color:var(--accent); border:1px solid var(--accent); text-decoration:none;}
   .badge.price{ background:color-mix(in srgb, var(--tan) 12%, transparent); color:var(--tan); border:1px solid var(--tan); font-weight:700;}
   .badge.uni{ background:transparent; border:none; color:var(--sub); font-weight:700; letter-spacing:0.1em; padding:5px 6px;}
-  .badge.fac{ font-weight:800;}
   .badge.new{ background:color-mix(in srgb, var(--tan) 14%, transparent); color:var(--tan); font-weight:700; border:1px solid var(--tan);}
   .rating-wrap{ display:flex; align-items:stretch; gap:14px; margin:12px 0 14px;}
   .grade-box{ border-radius:12px; padding:18px 20px; display:flex; flex-direction:column; align-items:center; justify-content:center; min-width:76px; flex:none;}
@@ -450,12 +449,6 @@ function render(){
     const badges=[];
     if(c.free) badges.push('<span class="badge free">FREE NOTE</span>');
     const facKey=(c.fac||'').toLowerCase().trim();
-    const facDisplay=FAC_LABEL[facKey]||c.fac;
-    if(facDisplay){
-      const fc=FAC_COLOR[facKey];
-      const style=fc?`background:${fc.bg};color:${fc.fg};border:none;`:'';
-      badges.push(`<span class="badge fac" style="${style}">${esc(facDisplay)}</span>`);
-    }
     const priceRaw=(c.price||'').replace(/^\s*notes\s*package\s*:\s*/i,'').trim();
     const priceClean=priceRaw && !/[$￥€£]/.test(priceRaw) && /^\d/.test(priceRaw) ? `$${priceRaw}` : priceRaw;
     if(!c.free && priceClean) badges.push(`<span class="badge price">Notes package: ${esc(priceClean)}</span>`);
@@ -465,7 +458,9 @@ function render(){
     const btn=c.free
       ?`<a class="dm" style="background:var(--ok)" href="${FORM_URL}" target="_blank" rel="noopener">Request free copy</a>`
       :`<a class="dm" href="${DM_LINK}" target="_blank" rel="noopener">DM for more</a>`;
-    return `<div class="card ${s}">
+    const facColor=FAC_COLOR[facKey];
+    const cardStyle=facColor?` style="--accent:${facColor.bg};"`:'';
+    return `<div class="card ${s}"${cardStyle}>
       <div class="name" style="margin:0;">${c.code?`<b class="code-inline">${esc(c.code)}</b>`:''}${c.tag?` <span class="tag-grey">(${esc(c.tag)})</span>`:''}${(c.code||c.tag)?' — ':''}${esc(c.title)}</div>
       <div class="metaline">${c.version?`<span>📅 Version: ${esc(c.version)}</span>`:''}${c.grade?`<span>🎓 Grade: ${esc(c.grade)}</span>`:''}</div>
       ${ratingCardHTML(c)}
